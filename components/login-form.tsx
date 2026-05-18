@@ -119,7 +119,7 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
           ) : "Sign In"}
         </button>
 
-        <a href="http://localhost:5000/api/auth/google"
+        <a href="${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/auth/google"
           className="w-full py-3 rounded border border-gray-500 text-white hover:bg-white/10 font-medium transition-all flex items-center justify-center gap-2">
           <span>G</span> Continue with Google
         </a>

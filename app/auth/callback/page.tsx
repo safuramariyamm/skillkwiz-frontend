@@ -40,7 +40,7 @@ export default function AuthCallbackPage() {
     localStorage.setItem("sk_refresh", refreshToken);
 
     // Fetch user info — use explicit full URL to avoid relative path pitfall
-    const meUrl = `http://localhost:5000/api/auth/me`;
+    const meUrl = `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/auth/me`;
 
     fetch(meUrl, {
       headers: { Authorization: `Bearer ${accessToken}` },

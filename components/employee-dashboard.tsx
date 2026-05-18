@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Calendar, Clock, MapPin, CheckCircle, XCircle, RefreshCw, Plus } from "lucide-react";
 
-const API_BASE = "http://localhost:5000/api";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
 interface Booking {
   _id: string;
@@ -119,9 +119,8 @@ export default function EmployeeDashboard() {
           <button
             key={f}
             onClick={() => setFilter(f)}
-            className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
-              filter === f ? "bg-blue-600 text-white" : "bg-white/10 text-gray-300 hover:bg-white/20"
-            }`}
+            className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${filter === f ? "bg-blue-600 text-white" : "bg-white/10 text-gray-300 hover:bg-white/20"
+              }`}
           >
             {f === "all" ? "All Bookings" : f.charAt(0).toUpperCase() + f.slice(1)}
           </button>

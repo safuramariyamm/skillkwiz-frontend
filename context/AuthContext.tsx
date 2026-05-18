@@ -168,7 +168,7 @@ export function useAuthCompat() {
 }
 
 // ─── API helper functions (require token from localStorage) ──────────────────
-const API_BASE_URL = "http://localhost:5000/api";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
 export async function apiCall(
   path: string,
