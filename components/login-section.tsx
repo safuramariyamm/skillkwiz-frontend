@@ -15,8 +15,7 @@ interface FormErrors {
   general?: string;
 }
 
-const GOOGLE_AUTH_URL = "${process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/auth/google";
-
+const GOOGLE_AUTH_URL = `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/auth/google`;
 export default function LoginSection() {
   const router = useRouter();
   const { login, register, user, isLoggedIn, logout } = useAuth();
