@@ -1,6 +1,5 @@
 // Always use explicit absolute URL - never rely on env var at runtime
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
-
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://skillkwiz-production.up.railway.app';
 function getToken(): string | null {
     if (typeof window === "undefined") return null;
     return localStorage.getItem("sk_token");
