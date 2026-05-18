@@ -15,7 +15,7 @@ export default function AuthCallbackPage() {
     const API_BASE =
       (typeof window !== "undefined" && (window as any).__NEXT_PUBLIC_API_URL__) ||
       process.env.NEXT_PUBLIC_API_URL ||
-      "http://localhost:5000/api";
+      process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
     const accessToken = searchParams.get("accessToken");
     const refreshToken = searchParams.get("refreshToken");
@@ -40,7 +40,7 @@ export default function AuthCallbackPage() {
     localStorage.setItem("sk_refresh", refreshToken);
 
     // Fetch user info — use explicit full URL to avoid relative path pitfall
-    const meUrl = `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/auth/me`;
+    const meUrl = `${process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/auth/me`;
 
     fetch(meUrl, {
       headers: { Authorization: `Bearer ${accessToken}` },
@@ -101,3 +101,4 @@ export default function AuthCallbackPage() {
     </div>
   );
 }
+

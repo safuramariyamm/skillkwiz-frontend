@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
 
 // Hardcoded - never rely on env var at browser runtime
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
 export type UserRole = "employee" | "employer" | "admin";
 
@@ -168,7 +168,7 @@ export function useAuthCompat() {
 }
 
 // ─── API helper functions (require token from localStorage) ──────────────────
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
 export async function apiCall(
   path: string,
@@ -208,3 +208,4 @@ export async function apiUpload(
     return { ok: false, data: { message: "Network error" } };
   }
 }
+
