@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
 
 // Hardcoded - never rely on env var at browser runtime
-const API_BASE = "http://localhost:5000/api";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
 export type UserRole = "employee" | "employer" | "admin";
 
