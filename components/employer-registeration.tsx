@@ -101,14 +101,21 @@ export default function EmployerRegistration({ onSubmit }: EmployerRegistrationP
 
     setIsLoading(true);
     try {
+      // Derive firstName/lastName from user.name if form fields are empty (logged-in user skipped account step)
+      const derivedFirst = formData.firstName || user?.name?.split(" ")[0] || "";
+      const derivedLast =
+        formData.lastName ||
+        (user?.name?.includes(" ") ? user.name.split(" ").slice(1).join(" ") : "") ||
+        derivedFirst; // fallback to first name to satisfy validator
+
       const res = await apiRegisterEmployer({
-        firstName: formData.firstName || user?.name?.split(" ")[0] || user?.name || "",
-        lastName: formData.lastName || (user?.name?.includes(" ") ? user.name.split(" ").slice(1).join(" ") : user?.name || "") || "-",
+        firstName: derivedFirst,
+        lastName: derivedLast,
         company: formData.company,
         email: formData.email || user?.email,
         phone: formData.phone,
         department: formData.department,
-        isAuthorized: formData.authorized === "yes",
+        authorized: formData.authorized,          // send "yes"/"no" string, not a boolean
         authorizationDetails: formData.authorizationDetails,
       });
 
