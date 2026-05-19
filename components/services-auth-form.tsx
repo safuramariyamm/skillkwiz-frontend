@@ -19,7 +19,6 @@ interface FormErrors {
   password?: string;
   name?: string;
   phone?: string;
-  emailOtp?: string;
   phoneOtp?: string;
   general?: string;
 }
@@ -32,7 +31,6 @@ export default function ServicesAuthForm({ onLogin }: ServicesAuthFormProps) {
   const [name, setName] = useState("");
   const [userType, setUserType] = useState<UserType>("employee");
   const [phone, setPhone] = useState("");
-  const [emailOtp, setEmailOtp] = useState("");
   const [phoneOtp, setPhoneOtp] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -123,8 +121,6 @@ export default function ServicesAuthForm({ onLogin }: ServicesAuthFormProps) {
     if (!validateSignup()) return;
     setIsLoading(true);
     try {
-      const emailOtpSent = await sendOtp(email, "email");
-      if (!emailOtpSent) { setIsLoading(false); return; }
       const phoneOtpSent = await sendOtp(phone, "phone");
       if (!phoneOtpSent) { setIsLoading(false); return; }
       setView("otp");
@@ -138,17 +134,14 @@ export default function ServicesAuthForm({ onLogin }: ServicesAuthFormProps) {
   const handleOtpVerification = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
-    if (!emailOtp.trim() || !phoneOtp.trim()) {
-      setErrors({ general: "Please enter both OTP codes" });
+    if (!phoneOtp.trim()) {
+      setErrors({ general: "Please enter the OTP code" });
       return;
     }
     setIsLoading(true);
     try {
-      const [emailVerified, phoneVerified] = await Promise.all([
-        verifyOtp(email, "email", emailOtp),
-        verifyOtp(phone, "phone", phoneOtp),
-      ]);
-      if (!emailVerified || !phoneVerified) {
+      const phoneVerified = await verifyOtp(phone, "phone", phoneOtp);
+      if (!phoneVerified) {
         setErrors({ general: "Invalid OTP. Please check and try again." });
         return;
       }
@@ -168,7 +161,7 @@ export default function ServicesAuthForm({ onLogin }: ServicesAuthFormProps) {
 
   const resetForm = () => {
     setEmail(""); setPassword(""); setName(""); setPhone("");
-    setEmailOtp(""); setPhoneOtp(""); setErrors({}); setSuccess(false);
+    setPhoneOtp(""); setErrors({}); setSuccess(false);
   };
 
   const switchView = (v: View) => { setView(v); resetForm(); };
@@ -196,7 +189,7 @@ export default function ServicesAuthForm({ onLogin }: ServicesAuthFormProps) {
         {view === "login" ? "Sign In" : view === "signup" ? "Create Account" : "Verify OTP"}
       </h1>
       <p className="text-center text-gray-300 mb-6">
-        {view === "login" ? "Sign in to access your account" : view === "signup" ? "Join SkillKwiz to get started" : "Enter the codes sent to your email and phone"}
+        {view === "login" ? "Sign in to access your account" : view === "signup" ? "Join SkillKwiz to get started" : "Enter the code sent to your phone"}
       </p>
 
       {success && (
@@ -339,18 +332,6 @@ export default function ServicesAuthForm({ onLogin }: ServicesAuthFormProps) {
       {/* OTP FORM */}
       {view === "otp" && (
         <form onSubmit={handleOtpVerification} className="space-y-5">
-          <div>
-            <label className="block mb-2">Email OTP (sent to {email})</label>
-            <input type="text" value={emailOtp} onChange={(e) => setEmailOtp(e.target.value)}
-              placeholder="6-digit code" maxLength={6}
-              className="w-full bg-[#333333] rounded px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
-              disabled={isLoading} />
-            <button type="button" onClick={() => sendOtp(email, "email")} disabled={isSendingOtp}
-              className="text-blue-400 text-sm mt-1 disabled:opacity-50">
-              {isSendingOtp ? "Sending..." : "Resend Email OTP"}
-            </button>
-          </div>
-
           <div>
             <label className="block mb-2">Phone OTP (sent to {phone})</label>
             <input type="text" value={phoneOtp} onChange={(e) => setPhoneOtp(e.target.value)}

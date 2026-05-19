@@ -35,15 +35,12 @@ export default function EmployerRegistration({ onSubmit }: EmployerRegistrationP
     password: "",
     authorized: null as "yes" | "no" | null,
     authorizationDetails: "",
-    emailOtp: "",
     phoneOtp: "",
   });
 
-  const [emailOtpSent, setEmailOtpSent] = useState(false);
   const [phoneOtpSent, setPhoneOtpSent] = useState(false);
-  const [emailVerified, setEmailVerified] = useState(false);
   const [phoneVerified, setPhoneVerified] = useState(false);
-  const [otpLoading, setOtpLoading] = useState<"email" | "phone" | null>(null);
+  const [otpLoading, setOtpLoading] = useState<"phone" | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [serverError, setServerError] = useState("");
@@ -51,27 +48,6 @@ export default function EmployerRegistration({ onSubmit }: EmployerRegistrationP
 
   const inputClass = (field: string) =>
     `w-full bg-[#1e3a5f] border ${errors[field] ? "border-red-400" : "border-[#2d5184]"} rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-[#f73e5d] transition-colors text-sm`;
-
-  const sendEmailOtp = async () => {
-    if (!formData.email) { setErrors({ ...errors, email: "Enter email first" }); return; }
-    setOtpLoading("email");
-    try {
-      const res = await apiSendOtp(formData.email, "email");
-      if (res.success) { setEmailOtpSent(true); }
-      else { setErrors({ ...errors, email: res.message || "Failed to send OTP" }); }
-    } catch { setErrors({ ...errors, email: "Network error" }); }
-    setOtpLoading(null);
-  };
-
-  const verifyEmailOtp = async () => {
-    setOtpLoading("email");
-    try {
-      const res = await apiVerifyOtp(formData.email, "email", formData.emailOtp);
-      if (res.success) { setEmailVerified(true); }
-      else { setErrors({ ...errors, emailOtp: res.message || "Invalid OTP" }); }
-    } catch { setErrors({ ...errors, emailOtp: "Network error" }); }
-    setOtpLoading(null);
-  };
 
   const sendPhoneOtp = async () => {
     if (!formData.phone) { setErrors({ ...errors, phone: "Enter phone first" }); return; }
@@ -224,7 +200,7 @@ export default function EmployerRegistration({ onSubmit }: EmployerRegistrationP
             placeholder="Acme Corp" required />
         </div>
 
-        {/* Email with OTP */}
+        {/* Email */}
         <div>
           <label className="block text-sm mb-1">Work Email *</label>
           <div className="flex gap-2">
@@ -232,24 +208,7 @@ export default function EmployerRegistration({ onSubmit }: EmployerRegistrationP
               value={formData.email || user?.email || ""}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               placeholder="jane@company.com" readOnly={!!user} />
-            {!emailVerified && (
-              <button type="button" onClick={sendEmailOtp} disabled={otpLoading === "email"}
-                className="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs rounded-lg whitespace-nowrap disabled:opacity-50">
-                {otpLoading === "email" ? <Loader2 className="w-3 h-3 animate-spin" /> : emailOtpSent ? "Resend" : "OTP"}
-              </button>
-            )}
-            {emailVerified && <CheckCircle className="w-5 h-5 text-green-400 mt-3 shrink-0" />}
           </div>
-          {emailOtpSent && !emailVerified && (
-            <div className="flex gap-2 mt-2">
-              <input className={inputClass("emailOtp") + " flex-1"} value={formData.emailOtp}
-                onChange={(e) => setFormData({ ...formData, emailOtp: e.target.value })}
-                placeholder="6-digit OTP" maxLength={6} />
-              <button type="button" onClick={verifyEmailOtp} disabled={otpLoading === "email"}
-                className="px-3 py-2 bg-green-600 hover:bg-green-700 text-white text-xs rounded-lg">Verify</button>
-            </div>
-          )}
-          {errors.emailOtp && <p className="text-red-300 text-xs mt-1">{errors.emailOtp}</p>}
         </div>
 
         {/* Phone with OTP */}
