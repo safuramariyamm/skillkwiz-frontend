@@ -77,7 +77,7 @@ export default function Banner() {
   const slide = slides[current];
 
   return (
-    <div className="relative w-full overflow-hidden" style={{ marginTop: "72px" }}>
+    <div className="relative w-full overflow-hidden" style={{ marginTop: "64px" }}>
       {/* Slides */}
       <div
         className={`relative w-full h-[480px] md:h-[560px] lg:h-[640px] transition-opacity duration-500 ${animating ? "opacity-0" : "opacity-100"}`}
