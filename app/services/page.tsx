@@ -13,9 +13,8 @@ import EmployerCredentialManager from "@/components/employer-credential-manager"
 import SuccessMessage from "@/components/success-message";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
-
 type EmployerTab = "profile" | "slots" | "credentials";
-type EmployeeScreen = "registration" | "booking";
+type EmployeeScreen = "profile" | "booking";
 
 export default function ServicesPage() {
   const { user, isLoggedIn, isLoading, logout } = useAuth();
@@ -28,7 +27,7 @@ export default function ServicesPage() {
 
   // Company employee states — stored in localStorage for persistence across logout/login
   const [companyEmployee, setCompanyEmployee] = useState<any>(null);
-  const [employeeScreen, setEmployeeScreen] = useState<EmployeeScreen>("registration");
+  const [employeeScreen, setEmployeeScreen] = useState<EmployeeScreen>("profile");
   const [employeeHasProfile, setEmployeeHasProfile] = useState<boolean | null>(null);
   const [employeeProfileLoading, setEmployeeProfileLoading] = useState(false);
 
@@ -78,11 +77,11 @@ export default function ServicesPage() {
         }
       } else {
         setEmployeeHasProfile(false);
-        setEmployeeScreen("registration");
+        setEmployeeScreen("profile"); // shows registration form for new employees
       }
     } catch {
       setEmployeeHasProfile(false);
-      setEmployeeScreen("registration");
+      setEmployeeScreen("profile");
     } finally {
       setEmployeeProfileLoading(false);
     }
@@ -193,27 +192,32 @@ export default function ServicesPage() {
               </div>
 
               <div className={panelClass}>
-                {employeeScreen === "registration" ? (
-                  <EmployeeRegistration onNext={handleEmployeeRegistrationComplete} />
+                {employeeScreen === "profile" || employeeScreen === "registration" ? (
+                  employeeHasProfile === true ? (
+                    <EmployeeProfileView
+                      companyEmployee={companyEmployee}
+                      onSwitchToBooking={() => setEmployeeScreen("booking")}
+                    />
+                  ) : (
+                    <EmployeeRegistration onNext={handleEmployeeRegistrationComplete} />
+                  )
                 ) : (
                   <EmployeeSlotBooking />
                 )}
               </div>
 
-              {/* Navigation tabs — only show if not booked */}
-              {companyEmployee.status !== "booked" && companyEmployee.status !== "assessed" && (
-                <div className="flex gap-2 mt-3 justify-center">
-                  <button onClick={() => setEmployeeScreen("registration")} className={tabClass(employeeScreen === "registration")}>
-                    My Profile
-                  </button>
-                  <button
-                    onClick={() => setEmployeeScreen("booking")}
-                    disabled={!employeeHasProfile}
-                    className={`${tabClass(employeeScreen === "booking")} disabled:opacity-40 disabled:cursor-not-allowed`}>
-                    Book Slot
-                  </button>
-                </div>
-              )}
+              {/* Navigation tabs — always show both */}
+              <div className="flex gap-2 mt-3 justify-center">
+                <button onClick={() => setEmployeeScreen("profile")} className={tabClass(employeeScreen === "profile")}>
+                  My Profile
+                </button>
+                <button
+                  onClick={() => setEmployeeScreen("booking")}
+                  disabled={!employeeHasProfile}
+                  className={`${tabClass(employeeScreen === "booking")} disabled:opacity-40 disabled:cursor-not-allowed`}>
+                  Book Slot
+                </button>
+              </div>
             </div>
           )}
 
@@ -263,6 +267,123 @@ export default function ServicesPage() {
     </div>
   );
 }
+
+// ── Employee Profile View — replaces blank EmployeeRegistration as "My Profile" panel ──
+function EmployeeProfileView({ companyEmployee, onSwitchToBooking }: {
+  companyEmployee: any;
+  onSwitchToBooking: () => void;
+}) {
+  const [profile, setProfile] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+
+  useEffect(() => {
+    const token = localStorage.getItem("sk_ce_token") || localStorage.getItem("sk_token");
+    fetch(`${API_BASE}/candidates/me`, { headers: { Authorization: `Bearer ${token}` } })
+      .then(r => r.json())
+      .then(data => {
+        if (data.success) setProfile(data.data.candidate);
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
+  const displayName = profile
+    ? `${profile.firstName || profile.candidateName?.split(" ")[0] || ""} ${profile.lastName || profile.candidateName?.split(" ").slice(1).join(" ") || ""}`.trim()
+    : companyEmployee?.name || "";
+
+  const displayEmail  = profile?.email || companyEmployee?.email || "";
+  const displayCompany = profile?.companyName || profile?.companyName || companyEmployee?.companyName || companyEmployee?.companyCode || "";
+  const displayStatus  = (profile?.status || companyEmployee?.status || "").charAt(0).toUpperCase() + (profile?.status || companyEmployee?.status || "").slice(1);
+
+  if (loading) {
+    return (
+      <div className="text-center py-10"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400 mx-auto" /></div>
+    );
+  }
+
+  return (
+    <div className="text-white space-y-5">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-xl font-semibold">My Profile</h2>
+          <p className="text-sm text-gray-400 mt-0.5">{displayCompany}</p>
+        </div>
+        <button onClick={onSwitchToBooking}
+          className="text-sm text-blue-400 hover:text-blue-300 font-medium">
+          ← Back to Book Slot
+        </button>
+      </div>
+
+      <div className="bg-white/5 border border-white/10 rounded-xl p-6">
+        <div className="flex items-center gap-4 mb-6">
+          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-2xl font-bold">
+            {displayName ? displayName.charAt(0).toUpperCase() : "?"}
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold">{displayName}</h3>
+            <p className="text-gray-400 text-sm">{displayEmail}</p>
+            <span className="inline-block mt-1 text-xs bg-blue-500/20 text-blue-300 px-2.5 py-0.5 rounded-full capitalize">
+              {displayStatus}
+            </span>
+          </div>
+        </div>
+
+        <div className="h-px bg-white/10 my-4" />
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="bg-white/5 rounded-lg p-3">
+            <p className="text-gray-400 text-xs uppercase tracking-wide mb-1">Company</p>
+            <p className="font-medium">{displayCompany}</p>
+          </div>
+          {profile?.companyCode && (
+            <div className="bg-white/5 rounded-lg p-3">
+              <p className="text-gray-400 text-xs uppercase tracking-wide mb-1">Company Code</p>
+              <p className="font-mono font-medium">{profile.companyCode}</p>
+            </div>
+          )}
+          {companyEmployee?.username && (
+            <div className="bg-white/5 rounded-lg p-3">
+              <p className="text-gray-400 text-xs uppercase tracking-wide mb-1">Username</p>
+              <p className="font-mono font-medium">{companyEmployee.username}</p>
+            </div>
+          )}
+          {displayEmail && (
+            <div className="bg-white/5 rounded-lg p-3">
+              <p className="text-gray-400 text-xs uppercase tracking-wide mb-1">Email</p>
+              <p className="font-medium truncate">{displayEmail}</p>
+            </div>
+          )}
+          {profile?.phone && (
+            <div className="bg-white/5 rounded-lg p-3">
+              <p className="text-gray-400 text-xs uppercase tracking-wide mb-1">Phone</p>
+              <p className="font-medium">{profile.phone}</p>
+            </div>
+          )}
+          {profile?.skills && profile.skills.length > 0 && (
+            <div className="col-span-1 sm:col-span-2 bg-white/5 rounded-lg p-3">
+              <p className="text-gray-400 text-xs uppercase tracking-wide mb-2">Skills</p>
+              <div className="flex flex-wrap gap-1.5">
+                {profile.skills.map((s: any, i: number) => (
+                  <span key={i} className="bg-blue-500/15 text-blue-300 text-xs px-2.5 py-1 rounded-full">
+                    {s.name || s}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+          {profile?.resume && (
+            <div className="col-span-1 sm:col-span-2 bg-white/5 rounded-lg p-3">
+              <p className="text-gray-400 text-xs uppercase tracking-wide mb-1">Resume</p>
+              <p className="text-green-400 text-sm">✓ Resume uploaded</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 
 // ── Separate component for login tabs to avoid complexity ────────────────────
 function LoginTabs({ panelClass, onEmployerLogin, onEmployeeLogin }: {
