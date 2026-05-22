@@ -39,14 +39,16 @@ const CARDS = [
   },
 ];
 
-const DESKTOP_BREAKPOINT = 768; // md
+const DESKTOP_BREAKPOINT = 768;
 
 export default function WhyChooseSection() {
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const timeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const sectionRef = useRef<HTMLElement>(null);
+  const hasAnimatedRef = useRef(false); // fire only once per mount
   const [isDesktop, setIsDesktop] = useState(false);
 
-  // Track viewport width
+  // Track breakpoint
   useEffect(() => {
     const mq = window.matchMedia(`(min-width: ${DESKTOP_BREAKPOINT}px)`);
     const handler = (e: MediaQueryListEvent | MediaQueryList) => setIsDesktop(e.matches);
@@ -64,15 +66,12 @@ export default function WhyChooseSection() {
     Object.assign(el.style, props);
   };
 
-  // Reset cards to stacked pile (desktop only)
   const stackAll = useCallback(() => {
     CARDS.forEach((_, i) => {
       const el = cardRefs.current[i];
       if (!el) return;
       applyStyle(el, {
-        transform: `translate(0px, ${i * -3}px) rotate(${(i - 1) * 2}deg) scale(${
-          1 - i * 0.03
-        })`,
+        transform: `translate(0px, ${i * -3}px) rotate(${(i - 1) * 2}deg) scale(${1 - i * 0.03})`,
         opacity: i === 0 ? "1" : i === 1 ? "0.9" : "0.8",
         transition: "none",
         zIndex: String(3 - i),
@@ -81,7 +80,6 @@ export default function WhyChooseSection() {
     });
   }, []);
 
-  // Fan out animation (desktop only)
   const playAnimation = useCallback(() => {
     clearAllTimeouts();
     stackAll();
@@ -119,20 +117,81 @@ export default function WhyChooseSection() {
     });
   }, [stackAll]);
 
-  // Run animation on mount / when switching to desktop
+  // IntersectionObserver — trigger animation when section scrolls into view
   useEffect(() => {
     if (!isDesktop) {
       clearAllTimeouts();
       return;
     }
+
+    // Reset so it fires again if breakpoint toggled
+    hasAnimatedRef.current = false;
     stackAll();
-    const t = setTimeout(playAnimation, 400);
-    timeoutsRef.current.push(t);
-    return () => clearAllTimeouts();
+
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        if (entry.isIntersecting && !hasAnimatedRef.current) {
+          hasAnimatedRef.current = true;
+          playAnimation();
+        }
+      },
+      {
+        // Fire when 30% of the section is visible
+        threshold: 0.3,
+      }
+    );
+
+    observer.observe(section);
+
+    return () => {
+      observer.disconnect();
+      clearAllTimeouts();
+    };
   }, [isDesktop, stackAll, playAnimation]);
 
+  // Shared card inner JSX to avoid duplication
+  const CardInner = ({ card }: { card: (typeof CARDS)[0] }) => (
+    <>
+      <div
+        style={{
+          width: 52,
+          height: 52,
+          borderRadius: "50%",
+          background: "#e3f0ff",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          margin: "0 auto 12px",
+          overflow: "hidden",
+          fontSize: 22,
+        }}
+      >
+        <img
+          src={card.icon}
+          alt=""
+          aria-hidden="true"
+          style={{ width: 56, height: 56, objectFit: "cover" }}
+          onError={(e) => {
+            const parent = (e.target as HTMLImageElement).parentElement;
+            if (parent) parent.innerHTML = card.emoji;
+          }}
+        />
+      </div>
+      <h3 style={{ fontSize: 15, fontWeight: 700, color: "#00418d", margin: "0 0 8px" }}>
+        {card.title}
+      </h3>
+      <p style={{ fontSize: 12, color: "#555", lineHeight: 1.5, margin: 0 }}>
+        {card.description}
+      </p>
+    </>
+  );
+
   return (
-    <section className="py-16 text-white relative overflow-hidden">
+    <section ref={sectionRef} className="py-16 text-white relative overflow-hidden">
       {/* ── Background ── */}
       <div className="absolute inset-0">
         <div className="absolute top-0 left-0 right-0 h-[40%]">
@@ -186,39 +245,7 @@ export default function WhyChooseSection() {
                 className="bg-white rounded-2xl text-center w-full max-w-xs"
                 style={{ padding: "24px 20px 20px", boxShadow: "0 4px 24px rgba(0,0,0,0.18)" }}
               >
-                <div
-                  style={{
-                    width: 52,
-                    height: 52,
-                    borderRadius: "50%",
-                    background: "#e3f0ff",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    margin: "0 auto 12px",
-                    overflow: "hidden",
-                    fontSize: 22,
-                  }}
-                >
-                  <img
-                    src={card.icon}
-                    alt=""
-                    aria-hidden="true"
-                    style={{ width: 56, height: 56, objectFit: "cover" }}
-                    onError={(e) => {
-                      const parent = (e.target as HTMLImageElement).parentElement;
-                      if (parent) parent.innerHTML = card.emoji;
-                    }}
-                  />
-                </div>
-                <h3
-                  style={{ fontSize: 15, fontWeight: 700, color: "#00418d", margin: "0 0 8px" }}
-                >
-                  {card.title}
-                </h3>
-                <p style={{ fontSize: 12, color: "#555", lineHeight: 1.5, margin: 0 }}>
-                  {card.description}
-                </p>
+                <CardInner card={card} />
               </div>
             ))}
           </div>
@@ -249,106 +276,32 @@ export default function WhyChooseSection() {
                   boxShadow: "0 4px 24px rgba(0,0,0,0.18)",
                 }}
               >
-                <div
-                  style={{
-                    width: 52,
-                    height: 52,
-                    borderRadius: "50%",
-                    background: "#e3f0ff",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    margin: "0 auto 12px",
-                    overflow: "hidden",
-                    fontSize: 22,
-                  }}
-                >
-                  <img
-                    src={card.icon}
-                    alt=""
-                    aria-hidden="true"
-                    style={{ width: 56, height: 56, objectFit: "cover" }}
-                    onError={(e) => {
-                      const parent = (e.target as HTMLImageElement).parentElement;
-                      if (parent) parent.innerHTML = card.emoji;
-                    }}
-                  />
-                </div>
-                <h3
-                  style={{ fontSize: 15, fontWeight: 700, color: "#00418d", margin: "0 0 8px" }}
-                >
-                  {card.title}
-                </h3>
-                <p style={{ fontSize: 12, color: "#555", lineHeight: 1.5, margin: 0 }}>
-                  {card.description}
-                </p>
+                <CardInner card={card} />
               </div>
             ))}
           </div>
         )}
 
-        {/* ── Replay + CTA (desktop only) ── */}
-        {isDesktop && (
-          <div
-            className="flex justify-center items-center relative z-20"
-            style={{ gap: 12, marginBottom: 64 }}
+        {/* ── CTA row ── */}
+        <div
+          className="flex justify-center items-center relative z-20"
+          style={{ gap: 12, marginBottom: 64 }}
+        >
+          <Link
+            href="/services"
+            style={{
+              background: "#f6c648",
+              color: "#00418d",
+              fontWeight: 700,
+              borderRadius: 100,
+              padding: "10px 28px",
+              fontSize: 13,
+              textDecoration: "none",
+            }}
           >
-            <button
-              onClick={playAnimation}
-              style={{
-                background: "rgba(255,255,255,0.12)",
-                border: "1px solid rgba(255,255,255,0.25)",
-                color: "#fff",
-                borderRadius: 100,
-                padding: "10px 24px",
-                fontSize: 13,
-                cursor: "pointer",
-              }}
-              onMouseEnter={(e) =>
-                ((e.currentTarget.style.background = "rgba(255,255,255,0.22)"))
-              }
-              onMouseLeave={(e) =>
-                ((e.currentTarget.style.background = "rgba(255,255,255,0.12)"))
-              }
-            >
-              ↺ Replay animation
-            </button>
-            <Link
-              href="/services"
-              style={{
-                background: "#f6c648",
-                color: "#00418d",
-                fontWeight: 700,
-                borderRadius: 100,
-                padding: "10px 28px",
-                fontSize: 13,
-                textDecoration: "none",
-              }}
-            >
-              Get started ↗
-            </Link>
-          </div>
-        )}
-
-        {/* ── Mobile CTA button ── */}
-        {!isDesktop && (
-          <div className="flex justify-center mb-10">
-            <Link
-              href="/services"
-              style={{
-                background: "#f6c648",
-                color: "#00418d",
-                fontWeight: 700,
-                borderRadius: 100,
-                padding: "10px 28px",
-                fontSize: 13,
-                textDecoration: "none",
-              }}
-            >
-              Get started ↗
-            </Link>
-          </div>
-        )}
+            Get started ↗
+          </Link>
+        </div>
 
         {/* ── Bottom CTA ── */}
         <div className="text-center relative z-20 mt-4 md:mt-0">
