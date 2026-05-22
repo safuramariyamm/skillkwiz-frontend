@@ -6,7 +6,7 @@ import {
   Copy,
   CheckCircle,
   Loader2,
- Mail,
+  Mail,
   Shield,
   Clock,
   Calendar,
@@ -54,7 +54,6 @@ export default function EmployerCredentialManager() {
   const [error, setError] = useState("");
   const [newCred, setNewCred] = useState<NewCredential | null>(null);
   const [copied, setCopied] = useState("");
-
   const [form, setForm] = useState({
     candidateName: "",
     candidateEmail: "",
@@ -122,8 +121,11 @@ export default function EmployerCredentialManager() {
       }
     );
 
-    if (ok) fetchCredentials();
-    else alert(data.message);
+    if (ok) {
+      fetchCredentials();
+    } else {
+      alert(data.message);
+    }
   };
 
   const copyToClipboard = (text: string, key: string) => {
@@ -136,38 +138,45 @@ export default function EmployerCredentialManager() {
 
   const statusConfig: Record<
     string,
-    { color: string; label: string }
+    {
+      color: string;
+      label: string;
+    }
   > = {
     invited: {
-      color: "bg-[#5a4a12]/30 text-[#f4d35e]",
+      color:
+        "bg-[#5c4a12]/30 text-[#f4d35e] border border-[#7a6218]/40",
       label: "Invited",
     },
 
     registered: {
-      color: "bg-[#1e3a5f]/40 text-[#c3dfff]",
+      color:
+        "bg-[#1e3a5f]/40 text-[#9ec5ff] border border-[#2d5184]/40",
       label: "Registered",
     },
 
     booked: {
-      color: "bg-[#1d4d3a]/30 text-[#7ee2b8]",
+      color:
+        "bg-[#123524]/30 text-[#7ee2b8] border border-[#1f5b3f]/40",
       label: "Slot Booked",
     },
 
     assessed: {
-      color: "bg-[#4a2b63]/30 text-[#d7b8ff]",
+      color:
+        "bg-[#3a1d5c]/30 text-[#d3b5ff] border border-[#5b2a8a]/40",
       label: "Assessed",
     },
   };
 
   return (
-    <div className="text-white">
+    <div className="text-white min-h-screen bg-[#1a2540] rounded-2xl p-4">
       {/* Stats */}
-      <div className="grid grid-cols-4 gap-3 mb-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
         {[
           {
             label: "Total",
             value: stats.total,
-            color: "text-black",
+            color: "text-white",
           },
 
           {
@@ -185,25 +194,26 @@ export default function EmployerCredentialManager() {
           {
             label: "Assessed",
             value: stats.assessed,
-            color: "text-[#d7b8ff]",
+            color: "text-[#d3b5ff]",
           },
         ].map((s) => (
           <div
             key={s.label}
-            className="bg-[#1a2540]/80 border border-[#2d5184]/30 rounded-xl p-3 text-center"
+            className="bg-[#1e2f4d] border border-[#2d5184]/40 rounded-2xl p-4 text-center shadow-lg shadow-black/10"
           >
             <p className={`text-headingMd font-bold ${s.color}`}>
               {s.value}
             </p>
 
-            <p className="text-caption text-gray-400 mt-0.5">
+            <p className="text-caption text-gray-400 mt-1">
               {s.label}
             </p>
           </div>
         ))}
       </div>
 
-      <div className="flex items-center justify-between mb-4">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-5">
         <h2 className="text-headingSm font-semibold">
           Candidate Access
         </h2>
@@ -214,7 +224,7 @@ export default function EmployerCredentialManager() {
             setError("");
             setNewCred(null);
           }}
-          className="flex items-center gap-2 bg-[#00418d] hover:bg-[#1e3a5f] px-4 py-2 rounded-lg text-body font-medium transition-colors"
+          className="flex items-center gap-2 bg-[#00418d] hover:bg-[#2d5184] transition-all duration-300 shadow-md shadow-[#00418d]/20 px-4 py-2 rounded-xl text-body font-medium"
         >
           <UserPlus className="w-4 h-4" />
 
@@ -222,23 +232,24 @@ export default function EmployerCredentialManager() {
         </button>
       </div>
 
-      {/* Add candidate form */}
+      {/* Add Candidate Form */}
       {showForm && (
         <form
           onSubmit={handleGenerate}
-          className="bg-[#1a2540]/80 border border-[#2d5184]/30 rounded-xl p-5 mb-5 space-y-3"
+          className="bg-[#1e2f4d] border border-[#2d5184]/40 rounded-2xl p-5 mb-5 space-y-4 shadow-xl shadow-black/10"
         >
           <h3 className="text-body font-medium text-gray-300 uppercase tracking-wide">
             Generate Credentials
           </h3>
 
           {error && (
-            <div className="bg-red-500/20 rounded-lg p-3">
+            <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-3">
               <p className="text-red-300 text-body">{error}</p>
             </div>
           )}
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Name */}
             <div>
               <label className="block text-caption text-gray-400 mb-1">
                 Candidate Full Name
@@ -254,10 +265,11 @@ export default function EmployerCredentialManager() {
                   }))
                 }
                 placeholder="e.g. Rahul Sharma"
-                className="w-full bg-[#1a2540] border border-[#2d5184]/30 rounded-lg px-3 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-[#00418d] text-body"
+                className="w-full bg-[#162238] border border-[#2d5184]/40 rounded-xl px-3 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-[#00418d] focus:ring-2 focus:ring-[#00418d]/20 transition-all"
               />
             </div>
 
+            {/* Email */}
             <div>
               <label className="block text-caption text-gray-400 mb-1">
                 Candidate Email
@@ -273,7 +285,7 @@ export default function EmployerCredentialManager() {
                   }))
                 }
                 placeholder="e.g. rahul@email.com"
-                className="w-full bg-[#1a2540] border border-[#2d5184]/30 rounded-lg px-3 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-[#00418d] text-body"
+                className="w-full bg-[#162238] border border-[#2d5184]/40 rounded-xl px-3 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-[#00418d] focus:ring-2 focus:ring-[#00418d]/20 transition-all"
               />
             </div>
           </div>
@@ -281,7 +293,7 @@ export default function EmployerCredentialManager() {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full py-2.5 bg-[#1d4d3a] hover:bg-[#163b2d] rounded-lg text-body font-medium disabled:opacity-50 flex items-center justify-center gap-2 transition-colors"
+            className="w-full py-3 bg-[#123524] hover:bg-[#1f5b3f] rounded-xl text-body font-medium disabled:opacity-50 flex items-center justify-center gap-2 transition-all duration-300"
           >
             {submitting ? (
               <>
@@ -298,11 +310,11 @@ export default function EmployerCredentialManager() {
         </form>
       )}
 
-      {/* New credential display */}
+      {/* Success Credentials */}
       {newCred && (
-        <div className="bg-[#1d4d3a]/20 border border-[#2d6a4f]/40 rounded-xl p-5 mb-5">
-          <div className="flex items-center gap-2 mb-3">
-            <CheckCircle className="w-5 h-5 text-[#63d39b]" />
+        <div className="bg-[#123524]/30 border border-[#1f5b3f]/50 rounded-2xl p-5 mb-5">
+          <div className="flex items-center gap-2 mb-4">
+            <CheckCircle className="w-5 h-5 text-[#7ee2b8]" />
 
             <span className="text-[#7ee2b8] font-medium">
               Credentials generated and emailed to{" "}
@@ -310,7 +322,7 @@ export default function EmployerCredentialManager() {
             </span>
           </div>
 
-          <div className="grid grid-cols-2 gap-2 text-body">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-body">
             {[
               {
                 label: "Company Code",
@@ -329,14 +341,14 @@ export default function EmployerCredentialManager() {
             ].map((item) => (
               <div
                 key={item.label}
-                className="bg-[#192030] rounded-lg p-3 flex items-center justify-between border border-[#2d5184]/20"
+                className="bg-[#162238] border border-[#2d5184]/30 rounded-xl p-3 flex items-center justify-between"
               >
                 <div>
                   <p className="text-caption text-gray-400">
                     {item.label}
                   </p>
 
-                  <p className="font-mono font-bold">
+                  <p className="font-mono font-bold break-all">
                     {item.value}
                   </p>
                 </div>
@@ -348,7 +360,7 @@ export default function EmployerCredentialManager() {
                   className="text-gray-400 hover:text-white ml-2 transition-colors"
                 >
                   {copied === item.label ? (
-                    <CheckCircle className="w-4 h-4 text-[#63d39b]" />
+                    <CheckCircle className="w-4 h-4 text-[#7ee2b8]" />
                   ) : (
                     <Copy className="w-4 h-4" />
                   )}
@@ -357,19 +369,20 @@ export default function EmployerCredentialManager() {
             ))}
           </div>
 
-          <p className="text-caption text-[#f4d35e] mt-3">
+          <p className="text-caption text-[#f4d35e] mt-4">
             ⚠️ Save this password — it won't be shown again.
           </p>
         </div>
       )}
 
-      {/* Candidates list */}
+      {/* Loading */}
       {loading ? (
-        <div className="text-center py-8">
-          <Loader2 className="w-8 h-8 animate-spin mx-auto text-[#3a6394]" />
+        <div className="text-center py-10">
+          <Loader2 className="w-8 h-8 animate-spin mx-auto text-[#4d8fda]" />
         </div>
       ) : credentials.length === 0 ? (
-        <div className="text-center py-10 text-gray-500">
+        /* Empty State */
+        <div className="text-center py-12 text-gray-400">
           <Shield className="w-12 h-12 mx-auto mb-3 opacity-40" />
 
           <p>
@@ -378,13 +391,15 @@ export default function EmployerCredentialManager() {
           </p>
         </div>
       ) : (
-        <div className="space-y-2">
+        /* Candidates */
+        <div className="space-y-3">
           {credentials.map((c) => (
             <div
               key={c._id}
-              className="bg-[#1a2540]/80 border border-[#2d5184]/30 rounded-xl p-4 flex items-start justify-between gap-3"
+              className="bg-[#1e2f4d] border border-[#2d5184]/40 rounded-2xl p-4 hover:border-[#3a6394]/60 transition-all duration-300 flex items-start justify-between gap-3"
             >
               <div className="flex-1 min-w-0">
+                {/* Top Row */}
                 <div className="flex items-center gap-2 mb-1 flex-wrap">
                   <p className="font-medium">
                     {c.candidateName}
@@ -397,22 +412,25 @@ export default function EmployerCredentialManager() {
                   </span>
 
                   {c.isUsed && (
-                    <span className="text-caption bg-[#00418d]/20 text-[#c3dfff] px-2 py-0.5 rounded-full">
+                    <span className="text-caption bg-[#00418d]/20 text-[#9ec5ff] border border-[#2d5184]/40 px-2 py-0.5 rounded-full">
                       Logged in
                     </span>
                   )}
                 </div>
 
+                {/* Email */}
                 <p className="text-body text-gray-400">
                   {c.candidateEmail}
                 </p>
 
+                {/* Username */}
                 <p className="text-caption text-gray-500 font-mono mt-0.5">
                   Username: {c.username}
                 </p>
 
+                {/* Slot */}
                 {c.bookedSlot && (
-                  <div className="mt-2 flex items-center gap-3 text-caption text-[#7ee2b8] flex-wrap">
+                  <div className="mt-3 flex items-center gap-3 flex-wrap text-caption text-[#7ee2b8]">
                     <span className="flex items-center gap-1">
                       <Calendar className="w-3 h-3" />
                       {c.bookedSlot.date}
@@ -428,12 +446,13 @@ export default function EmployerCredentialManager() {
                 )}
               </div>
 
+              {/* Delete */}
               {c.status === "invited" && (
                 <button
                   onClick={() =>
                     handleRevoke(c._id, c.candidateName)
                   }
-                  className="text-red-400 hover:text-red-300 p-1.5 hover:bg-red-500/10 rounded-lg transition-colors flex-shrink-0"
+                  className="text-[#ff8b8b] hover:text-white hover:bg-[#5c1f1f]/40 transition-all duration-300 p-2 rounded-lg flex-shrink-0"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
@@ -445,3 +464,4 @@ export default function EmployerCredentialManager() {
     </div>
   );
 }
+
