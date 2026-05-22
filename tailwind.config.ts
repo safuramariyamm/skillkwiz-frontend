@@ -21,6 +21,16 @@ const config: Config = {
         'float-delay-1': 'float 4s ease-in-out infinite 1s',
         'float-delay-2': 'float 4s ease-in-out infinite 2s',
       },
+      fontSize: {
+        caption: "12px",
+        body: "14px",
+        bodyLarge: "15px",
+        subhead: "16px",
+        headingSm: "20px",
+        headingMd: "24px",
+        headingLg: "30px",
+        headingXl: "36px",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

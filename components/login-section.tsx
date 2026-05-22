@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { Eye, EyeOff, Loader2, CheckCircle, XCircle, LogOut, ArrowRight } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 
@@ -83,8 +84,9 @@ export default function LoginSection() {
 
           {/* Left — illustration (always visible) */}
           <div className="w-full md:w-1/2 bg-white flex items-center justify-center overflow-hidden p-4">
-            <img src="/images/homepage/undraw_online-test_cqv0.svg" alt="Skill Assessment"
-              className="w-full h-[450px] object-contain" />
+            <Image src="/images/homepage/undraw_online-test_cqv0.svg" alt="Skill Assessment"
+              width={600} height={450} className="w-full h-[450px] object-contain"
+              priority fetchpriority="high" />
           </div>
 
           {/* Right — auth panel */}

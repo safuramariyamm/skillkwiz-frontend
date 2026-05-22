@@ -11,10 +11,7 @@ export default function AboutPage() {
       <section className="relative w-full bg-[#00418d] text-white overflow-hidden">
         <video
           className="absolute top-0 left-0 w-full h-full object-cover z-0"
-          autoPlay
-          muted
-          loop
-          playsInline
+          autoPlay muted loop playsInline preload="none"
         >
           <source src="/images/homepage/banner_video.mp4" type="video/mp4" />
           Your browser does not support the video tag.
@@ -144,7 +141,7 @@ export default function AboutPage() {
                 Who We Are
               </h3>
               <div className="space-y-5">
-                <p className="text-[15px] md:text-base text-gray-700 leading-relaxed">
+                <p className="text-bodyLarge md:text-base text-gray-700 leading-relaxed">
                   We are your trusted partner in skill assessment. Our expertise lies in
                   assessing skill levels in people and quantifying them through innovative,
                   secure, and reliable evaluation methods.
@@ -155,7 +152,7 @@ export default function AboutPage() {
                       <path fillRule="evenodd" d="M18 3a1 1 0 00-1.447-.894L8.763 6H5a3 3 0 000 6h.28l1.771 5.316A1 1 0 008 18h1a1 1 0 001-1.004V15a1 1 0 00-.894-.553L13 12.236V7a1 1 0 00-.553-.894l-1.447-.894A1 1 0 0011 5h-.28l-1.772 5.317z" clipRule="evenodd" />
                     </svg>
                   </div>
-                  <blockquote className="text-[15px] md:text-base text-gray-700 italic mb-3 leading-relaxed mt-2">
+                  <blockquote className="text-bodyLarge md:text-base text-gray-700 italic mb-3 leading-relaxed mt-2">
                     "SkillKwiz has a single purpose and that is to create
                     stakeholder value through cutting-edge assessment technology
                     that transforms how organizations evaluate and develop talent..."
@@ -238,12 +235,12 @@ export default function AboutPage() {
                   Venugopal B A
                 </h3>
                 <div className="space-y-4">
-                  <p className="text-[15px] md:text-base text-gray-700 leading-relaxed">
+                  <p className="text-bodyLarge md:text-base text-gray-700 leading-relaxed">
                     A veteran leader in the IT industry with 24 years of experience in senior leadership
                     roles, Venugopal has chosen to lead SkillKwiz with a deep understanding of the key
                     challenges faced by the services sector.
                   </p>
-                  <p className="text-[15px] md:text-base text-gray-700 leading-relaxed">
+                  <p className="text-bodyLarge md:text-base text-gray-700 leading-relaxed">
                     With a rich background in the technology industry, he aims to establish SkillKwiz as
                     an AI-first company. He is poised to take SkillKwiz to its next level of growth by
                     shaping it entirely according to market needs and technological innovation.

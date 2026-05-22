@@ -52,10 +52,10 @@ export default function Banner() {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      goToNext();
+      setCurrent(prev => (prev + 1) % slides.length);
     }, 5000);
     return () => clearInterval(timer);
-  }, [current]);
+  }, []);
 
   const goTo = (idx: number) => {
     if (animating || idx === current) return;

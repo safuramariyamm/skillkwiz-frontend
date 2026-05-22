@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useRef, useCallback, useState } from "react";
 
 const CARDS = [
@@ -157,34 +158,20 @@ export default function WhyChooseSection() {
   const CardInner = ({ card }: { card: (typeof CARDS)[0] }) => (
     <>
       <div
-        style={{
-          width: 52,
-          height: 52,
-          borderRadius: "50%",
-          background: "#e3f0ff",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          margin: "0 auto 12px",
-          overflow: "hidden",
-          fontSize: 22,
-        }}
+        className="w-[52px] h-[52px] rounded-full bg-[#e3f0ff] flex items-center justify-center mx-auto mb-3 overflow-hidden text-2xl"
       >
-        <img
-          src={card.icon}
-          alt=""
-          aria-hidden="true"
-          style={{ width: 56, height: 56, objectFit: "cover" }}
+        <Image
+          src={card.icon} alt="" width={56} height={56} className="object-cover"
           onError={(e) => {
             const parent = (e.target as HTMLImageElement).parentElement;
-            if (parent) parent.innerHTML = card.emoji;
+            if (parent) parent.textContent = card.emoji;
           }}
         />
       </div>
-      <h3 style={{ fontSize: 15, fontWeight: 700, color: "#00418d", margin: "0 0 8px" }}>
+      <h3 className="text-sm font-bold text-[#00418d] mb-2">
         {card.title}
       </h3>
-      <p style={{ fontSize: 12, color: "#555", lineHeight: 1.5, margin: 0 }}>
+      <p className="text-caption text-[#555555] leading-relaxed">
         {card.description}
       </p>
     </>
@@ -195,27 +182,11 @@ export default function WhyChooseSection() {
       {/* ── Background ── */}
       <div className="absolute inset-0">
         <div className="absolute top-0 left-0 right-0 h-[40%]">
-          <img
-            src="/images/homepage/why_choose_banner_2.png"
-            alt=""
-            className="w-full h-full object-cover"
-            aria-hidden="true"
-          />
+          <Image src="/images/homepage/why_choose_banner_2.png" alt="" fill className="object-cover" priority loading="eager" aria-hidden="true" />
         </div>
         <div className="absolute bottom-0 left-0 right-0 h-[40%]">
-          <img
-            src="/images/homepage/why_choose_banner_2.png"
-            alt=""
-            className="w-full h-full object-cover"
-            aria-hidden="true"
-          />
           <div className="absolute inset-0 flex justify-center items-center opacity-60">
-            <img
-              src="/images/homepage/home_globe.gif"
-              alt=""
-              className="w-full max-w-2xl"
-              aria-hidden="true"
-            />
+            <Image src="/images/homepage/home_globe.gif" alt="" width={600} height={400} className="max-w-2xl" loading="lazy" aria-hidden="true" />
           </div>
         </div>
       </div>
@@ -289,15 +260,7 @@ export default function WhyChooseSection() {
         >
           <Link
             href="/services"
-            style={{
-              background: "#f6c648",
-              color: "#00418d",
-              fontWeight: 700,
-              borderRadius: 100,
-              padding: "10px 28px",
-              fontSize: 13,
-              textDecoration: "none",
-            }}
+            className="bg-[#f6c648] text-[#00418d] font-bold rounded-full px-7 py-2.5 no-underline hover:bg-opacity-90 transition-all"
           >
             Get started ↗
           </Link>
