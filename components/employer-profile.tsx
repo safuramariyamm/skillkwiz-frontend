@@ -48,25 +48,25 @@ export default function EmployerProfile({ employerData: initialData }: EmployerP
       <h2 className="text-headingMd font-semibold text-center mb-6">Employer Profile</h2>
 
       {/* Company Code — most important, show first */}
-      <div className="bg-gradient-to-r from-blue-600/30 to-blue-800/30 border border-blue-500/40 rounded-2xl p-5 mb-5 text-center">
+      <div className="bg-gradient-to-r from-[#192030] to-[#364059] border border-blue-500/40 rounded-2xl p-5 mb-5 text-center">
         <p className="text-body text-blue-300 mb-1 uppercase tracking-wider font-medium">Your Company Code</p>
         <p className="text-headingXl font-black tracking-[0.3em] text-white mb-2">{profile.companyCode}</p>
         <button onClick={copyCode}
           className="flex items-center gap-2 mx-auto text-body bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 px-4 py-2 rounded-lg transition-colors">
           {copied ? <><CheckCircle className="w-4 h-4 text-green-400" />Copied!</> : <><Copy className="w-4 h-4" />Copy Code</>}
         </button>
-        <p className="text-caption text-gray-400 mt-3">Share this code with candidates so they can log in to take your assessment</p>
+        <p className="text-caption text--400 mt-3">Share this code with candidates so they can log in to take your assessment</p>
       </div>
 
       {/* Profile details */}
       <div className="bg-white/5 border border-white/10 rounded-xl p-5">
         <div className="flex items-center gap-4 mb-5">
-          <div className="w-14 h-14 rounded-full bg-blue-600/30 flex items-center justify-center text-headingSm font-bold flex-shrink-0">
+          <div className="w-14 h-14 rounded-full bg-[#364059] flex items-center justify-center text-headingSm font-bold flex-shrink-0">
             {profile.firstName?.charAt(0)}{profile.lastName?.charAt(0)}
           </div>
           <div>
-            <h3 className="text-headingSm font-semibold">{profile.firstName} {profile.lastName !== "-" ? profile.lastName : ""}</h3>
-            <p className="text-gray-400 text-body capitalize">{profile.department} — {profile.company}</p>
+            <h3 className="text-headingSm text-black font-semibold">{profile.firstName} {profile.lastName !== "-" ? profile.lastName : ""}</h3>
+            <p className="text-black text-body capitalize">{profile.department} — {profile.company}</p>
             {profile.isVerified && (
               <span className="inline-flex items-center gap-1 text-caption bg-green-500/20 text-green-300 px-2 py-0.5 rounded-full mt-1">
                 <CheckCircle className="w-3 h-3" />Verified
@@ -77,28 +77,28 @@ export default function EmployerProfile({ employerData: initialData }: EmployerP
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-body">
           <div className="flex items-center gap-3">
-            <Mail className="w-4 h-4 text-gray-400 flex-shrink-0" />
-            <div><p className="text-gray-500 text-caption">Email</p><p>{profile.email}</p></div>
+            <Mail className="w-4 h-4 text-black flex-shrink-0" />
+            <div><p className="text-black text-caption">Email</p><p className="text-black">{profile.email}</p></div>
           </div>
           <div className="flex items-center gap-3">
-            <Phone className="w-4 h-4 text-gray-400 flex-shrink-0" />
-            <div><p className="text-gray-500 text-caption">Phone</p><p>{profile.phone}</p></div>
+            <Phone className="w-4 h-4 text-black flex-shrink-0" />
+            <div><p className="text-black text-caption">Phone</p><p className="text-black">{profile.phone}</p></div>
           </div>
           <div className="flex items-center gap-3">
-            <Building2 className="w-4 h-4 text-gray-400 flex-shrink-0" />
-            <div><p className="text-gray-500 text-caption">Company</p><p className="capitalize">{profile.company}</p></div>
+            <Building2 className="w-4 h-4 text-black flex-shrink-0" />
+            <div><p className="text-black text-caption">Company</p><p className="capitalize text-black">{profile.company}</p></div>
           </div>
           <div className="flex items-center gap-3">
-            <Briefcase className="w-4 h-4 text-gray-400 flex-shrink-0" />
-            <div><p className="text-gray-500 text-caption">Department</p><p className="capitalize">{profile.department}</p></div>
+            <Briefcase className="w-4 h-4 text-black flex-shrink-0" />
+            <div><p className="text-black text-caption">Department</p><p className="capitalize text-black">{profile.department}</p></div>
           </div>
           <div className="flex items-center gap-3">
-            <Shield className="w-4 h-4 text-gray-400 flex-shrink-0" />
-            <div><p className="text-gray-500 text-caption">Authorization</p><p>{profile.authorized === "yes" ? "✓ Authorized to Hire" : "Not Authorized"}</p></div>
+            <Shield className="w-4 h-4 text-black flex-shrink-0" />
+            <div><p className="text-black text-caption">Authorization</p><p className="text-black">{profile.authorized === "yes" ? "✓ Authorized to Hire" : "Not Authorized"}</p></div>
           </div>
           <div className="flex items-center gap-3">
             <div className="w-4 h-4 flex-shrink-0" />
-            <div><p className="text-gray-500 text-caption">Member Since</p><p>{new Date(profile.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</p></div>
+            <div><p className="text-black text-caption">Member Since</p><p className="text-black">{new Date(profile.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</p></div>
           </div>
         </div>
       </div>

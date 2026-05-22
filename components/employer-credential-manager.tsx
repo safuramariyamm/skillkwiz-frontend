@@ -76,7 +76,7 @@ export default function EmployerCredentialManager() {
 
   const statusConfig: Record<string, { color: string; label: string }> = {
     invited: { color: "bg-yellow-500/20 text-yellow-300", label: "Invited" },
-    registered: { color: "bg-blue-500/20 text-blue-300", label: "Registered" },
+    registered: { color: "bg-[#00418d]/20 text-[#c3dfff]", label: "Registered" },
     booked: { color: "bg-green-500/20 text-green-300", label: "Slot Booked" },
     assessed: { color: "bg-purple-500/20 text-purple-300", label: "Assessed" },
   };
@@ -84,7 +84,7 @@ export default function EmployerCredentialManager() {
   return (
     <div className="text-white">
       {/* Stats */}
-      <div className="grid grid-cols-4 gap-3 mb-5">
+        <div className="grid grid-cols-4 gap-3 mb-4">
         {[
           { label: "Total", value: stats.total, color: "text-white" },
           { label: "Invited", value: stats.invited, color: "text-yellow-300" },
@@ -101,7 +101,7 @@ export default function EmployerCredentialManager() {
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-headingSm font-semibold">Candidate Access</h2>
         <button onClick={() => { setShowForm(!showForm); setError(""); setNewCred(null); }}
-          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-body font-medium">
+          className="flex items-center gap-2 bg-[#00418d] hover:bg-[#003070] px-4 py-2 rounded-lg text-body font-medium">
           <UserPlus className="w-4 h-4" /> {showForm ? "Cancel" : "Add Candidate"}
         </button>
       </div>
@@ -116,13 +116,13 @@ export default function EmployerCredentialManager() {
               <label className="block text-caption text-gray-400 mb-1">Candidate Full Name</label>
               <input type="text" value={form.candidateName} onChange={e => setForm(p => ({ ...p, candidateName: e.target.value }))}
                 placeholder="e.g. Rahul Sharma"
-                className="w-full bg-[#1a2540] border border-white/10 rounded-lg px-3 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-blue-400 text-body" />
+                className="w-full bg-[#0a1628] border border-white/10 rounded-lg px-3 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-[#00418d] text-body" />
             </div>
             <div>
               <label className="block text-caption text-gray-400 mb-1">Candidate Email</label>
               <input type="email" value={form.candidateEmail} onChange={e => setForm(p => ({ ...p, candidateEmail: e.target.value }))}
                 placeholder="e.g. rahul@email.com"
-                className="w-full bg-[#1a2540] border border-white/10 rounded-lg px-3 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-blue-400 text-body" />
+                className="w-full bg-[#0a1628] border border-white/10 rounded-lg px-3 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-[#00418d] text-body" />
             </div>
           </div>
           <button type="submit" disabled={submitting}
@@ -159,7 +159,7 @@ export default function EmployerCredentialManager() {
 
       {/* Candidates list */}
       {loading ? (
-        <div className="text-center py-8"><Loader2 className="w-8 h-8 animate-spin mx-auto text-blue-400" /></div>
+        <div className="text-center py-8"><Loader2 className="w-8 h-8 animate-spin mx-auto text-[#4d8fda]" /></div>
       ) : credentials.length === 0 ? (
         <div className="text-center py-10 text-gray-500">
           <Shield className="w-12 h-12 mx-auto mb-3 opacity-40" />
@@ -175,7 +175,7 @@ export default function EmployerCredentialManager() {
                   <span className={`text-caption px-2 py-0.5 rounded-full ${statusConfig[c.status]?.color}`}>
                     {statusConfig[c.status]?.label}
                   </span>
-                  {c.isUsed && <span className="text-caption bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full">Logged in</span>}
+                  {c.isUsed && <span className="text-caption bg-[#00418d]/20 text-[#c3dfff] px-2 py-0.5 rounded-full">Logged in</span>}
                 </div>
                 <p className="text-body text-gray-400">{c.candidateEmail}</p>
                 <p className="text-caption text-gray-500 font-mono mt-0.5">Username: {c.username}</p>

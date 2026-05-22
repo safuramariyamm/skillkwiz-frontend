@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Building2, Mail, Phone, Briefcase, Shield, CheckCircle, Loader2, Copy } from "lucide-react";
+import { CheckCircle, Loader2, Copy } from "lucide-react";
 import { apiCall } from "@/context/AuthContext";
 import { useAuth } from "@/context/AuthContext";
 
@@ -33,73 +33,85 @@ export default function EmployerProfile({ employerData: initialData }: EmployerP
   };
 
   if (isLoading) return (
-    <div className="text-center py-10 text-white">
-      <Loader2 className="w-8 h-8 animate-spin mx-auto mb-3 text-blue-400" />
-      <p className="text-gray-400">Loading profile...</p>
+    <div className="text-center py-10">
+      <Loader2 className="w-8 h-8 animate-spin mx-auto mb-3 text-[#00418d]" />
+      <p className="text-gray-500">Loading profile...</p>
     </div>
   );
 
   if (!profile) return (
-    <div className="text-center py-10 text-gray-400">Profile not found.</div>
+    <div className="text-center py-10 text-gray-500">Profile not found.</div>
   );
 
   return (
-    <div className="text-white">
-      <h2 className="text-headingMd font-semibold text-center mb-6">Employer Profile</h2>
-
-      {/* Company Code — most important, show first */}
-      <div className="bg-gradient-to-r from-blue-600/30 to-blue-800/30 border border-blue-500/40 rounded-2xl p-5 mb-5 text-center">
-        <p className="text-body text-blue-300 mb-1 uppercase tracking-wider font-medium">Your Company Code</p>
-        <p className="text-headingXl font-black tracking-[0.3em] text-white mb-2">{profile.companyCode}</p>
-        <button onClick={copyCode}
-          className="flex items-center gap-2 mx-auto text-body bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 px-4 py-2 rounded-lg transition-colors">
-          {copied ? <><CheckCircle className="w-4 h-4 text-green-400" />Copied!</> : <><Copy className="w-4 h-4" />Copy Code</>}
-        </button>
-        <p className="text-caption text-gray-400 mt-3">Share this code with candidates so they can log in to take your assessment</p>
-      </div>
-
-      {/* Profile details */}
-      <div className="bg-white/5 border border-white/10 rounded-xl p-5">
+    <div className="space-y-6">
+      {/* Employer header tile */}
+      <div className="bg-gradient-to-br from-[#f0f7ff] to-[#daeeff] rounded-2xl p-6 border border-[#00418d]/10">
         <div className="flex items-center gap-4 mb-5">
-          <div className="w-14 h-14 rounded-full bg-blue-600/30 flex items-center justify-center text-headingSm font-bold flex-shrink-0">
-            {profile.firstName?.charAt(0)}{profile.lastName?.charAt(0)}
+          <div className="w-16 h-16 rounded-2xl bg-[#00418d] flex items-center justify-center text-2xl font-black text-white shrink-0">
+            {profile.firstName?.charAt(0).toUpperCase()}
+            {profile.lastName?.charAt(0).toUpperCase()}
           </div>
           <div>
-            <h3 className="text-headingSm font-semibold">{profile.firstName} {profile.lastName !== "-" ? profile.lastName : ""}</h3>
-            <p className="text-gray-400 text-body capitalize">{profile.department} — {profile.company}</p>
+            <h3 className="font-bold text-gray-900 text-lg">
+              {profile.firstName} {profile.lastName !== "-" ? profile.lastName : ""}
+            </h3>
+            <p className="text-sm text-gray-500 capitalize">
+              {profile.department} — {profile.company}
+            </p>
             {profile.isVerified && (
-              <span className="inline-flex items-center gap-1 text-caption bg-green-500/20 text-green-300 px-2 py-0.5 rounded-full mt-1">
-                <CheckCircle className="w-3 h-3" />Verified
+              <span className="inline-flex items-center gap-1 mt-1.5 text-xs bg-green-100 text-green-700 px-3 py-0.5 rounded-full font-semibold">
+                <CheckCircle className="w-3 h-3" /> Verified
               </span>
             )}
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-body">
-          <div className="flex items-center gap-3">
-            <Mail className="w-4 h-4 text-gray-400 flex-shrink-0" />
-            <div><p className="text-gray-500 text-caption">Email</p><p>{profile.email}</p></div>
+        <div className="h-px bg-[#00418d]/10 my-4" />
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+          <div>
+            <p className="text-gray-400 text-xs uppercase tracking-wider mb-1 font-semibold">Email</p>
+            <p className="text-gray-900 font-semibold text-sm">{profile.email}</p>
           </div>
-          <div className="flex items-center gap-3">
-            <Phone className="w-4 h-4 text-gray-400 flex-shrink-0" />
-            <div><p className="text-gray-500 text-caption">Phone</p><p>{profile.phone}</p></div>
+          <div>
+            <p className="text-gray-400 text-xs uppercase tracking-wider mb-1 font-semibold">Phone</p>
+            <p className="text-gray-900 font-semibold text-sm">{profile.phone}</p>
           </div>
-          <div className="flex items-center gap-3">
-            <Building2 className="w-4 h-4 text-gray-400 flex-shrink-0" />
-            <div><p className="text-gray-500 text-caption">Company</p><p className="capitalize">{profile.company}</p></div>
+          <div>
+            <p className="text-gray-400 text-xs uppercase tracking-wider mb-1 font-semibold">Company</p>
+            <p className="text-gray-900 font-semibold text-sm capitalize">{profile.company}</p>
           </div>
-          <div className="flex items-center gap-3">
-            <Briefcase className="w-4 h-4 text-gray-400 flex-shrink-0" />
-            <div><p className="text-gray-500 text-caption">Department</p><p className="capitalize">{profile.department}</p></div>
+          <div>
+            <p className="text-gray-400 text-xs uppercase tracking-wider mb-1 font-semibold">Department</p>
+            <p className="text-gray-900 font-semibold text-sm capitalize">{profile.department}</p>
           </div>
-          <div className="flex items-center gap-3">
-            <Shield className="w-4 h-4 text-gray-400 flex-shrink-0" />
-            <div><p className="text-gray-500 text-caption">Authorization</p><p>{profile.authorized === "yes" ? "✓ Authorized to Hire" : "Not Authorized"}</p></div>
+          <div>
+            <p className="text-gray-400 text-xs uppercase tracking-wider mb-1 font-semibold">Authorization</p>
+            <p className="text-gray-900 font-semibold text-sm">
+              {profile.authorized === "yes" ? "✓ Authorized to Hire" : "Not Authorized"}
+            </p>
           </div>
-          <div className="flex items-center gap-3">
-            <div className="w-4 h-4 flex-shrink-0" />
-            <div><p className="text-gray-500 text-caption">Member Since</p><p>{new Date(profile.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</p></div>
+          <div>
+            <p className="text-gray-400 text-xs uppercase tracking-wider mb-1 font-semibold">Member Since</p>
+            <p className="text-gray-900 font-semibold text-sm">
+              {new Date(profile.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
+            </p>
           </div>
+        </div>
+
+        {/* Company Code — secondary, below profile fields */}
+        <div className="h-px bg-[#00418d]/10 my-4" />
+        <div className="pt-1">
+          <p className="text-gray-500 text-caption mb-1 uppercase tracking-wider font-medium">Your Company Code</p>
+          <div className="flex items-center gap-3">
+            <p className="text-headingSm font-black text-[#00418d] tracking-wide">{profile.companyCode}</p>
+            <button onClick={copyCode}
+              className="flex items-center gap-1.5 text-body bg-[#00418d]/8 hover:bg-[#00418d]/15 text-[#00418d] px-3 py-1.5 rounded-lg transition-colors text-sm font-semibold">
+              {copied ? <><CheckCircle className="w-3.5 h-3.5 text-green-600" />Copied!</> : <><Copy className="w-3.5 h-3.5" />Copy</>}
+            </button>
+          </div>
+          <p className="text-gray-400 text-xs mt-2">Share this code with candidates so they can log in to take your assessment</p>
         </div>
       </div>
     </div>

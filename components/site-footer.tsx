@@ -1,86 +1,104 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 
-export default function Footer() {
+export default function SiteFooter() {
   return (
-    <footer className="bg-[#003b8e] text-white">
-      <div className="max-w-7xl mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* About Us Column */}
-          <div>
-            <h3 className="text-headingSm font-semibold mb-4">About Us</h3>
-            <p className="text-body mb-4">
-              SkillKwiz is at the forefront of transforming recruitment with
-              innovative assessment solutions and best-in-class support.
-            </p>
-            <div className="text-body">
-              <Link href="/contact" className="hover:underline">
-                Contact
-              </Link>
-              <span className="mx-2">|</span>
-              <Link href="/contact?sales=true" className="hover:underline">
-                Sales
-              </Link>
+    <footer className="bg-[#000c2a] text-white">
+
+      {/* Main footer content */}
+      <div className="sk-container py-14 md:py-16">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+
+          {/* Brand column */}
+          <div className="md:col-span-1">
+            <Image
+              src="/images/skilllogo.png"
+              alt="SkillKwiz"
+              width={140}
+              height={36}
+              className="object-contain mb-4  invert"
+              style={{ height: "36px", width: "auto" }}
+            />
+            <p className="text-white/55 text-sm leading-relaxed mb-5">
+SkillKwiz is at the forefront of transforming recruitment with innovative assessment solutions and best-in-class support.            </p>
+            <div className="flex gap-3">
+              {/* Social icons — placeholder links */}
+              {["linkedin", "twitter", "email"].map((s) => (
+                <a key={s} href="#" className="w-9 h-9 rounded-xl bg-white/8 hover:bg-[#00418d] flex items-center justify-center transition-all duration-200 text-white/60 hover:text-white">
+                  <span className="text-xs font-bold capitalize">{s[0].toUpperCase()}</span>
+                </a>
+              ))}
             </div>
           </div>
 
-          {/* Quick Links Column */}
+          {/* Quick Links */}
           <div>
-            <h3 className="text-headingSm font-semibold mb-4">Quick Links</h3>
-            <ul className="space-y-2 text-body">
-              <li>
-                <Link href="/" className="hover:underline">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link href="/about" className="hover:underline">
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link href="/services" className="hover:underline">
-                  Services
-                </Link>
-              </li>
-              <li>
-                <Link href="/blog" className="hover:underline">
-                  Blogs
-                </Link>
-              </li>
+            <h4 className="sk-label text-white/40 mb-5">Navigation</h4>
+            <ul className="space-y-3">
+              {[
+                { href: "/", label: "Home" },
+                { href: "/about", label: "About Us" },
+                { href: "/services", label: "Services" },
+                { href: "/blog", label: "Blog" },
+              ].map((l) => (
+                <li key={l.href}>
+                  <Link href={l.href} className="text-sm text-white/60 hover:text-white transition-colors duration-200">
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Contact Info Column */}
+          {/* Company */}
           <div>
-            <h3 className="text-headingSm font-semibold mb-4">Contact Info</h3>
-            <div className="space-y-2 text-body">
-              <p>
-                <span className="block">Address: 5th Block,</span>
-                <span className="block">Jayanagar, Bangalore 560041</span>
-              </p>
-              <p>
-                Email:{" "}
-                <a href="mailto:info@skillkwiz.com" className="hover:underline">
-                  info@skillkwiz.com
-                </a>
-              </p>
-              <p>
-                Phone:{" "}
-                <a href="tel:+919740377330" className="hover:underline">
-                  +91-9740377330
-                </a>
-              </p>
+            <h4 className="sk-label text-white/40 mb-5">Company</h4>
+            <ul className="space-y-3">
+              {[
+                { href: "/about", label: "About SkillKwiz" },
+                { href: "/contact", label: "Contact Us" },
+                { href: "/contact?sales=true", label: "Talk to Sales" },
+              ].map((l) => (
+                <li key={l.href}>
+                  <Link href={l.href} className="text-sm text-white/60 hover:text-white transition-colors duration-200">
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact */}
+          <div>
+            <h4 className="sk-label text-white/40 mb-5">Get in Touch</h4>
+            <div className="space-y-3 text-sm text-white/60">
+              <p className="leading-relaxed">5th Block, Jayanagar<br />Bangalore 560041, India</p>
+              <a href="mailto:info@skillkwiz.com" className="flex items-center gap-2 hover:text-white transition-colors duration-200">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#f6c648]" />
+                info@skillkwiz.com
+              </a>
+              <a href="tel:+919740377330" className="flex items-center gap-2 hover:text-white transition-colors duration-200">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#f73e5d]" />
+                +91-9740377330
+              </a>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Copyright Bar */}
-      <div className="border-t border-blue-700">
-        <div className="max-w-7xl mx-auto px-6 py-4 text-body text-center">
-          Copyright © 2025
+      {/* Bottom bar */}
+      <div className="border-t border-white/8">
+        <div className="sk-container py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="text-sm text-white/40">© 2025 SkillKwiz. All rights reserved.</p>
+          <div className="flex gap-5">
+            {["Privacy Policy", "Terms of Service"].map((l) => (
+              <a key={l} href="#" className="text-xs text-white/35 hover:text-white/70 transition-colors">
+                {l}
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </footer>

@@ -47,7 +47,7 @@ export default function EmployerRegistration({ onSubmit }: EmployerRegistrationP
   const [showAccountStep, setShowAccountStep] = useState(!user);
 
   const inputClass = (field: string) =>
-    `w-full bg-[#1e3a5f] border ${errors[field] ? "border-red-400" : "border-[#2d5184]"} rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-[#f73e5d] transition-colors text-body`;
+    `w-full bg-[#0d2d5c] border ${errors[field] ? "border-red-400" : "border-[#1a4480]"} rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-[#f73e5d] transition-colors text-body`;
 
   const sendPhoneOtp = async () => {
     if (!formData.phone) { setErrors({ ...errors, phone: "Enter phone first" }); return; }
@@ -228,7 +228,7 @@ export default function EmployerRegistration({ onSubmit }: EmployerRegistrationP
               placeholder="+91 9876543210" />
             {!phoneVerified && (
               <button type="button" onClick={sendPhoneOtp} disabled={otpLoading === "phone"}
-                className="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-caption rounded-lg whitespace-nowrap disabled:opacity-50">
+                className="px-3 py-2 bg-[#00418d] hover:bg-[#003070] text-white text-caption rounded-lg whitespace-nowrap disabled:opacity-50">
                 {otpLoading === "phone" ? <Loader2 className="w-3 h-3 animate-spin" /> : phoneOtpSent ? "Resend" : "OTP"}
               </button>
             )}
@@ -263,7 +263,7 @@ export default function EmployerRegistration({ onSubmit }: EmployerRegistrationP
             {["yes", "no"].map((opt) => (
               <button key={opt} type="button"
                 onClick={() => setFormData({ ...formData, authorized: opt as "yes" | "no" })}
-                className={`flex-1 py-2 rounded-lg text-body border ${formData.authorized === opt ? "bg-[#f73e5d] border-[#f73e5d]" : "bg-[#1e3a5f] border-[#2d5184]"}`}>
+                className={`flex-1 py-2 rounded-lg text-body border ${formData.authorized === opt ? "bg-[#f73e5d] border-[#f73e5d]" : "bg-[#0d2d5c] border-[#1a4480]"}`}>
                 {opt === "yes" ? "✅ Yes" : "❌ No"}
               </button>
             ))}

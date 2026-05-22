@@ -73,7 +73,7 @@ export default function EmployerAssessmentRequest() {
             {submittedRequest.candidateFirstName} {submittedRequest.candidateLastName}
           </span> has been submitted.
         </p>
-        <div className="bg-[#2d5184]/60 rounded-xl p-4 max-w-sm mx-auto text-left space-y-2 mb-6">
+        <div className="bg-[#1a4480]/60 rounded-xl p-4 max-w-sm mx-auto text-left space-y-2 mb-6">
           <div className="flex justify-between text-body">
             <span className="text-gray-300">Candidate</span>
             <span>{submittedRequest.candidateFirstName} {submittedRequest.candidateLastName}</span>
@@ -92,7 +92,7 @@ export default function EmployerAssessmentRequest() {
           </div>
         </div>
         <button onClick={() => { setSubmitted(false); setCandidateFirstName(""); setCandidateLastName(""); setCandidateEmail(""); setNotes(""); setSelectedSkills(["C#", "Python"]); }}
-          className="px-6 py-2 bg-[#2d5184] hover:bg-[#3a6394] rounded-lg text-white text-body">
+          className="px-6 py-2 bg-[#1a4480] hover:bg-[#00418d] rounded-lg text-white text-body">
           Submit Another Request
         </button>
       </div>
@@ -113,21 +113,21 @@ export default function EmployerAssessmentRequest() {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Candidate Info */}
-        <div className="bg-[#1e3a5f]/60 rounded-xl p-4 space-y-3">
+        <div className="bg-[#0d2d5c]/60 rounded-xl p-4 space-y-3">
           <h3 className="text-body font-semibold text-gray-300 uppercase tracking-wider">Candidate Details</h3>
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="block text-caption text-gray-400 mb-1">First Name *</label>
               <input value={candidateFirstName}
                 onChange={(e) => setCandidateFirstName(e.target.value)}
-                className="w-full bg-[#1e3a5f] border border-[#2d5184] rounded-lg px-3 py-2 text-white text-body focus:outline-none focus:border-blue-400"
+                className="w-full bg-[#0d2d5c] border border-[#1a4480] rounded-lg px-3 py-2 text-white text-body focus:outline-none focus:border-[#00418d]"
                 placeholder="John" required />
             </div>
             <div>
               <label className="block text-caption text-gray-400 mb-1">Last Name *</label>
               <input value={candidateLastName}
                 onChange={(e) => setCandidateLastName(e.target.value)}
-                className="w-full bg-[#1e3a5f] border border-[#2d5184] rounded-lg px-3 py-2 text-white text-body focus:outline-none focus:border-blue-400"
+                className="w-full bg-[#0d2d5c] border border-[#1a4480] rounded-lg px-3 py-2 text-white text-body focus:outline-none focus:border-[#00418d]"
                 placeholder="Doe" required />
             </div>
           </div>
@@ -135,7 +135,7 @@ export default function EmployerAssessmentRequest() {
             <label className="block text-caption text-gray-400 mb-1">Candidate Email *</label>
             <input type="email" value={candidateEmail}
               onChange={(e) => setCandidateEmail(e.target.value)}
-              className="w-full bg-[#1e3a5f] border border-[#2d5184] rounded-lg px-3 py-2 text-white text-body focus:outline-none focus:border-blue-400"
+              className="w-full bg-[#0d2d5c] border border-[#1a4480] rounded-lg px-3 py-2 text-white text-body focus:outline-none focus:border-[#00418d]"
               placeholder="john@example.com" required />
           </div>
         </div>
@@ -149,8 +149,8 @@ export default function EmployerAssessmentRequest() {
             {SKILL_OPTIONS.map((skill) => (
               <button key={skill} type="button" onClick={() => toggleSkill(skill)}
                 className={`px-3 py-1.5 rounded-full text-caption border transition-colors ${selectedSkills.includes(skill)
-                    ? "bg-blue-600 border-blue-400 text-white"
-                    : "bg-[#1e3a5f] border-[#2d5184] text-gray-300 hover:border-blue-400"
+                    ? "bg-[#00418d] border-[#00418d] text-white"
+                    : "bg-[#0d2d5c] border-[#1a4480] text-gray-300 hover:border-[#00418d]"
                   }`}>
                 {skill}
               </button>
@@ -162,12 +162,12 @@ export default function EmployerAssessmentRequest() {
         <div>
           <label className="block text-body mb-1">Additional Notes</label>
           <textarea value={notes} onChange={(e) => setNotes(e.target.value)}
-            className="w-full bg-[#1e3a5f] border border-[#2d5184] rounded-lg px-3 py-2 text-white text-body focus:outline-none focus:border-blue-400 h-20 resize-none"
+            className="w-full bg-[#0d2d5c] border border-[#1a4480] rounded-lg px-3 py-2 text-white text-body focus:outline-none focus:border-[#00418d] h-20 resize-none"
             placeholder="Any specific requirements or notes..." />
         </div>
 
         <button type="submit" disabled={loading}
-          className="w-full py-3 rounded-lg bg-gradient-to-r from-[#4ECDC4] to-[#2d8a84] text-white font-semibold flex items-center justify-center gap-2 disabled:opacity-50">
+          className="w-full py-3 rounded-lg bg-gradient-to-r from-[#f73e5d] to-[#d62f4f] text-white font-semibold flex items-center justify-center gap-2 disabled:opacity-50">
           {loading ? <><Loader2 className="w-4 h-4 animate-spin" /> Submitting...</> : "Submit Assessment Request"}
         </button>
       </form>

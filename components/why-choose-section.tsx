@@ -9,10 +9,9 @@ const CARDS = [
     icon: "/images/homepage/books.gif",
     emoji: "📚",
     title: "Skill Library",
-    description:
-      "Extensive assessments covering technical, professional and soft skills for all roles.",
-    tx: -220,
-    ty: 10,
+    description: "Extensive assessments covering technical, professional and soft skills for all roles and industries.",
+    tx: -260,
+    ty: 12,
     rot: -6,
   },
   {
@@ -20,10 +19,9 @@ const CARDS = [
     icon: "/images/homepage/guard.gif",
     emoji: "🛡️",
     title: "Secure Testing",
-    description:
-      "Biometric verification and content-aware environments ensure authentic results.",
+    description: "Biometric verification and content-aware environments ensure authentic, tamper-proof results.",
     tx: 0,
-    ty: -20,
+    ty: -22,
     rot: 0,
   },
   {
@@ -31,10 +29,9 @@ const CARDS = [
     icon: "/images/homepage/dollar.gif",
     emoji: "💰",
     title: "Flexible Pricing",
-    description:
-      "Credit-based model — pay only for what you use, scale with your organisation.",
-    tx: 220,
-    ty: 10,
+    description: "Credit-based model — pay only for what you use. Scale seamlessly with your organisation.",
+    tx: 260,
+    ty: 12,
     rot: 6,
   },
 ];
@@ -45,10 +42,9 @@ export default function WhyChooseSection() {
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const timeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
   const sectionRef = useRef<HTMLElement>(null);
-  const hasAnimatedRef = useRef(false); // fire only once per mount
+  const hasAnimatedRef = useRef(false);
   const [isDesktop, setIsDesktop] = useState(false);
 
-  // Track breakpoint
   useEffect(() => {
     const mq = window.matchMedia(`(min-width: ${DESKTOP_BREAKPOINT}px)`);
     const handler = (e: MediaQueryListEvent | MediaQueryList) => setIsDesktop(e.matches);
@@ -71,11 +67,11 @@ export default function WhyChooseSection() {
       const el = cardRefs.current[i];
       if (!el) return;
       applyStyle(el, {
-        transform: `translate(0px, ${i * -3}px) rotate(${(i - 1) * 2}deg) scale(${1 - i * 0.03})`,
-        opacity: i === 0 ? "1" : i === 1 ? "0.9" : "0.8",
+        transform: `translate(0px, ${i * -4}px) rotate(${(i - 1) * 2.5}deg) scale(${1 - i * 0.03})`,
+        opacity: i === 0 ? "1" : i === 1 ? "0.88" : "0.75",
         transition: "none",
         zIndex: String(3 - i),
-        boxShadow: "0 4px 24px rgba(0,0,0,0.18)",
+        boxShadow: "0 6px 30px rgba(0,65,141,0.2)",
       });
     });
   }, []);
@@ -83,16 +79,14 @@ export default function WhyChooseSection() {
   const playAnimation = useCallback(() => {
     clearAllTimeouts();
     stackAll();
-
     const t1 = setTimeout(() => {
       const el = cardRefs.current[1];
       if (!el) return;
       applyStyle(el, {
-        transition:
-          "transform 0.25s cubic-bezier(0.34,1.56,0.64,1), opacity 0.2s, box-shadow 0.2s",
-        transform: "translate(0px, -40px) scale(1.06)",
+        transition: "transform 0.28s cubic-bezier(0.34,1.56,0.64,1), opacity 0.2s, box-shadow 0.2s",
+        transform: "translate(0px, -44px) scale(1.07)",
         opacity: "1",
-        boxShadow: "0 16px 40px rgba(0,0,0,0.28)",
+        boxShadow: "0 20px 50px rgba(0,65,141,0.28)",
       });
     }, 300);
     timeoutsRef.current.push(t1);
@@ -102,178 +96,113 @@ export default function WhyChooseSection() {
         const el = cardRefs.current[i];
         if (!el) return;
         applyStyle(el, {
-          transition:
-            "transform 0.55s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s, box-shadow 0.3s",
+          transition: "transform 0.58s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s, box-shadow 0.3s",
           transform: `translate(${c.tx}px, ${c.ty}px) rotate(${c.rot}deg) scale(1)`,
           opacity: "1",
           zIndex: c.id === "card1" ? "4" : "3",
-          boxShadow:
-            c.id === "card1"
-              ? "0 12px 36px rgba(0,0,0,0.24)"
-              : "0 6px 20px rgba(0,0,0,0.16)",
+          boxShadow: c.id === "card1"
+            ? "0 16px 44px rgba(0,65,141,0.22)"
+            : "0 8px 24px rgba(0,65,141,0.14)",
         });
-      }, 600 + i * 140);
+      }, 620 + i * 140);
       timeoutsRef.current.push(t);
     });
   }, [stackAll]);
 
-  // IntersectionObserver — trigger animation when section scrolls into view
   useEffect(() => {
-    if (!isDesktop) {
-      clearAllTimeouts();
-      return;
-    }
-
-    // Reset so it fires again if breakpoint toggled
+    if (!isDesktop) { clearAllTimeouts(); return; }
     hasAnimatedRef.current = false;
     stackAll();
-
     const section = sectionRef.current;
     if (!section) return;
-
     const observer = new IntersectionObserver(
-      (entries) => {
-        const [entry] = entries;
+      ([entry]) => {
         if (entry.isIntersecting && !hasAnimatedRef.current) {
           hasAnimatedRef.current = true;
           playAnimation();
         }
       },
-      {
-        // Fire when 30% of the section is visible
-        threshold: 0.3,
-      }
+      { threshold: 0.25 }
     );
-
     observer.observe(section);
-
-    return () => {
-      observer.disconnect();
-      clearAllTimeouts();
-    };
+    return () => { observer.disconnect(); clearAllTimeouts(); };
   }, [isDesktop, stackAll, playAnimation]);
 
-  // Shared card inner JSX to avoid duplication
   const CardInner = ({ card }: { card: (typeof CARDS)[0] }) => (
-    <>
-      <div
-        style={{
-          width: 52,
-          height: 52,
-          borderRadius: "50%",
-          background: "#e3f0ff",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          margin: "0 auto 12px",
-          overflow: "hidden",
-          fontSize: 22,
-        }}
-      >
+    <div className="flex flex-col items-center text-center h-full">
+      {/* Icon circle */}
+      <div className="w-16 h-16 rounded-2xl bg-[#00418d]/8 flex items-center justify-center mb-5 overflow-hidden">
         <img
           src={card.icon}
           alt=""
           aria-hidden="true"
-          style={{ width: 56, height: 56, objectFit: "cover" }}
+          className="w-12 h-12 object-contain"
+          loading="lazy"
           onError={(e) => {
-            const parent = (e.target as HTMLImageElement).parentElement;
-            if (parent) parent.innerHTML = card.emoji;
+            const p = (e.target as HTMLImageElement).parentElement;
+            if (p) p.innerHTML = `<span style="font-size:28px">${card.emoji}</span>`;
           }}
         />
       </div>
-      <h3 style={{ fontSize: 15, fontWeight: 700, color: "#00418d", margin: "0 0 8px" }}>
-        {card.title}
-      </h3>
-      <p style={{ fontSize: 12, color: "#555", lineHeight: 1.5, margin: 0 }}>
-        {card.description}
-      </p>
-    </>
+      <h3 className="sk-h4 text-[#00418d] mb-3">{card.title}</h3>
+      <p className="sk-caption text-gray-500 leading-relaxed">{card.description}</p>
+    </div>
   );
 
   return (
-    <section ref={sectionRef} className="py-16 text-white relative overflow-hidden">
-      {/* ── Background ── */}
-      <div className="absolute inset-0">
-        <div className="absolute top-0 left-0 right-0 h-[40%]">
-          <img
-            src="/images/homepage/why_choose_banner_2.png"
-            alt=""
-            className="w-full h-full object-cover"
-            aria-hidden="true"
-          />
-        </div>
-        <div className="absolute bottom-0 left-0 right-0 h-[40%]">
-          <img
-            src="/images/homepage/why_choose_banner_2.png"
-            alt=""
-            className="w-full h-full object-cover"
-            aria-hidden="true"
-          />
-          <div className="absolute inset-0 flex justify-center items-center opacity-60">
-            <img
-              src="/images/homepage/home_globe.gif"
-              alt=""
-              className="w-full max-w-2xl"
-              aria-hidden="true"
-            />
-          </div>
-        </div>
+    <section ref={sectionRef} className="relative overflow-hidden" style={{ background: "linear-gradient(180deg, #f0f7ff 0%, #000c2a 18%, #000c2a 82%, #f0f7ff 100%)" }}>
+
+      {/* Globe decoration */}
+      <div className="absolute inset-0 flex items-center justify-center opacity-15 pointer-events-none" aria-hidden="true">
+        <img src="/images/homepage/home_globe.gif" alt="" className="w-full max-w-3xl" loading="lazy" />
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
-        {/* ── Heading ── */}
-        <h2 className="text-headingMd sm:text-headingLg font-bold text-center mb-2">
-          Why Choose{" "}
-          <span>
-            Skill<span className="text-[#f73e5d]">Kwiz</span>
-          </span>{" "}
-          ?
+      <div className="sk-container relative z-10 sk-section">
+
+        {/* Eyebrow */}
+        <div className="flex justify-center mb-4">
+          <span className="sk-label text-white/50 bg-white/8 px-5 py-2 rounded-full border border-white/12">
+            Why Choose SkillKwiz
+          </span>
+        </div>
+
+        {/* Heading */}
+        <h2 className="sk-h2 text-center text-white mb-4">
+          Built for{" "}
+          <span className="text-[#f6c648]">Precision</span>
+          {" & "}
+          <span className="text-[#f73e5d]">Trust</span>
         </h2>
-        <p
-          className="text-center mx-auto text-body mb-10 sm:mb-11"
-          style={{ color: "rgba(255,255,255,0.65)", maxWidth: 480 }}
-        >
-          Discover our unique value propositions designed to enhance your recruitment strategy.
+        <p className="text-center text-white/55 max-w-xl mx-auto mb-16 text-base leading-relaxed">
+          Discover the value propositions that make SkillKwiz the most reliable assessment platform for modern recruiting.
         </p>
 
-        {/* ── MOBILE: vertical card list ── */}
+        {/* Mobile: vertical stack */}
         {!isDesktop && (
-          <div className="flex flex-col items-center gap-5 mb-10">
+          <div className="flex flex-col items-center gap-5 mb-14">
             {CARDS.map((card) => (
-              <div
-                key={card.id}
-                className="bg-white rounded-2xl text-center w-full max-w-xs"
-                style={{ padding: "24px 20px 20px", boxShadow: "0 4px 24px rgba(0,0,0,0.18)" }}
-              >
+              <div key={card.id} className="sk-card w-full max-w-sm p-8">
                 <CardInner card={card} />
               </div>
             ))}
           </div>
         )}
 
-        {/* ── DESKTOP: animated fan stack ── */}
+        {/* Desktop: animated fan */}
         {isDesktop && (
-          <div
-            className="relative flex items-center justify-center"
-            style={{ height: 260, marginBottom: 40 }}
-          >
+          <div className="relative flex items-center justify-center mb-16" style={{ height: 300 }}>
             {CARDS.map((card, i) => (
               <div
                 key={card.id}
-                ref={(el) => {
-                  cardRefs.current[i] = el;
-                }}
+                ref={(el) => { cardRefs.current[i] = el; }}
+                className="absolute bg-white rounded-2xl p-8 text-center"
                 style={{
-                  position: "absolute",
-                  width: 190,
-                  background: "#fff",
-                  borderRadius: 16,
-                  padding: "24px 20px 20px",
-                  textAlign: "center",
+                  width: 220,
                   cursor: "default",
                   willChange: "transform, opacity",
                   transformOrigin: "center bottom",
-                  boxShadow: "0 4px 24px rgba(0,0,0,0.18)",
+                  boxShadow: "0 6px 30px rgba(0,65,141,0.2)",
+                  borderRadius: 20,
                 }}
               >
                 <CardInner card={card} />
@@ -282,39 +211,27 @@ export default function WhyChooseSection() {
           </div>
         )}
 
-        {/* ── CTA row ── */}
-        <div
-          className="flex justify-center items-center relative z-20"
-          style={{ gap: 12, marginBottom: 64 }}
-        >
-          <Link
-            href="/services"
-            style={{
-              background: "#f6c648",
-              color: "#00418d",
-              fontWeight: 700,
-              borderRadius: 100,
-              padding: "10px 28px",
-              fontSize: 13,
-              textDecoration: "none",
-            }}
-          >
-            Get started ↗
+        {/* Stats row */}
+
+
+        {/* CTA */}
+        <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
+          <Link href="/services" className="btn-accent btn-lg">
+            Get Started ↗
+          </Link>
+          <Link href="/about" className="btn-ghost-white btn-md">
+            Learn More
           </Link>
         </div>
 
-        {/* ── Bottom CTA ── */}
-        <div className="text-center relative z-20 mt-4 md:mt-0">
-          <h3 className="text-headingSm sm:text-headingMd font-bold mb-3">Join the Talent Revolution</h3>
-          <p className="max-w-2xl mx-auto mb-8 text-body px-2">
-            Take the first step towards transforming your hiring process. Make selections in line
-            with our tried and tested platform.
+        {/* Join revolution sub-cta */}
+        <div className="text-center mt-20 border-t border-white/10 pt-16">
+          <h3 className="sk-h3 text-white mb-4">Join the Talent Revolution</h3>
+          <p className="text-white/55 max-w-lg mx-auto mb-8 text-base leading-relaxed">
+            Take the first step towards transforming your hiring process with our tried and tested platform.
           </p>
-          <Link
-            href="/services"
-            className="inline-flex items-center justify-center bg-[#f7d03e] text-black px-8 py-3 rounded-md font-medium hover:bg-opacity-90 transition-all"
-          >
-            Get Started
+          <Link href="/services" className="btn-cta btn-lg">
+            Start Free Today
           </Link>
         </div>
       </div>
