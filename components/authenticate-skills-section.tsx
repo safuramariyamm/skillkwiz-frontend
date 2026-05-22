@@ -68,7 +68,7 @@ export default function AuthenticateSkillsSection() {
         </div>
 
         {/* MAIN LAYOUT */}
-        <div className="grid lg:grid-cols-2 gap-16 items-center mt-20">
+        <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 md:gap-16 items-center mt-12 sm:mt-16 md:mt-20">
 
           {/* LEFT SIDE */}
           <div
@@ -215,16 +215,16 @@ export default function AuthenticateSkillsSection() {
             </div>
           </div>
 
-          {/* RIGHT SIDE */}
+          {/* RIGHT SIDE — responsive wrapper prevents overflow on narrow viewports */}
           <div
-            className={`relative transition-all duration-700 delay-300 ${
+            className={`relative px-4 md:px-0 transition-all duration-700 delay-300 ${
               visible
                 ? "opacity-100 translate-x-0"
                 : "opacity-0 translate-x-10"
             }`}
           >
-            {/* MAIN IMAGE */}
-            <div className="relative h-[650px] rounded-[40px] overflow-hidden shadow-[0_25px_80px_rgba(0,0,0,0.15)]">
+            {/* MAIN IMAGE — responsive height on mobile / tablet */}
+            <div className="relative h-[480px] sm:h-[550px] md:h-[650px] rounded-[28px] sm:rounded-[36px] md:rounded-[40px] overflow-hidden shadow-[0_25px_80px_rgba(0,0,0,0.15)]">
 
               <Image
                 src="/images/homepage/skills_1.png"
@@ -239,8 +239,8 @@ export default function AuthenticateSkillsSection() {
 
             </div>
 
-            {/* FLOATING STATS CARD */}
-            <div className="absolute bottom-6 left-6 bg-white/90 backdrop-blur-xl border border-white rounded-3xl px-6 py-5 shadow-2xl max-w-[240px]">
+            {/* FLOATING STATS CARD — safe from screen edges on all sizes */}
+            <div className="absolute bottom-2 right-2 md:bottom-6 md:left-6 bg-white/90 backdrop-blur-xl border border-white rounded-3xl px-5 py-4 shadow-2xl w-[calc(100%-160px)] max-w-[240px] sm:w-auto">
 
               <div className="text-4xl font-black text-[#00418d]">
                 98%
@@ -252,8 +252,8 @@ export default function AuthenticateSkillsSection() {
 
             </div>
 
-            {/* SMALL FLOATING IMAGE */}
-            <div className="absolute top-6 -right-6 w-44 h-44 rounded-[28px] overflow-hidden border-[6px] border-white shadow-2xl">
+            {/* SMALL FLOATING IMAGE — stays in-bounds on all viewports */}
+            <div className="absolute top-2 right-0 sm:top-6 sm:right-0 md:top-6 md:-right-6 w-32 h-32 sm:w-40 sm:h-40 md:w-44 md:h-44 rounded-[24px] sm:rounded-[28px] overflow-hidden border-[4px] sm:border-[6px] border-white shadow-2xl">
 
               <Image
                 src="/images/homepage/skills_3.png"
@@ -264,8 +264,8 @@ export default function AuthenticateSkillsSection() {
 
             </div>
 
-            {/* EXPERIENCE BADGE */}
-            <div className="absolute top-1/2 -left-10 bg-[#00418d] text-white rounded-3xl px-6 py-5 shadow-2xl">
+            {/* EXPERIENCE BADGE — in-bounds on mobile; negative offset only on md+ */}
+            <div className="absolute -top-2 -left-2 md:top-1/2 md:-left-10 bg-[#00418d] text-white rounded-2xl md:rounded-3xl px-5 py-4 md:px-6 md:py-5 shadow-2xl">
 
               <div className="text-3xl font-black">
                 10K+
