@@ -2,11 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  .page-enter {
+    animation: pageEnter 0.25s ease-out both;
+  }
 }
 
-@layer utilities {
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
   .text-balance {
     text-wrap: balance;
   }

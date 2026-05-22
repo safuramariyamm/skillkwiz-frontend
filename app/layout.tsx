@@ -23,9 +23,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={inter.variable}>
       <body className={`${inter.className} bg-[#f0f7ff] min-h-screen`}>
         <AuthProvider>
-          <div className="flex min-h-screen flex-col">
+          <div className="flex min-h-screen flex-col font-[var(--font-inter)]">
             <SiteHeader />
-            <main className="flex-grow">{children}</main>
+            <main className="flex-grow page-enter">{children}</main>
             <SiteFooter />
           </div>
         </AuthProvider>

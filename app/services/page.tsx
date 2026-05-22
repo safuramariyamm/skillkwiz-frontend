@@ -11,6 +11,7 @@ import EmployerProfile from "@/components/employer-profile";
 import EmployerSlotManager from "@/components/employer-slot-manager";
 import EmployerCredentialManager from "@/components/employer-credential-manager";
 import SuccessMessage from "@/components/success-message";
+import { DarkPageSkeleton } from "@/components/page-skeleton";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 type EmployerTab = "profile" | "slots" | "credentials";
@@ -38,78 +39,62 @@ export default function ServicesPage() {
     if (storedUser && storedToken) {
       try {
         const u = JSON.parse(storedUser);
-        if (u.isCompanyEmployee) {
-          setCompanyEmployee(u);
-        }
+        if (u.isCompanyEmployee) setCompanyEmployee(u);
       } catch { }
     }
   }, []);
 
-  // When company employee is set, check if they already have a candidate profile
+  // When employer logs in OR company employee is set, run profile checks in parallel
   useEffect(() => {
-    if (companyEmployee) {
-      checkEmployeeProfile();
-    }
-  }, [companyEmployee?.id]);
+    const token = localStorage.getItem("sk_ce_token") || localStorage.getItem("sk_token");
+    if (!token) return;
 
-  // When employer logs in, check if they already have an employer profile
-  useEffect(() => {
+    const checks: Promise<void>[] = [];
+
     if (isLoggedIn && user?.role === "employer") {
-      checkEmployerProfile();
+      setEmployerProfileLoading(true);
+      checks.push(
+        fetch(`${API_BASE}/employers/me`, { headers: { Authorization: `Bearer ${token}` } })
+          .then(r => r.json())
+          .then(data => {
+            if (data.data?.employer) { setEmployerHasProfile(true); setEmployerRegistered(true); }
+            else setEmployerHasProfile(false);
+          })
+          .catch(() => setEmployerHasProfile(false))
+          .finally(() => setEmployerProfileLoading(false))
+      );
     }
-  }, [isLoggedIn, user?.role]);
 
-  const checkEmployeeProfile = async () => {
-    setEmployeeProfileLoading(true);
-    try {
-      const token = localStorage.getItem("sk_ce_token") || localStorage.getItem("sk_token");
-      const res = await fetch(`${API_BASE}/candidates/me`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await res.json();
-      if (res.ok && data.data?.candidate) {
-        setEmployeeHasProfile(true);
-        // Already registered — go straight to booking
-        if (companyEmployee?.status === "booked" || companyEmployee?.status === "assessed") {
-          setEmployeeScreen("booking"); // show booked confirmation
-        } else {
-          setEmployeeScreen("booking"); // show slot selection
-        }
-      } else {
-        setEmployeeHasProfile(false);
-        setEmployeeScreen("profile"); // shows registration form for new employees
-      }
-    } catch {
-      setEmployeeHasProfile(false);
-      setEmployeeScreen("profile");
-    } finally {
-      setEmployeeProfileLoading(false);
+    if (companyEmployee) {
+      setEmployeeProfileLoading(true);
+      checks.push(
+        fetch(`${API_BASE}/candidates/me`, { headers: { Authorization: `Bearer ${token}` } })
+          .then(r => r.json())
+          .then(data => {
+            if (data.data?.candidate) { setEmployeeHasProfile(true); setEmployeeScreen("booking"); }
+            else { setEmployeeHasProfile(false); setEmployeeScreen("profile"); }
+          })
+          .catch(() => { setEmployeeHasProfile(false); setEmployeeScreen("profile"); })
+          .finally(() => setEmployeeProfileLoading(false))
+      );
     }
-  };
 
-  const checkEmployerProfile = async () => {
-    setEmployerProfileLoading(true);
-    try {
-      const token = localStorage.getItem("sk_ce_token") || localStorage.getItem("sk_token");
-      const res = await fetch(`${API_BASE}/employers/me`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await res.json();
-      if (res.ok && data.data?.employer) {
-        setEmployerHasProfile(true);
-        setEmployerRegistered(true);
-      } else {
-        setEmployerHasProfile(false);
-      }
-    } catch {
-      setEmployerHasProfile(false);
-    } finally {
-      setEmployerProfileLoading(false);
-    }
-  };
+    // Run all checks in parallel — no waterfall
+    Promise.all(checks);
+  }, [isLoggedIn, user?.role, companyEmployee?.id]);
 
   const handleEmployerLogin = () => {
-    checkEmployerProfile();
+    // Re-trigger the parallel profile check useEffect by forcing a state update
+    setEmployerProfileLoading(true);
+    const token = localStorage.getItem("sk_ce_token") || localStorage.getItem("sk_token");
+    fetch(`${API_BASE}/employers/me`, { headers: { Authorization: `Bearer ${token}` } })
+      .then(r => r.json())
+      .then(data => {
+        if (data.data?.employer) { setEmployerHasProfile(true); setEmployerRegistered(true); }
+        else setEmployerHasProfile(false);
+      })
+      .catch(() => setEmployerHasProfile(false))
+      .finally(() => setEmployerProfileLoading(false));
   };
 
   const handleCompanyEmployeeLogin = (u: any) => {
@@ -151,11 +136,7 @@ export default function ServicesPage() {
       <div className="relative z-10 pt-20 pb-12">
         <div className="container mx-auto px-4 max-w-4xl">
 
-          {isLoaderShowing && (
-            <div className="flex justify-center items-center min-h-[400px]">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500" />
-            </div>
-          )}
+          {isLoaderShowing && <DarkPageSkeleton />}
 
           {/* ── Not logged in — show login/register tabs ── */}
           {!isLoaderShowing && !isLoggedIn && !companyEmployee && (
