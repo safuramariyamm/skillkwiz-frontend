@@ -18,19 +18,12 @@ export default function SiteFooter() {
               alt="SkillKwiz"
               width={140}
               height={36}
-              className="object-contain mb-4  invert"
+              className="object-contain mb-4"
               style={{ height: "36px", width: "auto" }}
             />
             <p className="text-white/55 text-sm leading-relaxed mb-5">
 SkillKwiz is at the forefront of transforming recruitment with innovative assessment solutions and best-in-class support.            </p>
-            <div className="flex gap-3">
-              {/* Social icons — placeholder links */}
-              {["linkedin", "twitter", "email"].map((s) => (
-                <a key={s} href="#" className="w-9 h-9 rounded-xl bg-white/8 hover:bg-[#00418d] flex items-center justify-center transition-all duration-200 text-white/60 hover:text-white">
-                  <span className="text-xs font-bold capitalize">{s[0].toUpperCase()}</span>
-                </a>
-              ))}
-            </div>
+           
           </div>
 
           {/* Quick Links */}
