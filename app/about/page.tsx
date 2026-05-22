@@ -9,21 +9,22 @@ export default function AboutPage() {
     <div className="bg-[#f0f7ff] pt-16">
       {/* Hero Section */}
       <section className="relative w-full bg-[#00418d] text-white overflow-hidden">
+        {/* Background video — deferred until after page paint */}
         <video
           className="absolute top-0 left-0 w-full h-full object-cover z-0"
           autoPlay muted loop playsInline preload="none"
+          aria-hidden="true"
         >
           <source src="/images/homepage/banner_video.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
         </video>
         <div className="relative z-10 pt-16 pb-12 md:pt-24 md:pb-16">
           <div className="max-w-7xl mx-auto px-4 md:px-6">
             <div className="flex flex-col md:flex-row items-center">
               <div className="w-full md:w-2/3 lg:w-1/2">
-                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center md:text-left mb-4 md:mb-6">
+                <h1 className="text-headingLg md:text-headingXl lg:text-headingXl font-bold text-center md:text-left mb-4 md:mb-6">
                   ELEVATE YOUR BUSINESS
                 </h1>
-                <p className="text-center md:text-left max-w-2xl mx-auto md:mx-0 text-sm md:text-base mb-6 md:mb-8 leading-relaxed">
+                <p className="text-center md:text-left max-w-2xl mx-auto md:mx-0 text-body md:text-subhead mb-6 md:mb-8 leading-relaxed">
                   Skill Assessments Done With The Utmost Knowledge, Integrity, Trust,
                   Respect And Security. Our Objective Is To Provide You With Accurate
                   Insights Into The Skill Levels Of Your Current And Prospective
@@ -31,13 +32,13 @@ export default function AboutPage() {
                 </p>
                 <div className="flex justify-center md:justify-start mt-2">
                   <Link href="/services">
-                    <button className="bg-[#f73e5d] text-white px-8 md:px-10 py-4 rounded-lg font-semibold text-lg hover:bg-[#d62f4f] hover:scale-105 hover:shadow-xl transition-all duration-300 transform active:scale-95 shadow-lg">
+                    <button className="bg-[#f73e5d] text-white px-8 md:px-10 py-4 rounded-lg font-semibold text-headingSm hover:bg-[#d62f4f] hover:scale-105 hover:shadow-xl transition-all duration-300 transform active:scale-95 shadow-lg">
                       Get Started Free
                     </button>
                   </Link>
                   <div className="ml-4 text-center md:text-left">
-                    <p className="text-sm text-gray-300 mb-1">Join 500+ companies</p>
-                    <p className="text-xs text-gray-400">Free 14-day trial • No credit card required</p>
+                    <p className="text-body text-gray-300 mb-1">Join 500+ companies</p>
+                    <p className="text-caption text-gray-400">Free 14-day trial • No credit card required</p>
                   </div>
                 </div>
               </div>
@@ -45,9 +46,10 @@ export default function AboutPage() {
                 <div className="relative flex justify-center md:justify-end">
                   <Image
                     src="/images/homepage/home_globe.gif"
-                    alt="SkillKwiz assessment platform"
+                    alt=""
                     width={300}
                     height={250}
+                    loading="lazy"
                     className="w-full max-w-sm h-auto opacity-20 md:opacity-30"
                   />
                 </div>
@@ -63,6 +65,7 @@ export default function AboutPage() {
           <div className="group bg-white overflow-hidden hover:bg-[#00418d] transition-all duration-500 p-6 rounded-lg shadow-lg flex flex-col items-center text-center h-[250px] hover:h-[350px]">
             <Image
               src="/images/aboutpage/eye.gif"
+              loading="lazy"
               alt="Eye-if"
               width={200}
               height={200}
@@ -71,7 +74,7 @@ export default function AboutPage() {
             <h3 className="text-[#272727] font-bold group-hover:text-white transition-colors duration-300">
               OUR VISION
             </h3>
-            <p className="opacity-0 group-hover:opacity-100 group-hover:mt-4 transition-opacity duration-500 text-sm text-[#272727] group-hover:text-white text-center">
+            <p className="opacity-0 group-hover:opacity-100 group-hover:mt-4 transition-opacity duration-500 text-body text-[#272727] group-hover:text-white text-center">
               We envision a future where skill assessments empower companies to
               grow confidently by hiring and developing talent based on data,
               not guesswork.
@@ -89,11 +92,12 @@ export default function AboutPage() {
               width={200}
               height={200}
               className="w-auto h-auto max-h-32 object-contain mb-4"
-            />
+            loading="lazy"
+          />
             <h3 className="text-[#272727] font-bold group-hover:text-white transition-colors duration-300">
               OUR MISSION
             </h3>
-            <p className="opacity-0 group-hover:opacity-100 group-hover:mt-4 transition-opacity duration-500 text-sm text-[#272727] group-hover:text-white text-center">
+            <p className="opacity-0 group-hover:opacity-100 group-hover:mt-4 transition-opacity duration-500 text-body text-[#272727] group-hover:text-white text-center">
               We envision a future where skill assessments empower companies to
               grow confidently by hiring and developing talent based on data,
               not guesswork.
@@ -113,11 +117,12 @@ export default function AboutPage() {
               width={200}
               height={200}
               className="w-auto h-auto max-h-32 object-contain"
-            />
+            loading="lazy"
+          />
             <h3 className="text-[#272727] font-bold group-hover:text-white transition-colors duration-300">
               OUR PURPOSE
             </h3>
-            <p className="opacity-0 group-hover:opacity-100 group-hover:mt-4 transition-opacity duration-500 text-sm text-[#272727] group-hover:text-white text-center">
+            <p className="opacity-0 group-hover:opacity-100 group-hover:mt-4 transition-opacity duration-500 text-body text-[#272727] group-hover:text-white text-center">
               We envision a future where skill assessments empower companies to
               grow confidently by hiring and developing talent based on data,
               not guesswork.
@@ -133,15 +138,15 @@ export default function AboutPage() {
             <div className="flex flex-col justify-center px-4 md:px-8">
               <div className="flex items-center gap-3 mb-5">
                 <div className="w-2 h-10 bg-[#f6c648] rounded-full" />
-                <h2 className="text-sm md:text-base font-bold text-[#f73e5d] uppercase tracking-widest">
+                <h2 className="text-body md:text-subhead font-bold text-[#f73e5d] uppercase tracking-widest">
                   About SkillKwiz
                 </h2>
               </div>
-              <h3 className="text-3xl md:text-4xl lg:text-[2.75rem] font-bold text-[#00418d] mb-5 leading-tight">
+              <h3 className="text-headingLg md:text-headingXl lg:text-[2.75rem] font-bold text-[#00418d] mb-5 leading-tight">
                 Who We Are
               </h3>
               <div className="space-y-5">
-                <p className="text-bodyLarge md:text-base text-gray-700 leading-relaxed">
+                <p className="text-bodyLarge md:text-subhead text-gray-700 leading-relaxed">
                   We are your trusted partner in skill assessment. Our expertise lies in
                   assessing skill levels in people and quantifying them through innovative,
                   secure, and reliable evaluation methods.
@@ -152,12 +157,12 @@ export default function AboutPage() {
                       <path fillRule="evenodd" d="M18 3a1 1 0 00-1.447-.894L8.763 6H5a3 3 0 000 6h.28l1.771 5.316A1 1 0 008 18h1a1 1 0 001-1.004V15a1 1 0 00-.894-.553L13 12.236V7a1 1 0 00-.553-.894l-1.447-.894A1 1 0 0011 5h-.28l-1.772 5.317z" clipRule="evenodd" />
                     </svg>
                   </div>
-                  <blockquote className="text-bodyLarge md:text-base text-gray-700 italic mb-3 leading-relaxed mt-2">
+                  <blockquote className="text-bodyLarge md:text-subhead text-gray-700 italic mb-3 leading-relaxed mt-2">
                     "SkillKwiz has a single purpose and that is to create
                     stakeholder value through cutting-edge assessment technology
                     that transforms how organizations evaluate and develop talent..."
                   </blockquote>
-                  <cite className="text-sm md:text-base text-[#00418d] font-bold">
+                  <cite className="text-body md:text-subhead text-[#00418d] font-bold">
                     — Venugopal B A, CEO &amp; Founder, SkillKwiz
                   </cite>
                 </div>
@@ -198,7 +203,7 @@ export default function AboutPage() {
         <div className="max-w-6xl mx-auto px-4 md:px-6">
           <div className="flex items-center gap-3 mb-10 justify-center">
             <div className="w-2 h-10 bg-[#f6c648] rounded-full" />
-            <h2 className="text-sm md:text-base font-bold text-[#f73e5d] uppercase tracking-widest">
+            <h2 className="text-body md:text-subhead font-bold text-[#f73e5d] uppercase tracking-widest">
               Our Founder
             </h2>
             <div className="w-2 h-10 bg-[#f6c648] rounded-full" />
@@ -228,26 +233,26 @@ export default function AboutPage() {
 
               {/* Text side */}
               <div className="p-6 md:p-10 flex flex-col justify-center">
-                <div className="inline-block bg-[#00418d] text-white text-center text-sm font-bold uppercase tracking-wider px-4 py-1.5 rounded-full mb-4">
+                <div className="inline-block bg-[#00418d] text-white text-center text-body font-bold uppercase tracking-wider px-4 py-1.5 rounded-full mb-4">
                   CEO &amp; Founder
                 </div>
-                <h3 className="text-2xl md:text-3xl font-bold text-[#00418d] mb-5">
+                <h3 className="text-headingMd md:text-headingLg font-bold text-[#00418d] mb-5">
                   Venugopal B A
                 </h3>
                 <div className="space-y-4">
-                  <p className="text-bodyLarge md:text-base text-gray-700 leading-relaxed">
+                  <p className="text-bodyLarge md:text-subhead text-gray-700 leading-relaxed">
                     A veteran leader in the IT industry with 24 years of experience in senior leadership
                     roles, Venugopal has chosen to lead SkillKwiz with a deep understanding of the key
                     challenges faced by the services sector.
                   </p>
-                  <p className="text-bodyLarge md:text-base text-gray-700 leading-relaxed">
+                  <p className="text-bodyLarge md:text-subhead text-gray-700 leading-relaxed">
                     With a rich background in the technology industry, he aims to establish SkillKwiz as
                     an AI-first company. He is poised to take SkillKwiz to its next level of growth by
                     shaping it entirely according to market needs and technological innovation.
                   </p>
                 </div>
                 {/* <Link href="/about" className="mt-8">
-                  <button className="w-fit px-6 py-2.5 bg-[#00418d] text-white rounded-full font-semibold text-sm
+                  <button className="w-fit px-6 py-2.5 bg-[#00418d] text-white rounded-full font-semibold text-body
                                    hover:bg-[#042578] transition-all shadow-md hover:shadow-lg">
                     Read Full Story
                   </button>
@@ -262,10 +267,10 @@ export default function AboutPage() {
       <section className="w-full bg-white py-12 md:py-16">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <div className="text-center mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold text-[#00418d] mb-4">
+            <h2 className="text-headingMd md:text-headingLg font-bold text-[#00418d] mb-4">
               See SkillKwiz in Action
             </h2>
-            <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-subhead md:text-headingSm text-gray-600 max-w-2xl mx-auto">
               Watch how our platform revolutionizes skill assessment and talent evaluation
             </p>
           </div>

@@ -23,7 +23,7 @@ export default function SuccessMessage({
             <CheckCircle className="w-12 h-12 text-green-500" />
           </div>
         </div>
-        <h2 className="text-2xl font-bold text-[#00418d] mb-3">{title}</h2>
+        <h2 className="text-headingMd font-bold text-[#00418d] mb-3">{title}</h2>
         <p className="text-gray-600 mb-8 leading-relaxed">{message}</p>
         <button
           onClick={onContinue}

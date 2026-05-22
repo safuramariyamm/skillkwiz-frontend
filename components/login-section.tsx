@@ -99,19 +99,19 @@ export default function LoginSection() {
                   <div className="w-20 h-20 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-4">
                     <CheckCircle className="w-12 h-12 text-green-400" />
                   </div>
-                  <h3 className="text-2xl font-bold mb-1">Welcome back!</h3>
+                  <h3 className="text-headingMd font-bold mb-1">Welcome back!</h3>
                   <p className="text-gray-300 mb-4">You're signed in to SkillKwiz</p>
 
                   <div className="bg-white/10 rounded-xl p-4 mb-6 text-left space-y-1">
-                    <p className="text-sm">
+                    <p className="text-body">
                       <span className="text-gray-300">Name: </span>
                       <span className="font-semibold">{user.name}</span>
                     </p>
-                    <p className="text-sm">
+                    <p className="text-body">
                       <span className="text-gray-300">Email: </span>
                       <span className="font-semibold">{user.email}</span>
                     </p>
-                    <p className="text-sm capitalize">
+                    <p className="text-body capitalize">
                       <span className="text-gray-300">Role: </span>
                       <span className="font-semibold text-blue-300">{user.role}</span>
                     </p>
@@ -134,21 +134,21 @@ export default function LoginSection() {
                   {/* Toggle */}
                   <div className="flex rounded-lg overflow-hidden mb-6 border border-white/20">
                     <button onClick={() => switchView("login")} disabled={isLoading}
-                      className={`flex-1 py-3 text-sm font-semibold transition-all disabled:opacity-50 ${view === "login" ? "bg-white text-[#00418d]" : "text-white hover:bg-white/10"
+                      className={`flex-1 py-3 text-body font-semibold transition-all disabled:opacity-50 ${view === "login" ? "bg-white text-[#00418d]" : "text-white hover:bg-white/10"
                         }`}>Sign In</button>
                     <button onClick={() => switchView("signup")} disabled={isLoading}
-                      className={`flex-1 py-3 text-sm font-semibold transition-all disabled:opacity-50 ${view === "signup" ? "bg-white text-[#00418d]" : "text-white hover:bg-white/10"
+                      className={`flex-1 py-3 text-body font-semibold transition-all disabled:opacity-50 ${view === "signup" ? "bg-white text-[#00418d]" : "text-white hover:bg-white/10"
                         }`}>Register</button>
                   </div>
 
-                  <h2 className="text-xl font-bold text-white mb-5">
+                  <h2 className="text-headingSm font-bold text-white mb-5">
                     {view === "login" ? "Welcome Back!" : "Create Your Account"}
                   </h2>
 
                   {errors.general && (
                     <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-3 mb-4 flex items-center gap-2">
                       <XCircle className="w-4 h-4 text-red-400 shrink-0" />
-                      <span className="text-red-300 text-sm">{errors.general}</span>
+                      <span className="text-red-300 text-body">{errors.general}</span>
                     </div>
                   )}
 
@@ -158,7 +158,7 @@ export default function LoginSection() {
                         <input type="email" placeholder="Email address" value={email} disabled={isLoading}
                           onChange={(e) => { setEmail(e.target.value); if (errors.email) setErrors({ ...errors, email: undefined }); }}
                           className={`w-full bg-gray-200 text-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 ${errors.email ? "ring-2 ring-red-400 bg-red-50" : "focus:ring-[#00a8e8]"}`} />
-                        {errors.email && <p className="text-red-300 text-xs mt-1 flex items-center gap-1"><XCircle className="w-3 h-3" />{errors.email}</p>}
+                        {errors.email && <p className="text-red-300 text-caption mt-1 flex items-center gap-1"><XCircle className="w-3 h-3" />{errors.email}</p>}
                       </div>
 
                       <div className="relative">
@@ -169,14 +169,14 @@ export default function LoginSection() {
                           className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-800">
                           {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                         </button>
-                        {errors.password && <p className="text-red-300 text-xs mt-1 flex items-center gap-1"><XCircle className="w-3 h-3" />{errors.password}</p>}
+                        {errors.password && <p className="text-red-300 text-caption mt-1 flex items-center gap-1"><XCircle className="w-3 h-3" />{errors.password}</p>}
                       </div>
 
                       <div className="flex items-center justify-between">
-                        <label className="flex items-center text-white text-sm gap-2">
+                        <label className="flex items-center text-white text-body gap-2">
                           <input type="checkbox" className="accent-[#f73e5d]" disabled={isLoading} /> Remember me
                         </label>
-                        <button type="button" className="text-blue-300 hover:underline text-sm" disabled={isLoading}>Forgot Password?</button>
+                        <button type="button" className="text-blue-300 hover:underline text-body" disabled={isLoading}>Forgot Password?</button>
                       </div>
 
                       <button type="submit" disabled={isLoading}
@@ -184,7 +184,7 @@ export default function LoginSection() {
                         {isLoading ? <><Loader2 className="w-5 h-5 animate-spin" />Signing In...</> : "Sign In"}
                       </button>
 
-                      <div className="text-center text-white text-sm">
+                      <div className="text-center text-white text-body">
                         <p className="mb-3 text-gray-300">— Or continue with —</p>
                         <div className="flex justify-center">
                           <a href={GOOGLE_AUTH_URL}
@@ -199,7 +199,7 @@ export default function LoginSection() {
                         </div>
                       </div>
 
-                      <p className="text-center text-gray-300 text-sm">
+                      <p className="text-center text-gray-300 text-body">
                         Don't have an account?{" "}
                         <button type="button" onClick={() => switchView("signup")} className="text-blue-300 hover:underline" disabled={isLoading}>Sign up</button>
                       </p>
@@ -210,14 +210,14 @@ export default function LoginSection() {
                         <input type="text" placeholder="Full Name" value={name} disabled={isLoading}
                           onChange={(e) => { setName(e.target.value); if (errors.name) setErrors({ ...errors, name: undefined }); }}
                           className={`w-full bg-gray-200 text-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 ${errors.name ? "ring-2 ring-red-400 bg-red-50" : "focus:ring-[#00a8e8]"}`} />
-                        {errors.name && <p className="text-red-300 text-xs mt-1 flex items-center gap-1"><XCircle className="w-3 h-3" />{errors.name}</p>}
+                        {errors.name && <p className="text-red-300 text-caption mt-1 flex items-center gap-1"><XCircle className="w-3 h-3" />{errors.name}</p>}
                       </div>
 
                       <div>
                         <input type="email" placeholder="Email address" value={email} disabled={isLoading}
                           onChange={(e) => { setEmail(e.target.value); if (errors.email) setErrors({ ...errors, email: undefined }); }}
                           className={`w-full bg-gray-200 text-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 ${errors.email ? "ring-2 ring-red-400 bg-red-50" : "focus:ring-[#00a8e8]"}`} />
-                        {errors.email && <p className="text-red-300 text-xs mt-1 flex items-center gap-1"><XCircle className="w-3 h-3" />{errors.email}</p>}
+                        {errors.email && <p className="text-red-300 text-caption mt-1 flex items-center gap-1"><XCircle className="w-3 h-3" />{errors.email}</p>}
                       </div>
 
                       <div className="relative">
@@ -228,15 +228,15 @@ export default function LoginSection() {
                           className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-800">
                           {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                         </button>
-                        {errors.password && <p className="text-red-300 text-xs mt-1 flex items-center gap-1"><XCircle className="w-3 h-3" />{errors.password}</p>}
+                        {errors.password && <p className="text-red-300 text-caption mt-1 flex items-center gap-1"><XCircle className="w-3 h-3" />{errors.password}</p>}
                       </div>
 
                       <div>
-                        <label className="block text-white text-sm mb-2">Account Type</label>
+                        <label className="block text-white text-body mb-2">Account Type</label>
                         <div className="flex gap-3">
                           {(["employee", "employer"] as const).map((type) => (
                             <button key={type} type="button" onClick={() => setUserType(type)} disabled={isLoading}
-                              className={`flex-1 py-3 rounded-md text-sm font-medium transition-all flex items-center justify-center gap-2 ${userType === type ? "bg-[#f73e5d] text-white border-2 border-[#f73e5d]" : "bg-white/10 text-white border border-white/20 hover:bg-white/20"
+                              className={`flex-1 py-3 rounded-md text-body font-medium transition-all flex items-center justify-center gap-2 ${userType === type ? "bg-[#f73e5d] text-white border-2 border-[#f73e5d]" : "bg-white/10 text-white border border-white/20 hover:bg-white/20"
                                 }`}>
                               {type === "employee" ? "👤 Employee" : "🏢 Employer"}
                             </button>
@@ -249,7 +249,7 @@ export default function LoginSection() {
                         {isLoading ? <><Loader2 className="w-5 h-5 animate-spin" />Creating Account...</> : "Create Account"}
                       </button>
 
-                      <p className="text-center text-gray-300 text-sm">
+                      <p className="text-center text-gray-300 text-body">
                         Already have an account?{" "}
                         <button type="button" onClick={() => switchView("login")} className="text-blue-300 hover:underline" disabled={isLoading}>Sign in</button>
                       </p>

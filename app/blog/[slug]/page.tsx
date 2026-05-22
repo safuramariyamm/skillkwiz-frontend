@@ -869,7 +869,7 @@ export default function BlogPostPage() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Post Not Found</h1>
+          <h1 className="text-headingXl font-bold text-gray-900 mb-4">Post Not Found</h1>
           <p className="text-gray-600 mb-8">The blog post you're looking for doesn't exist.</p>
           <button
             onClick={() => router.push('/blog')}
@@ -946,20 +946,20 @@ export default function BlogPostPage() {
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="relative z-10 max-w-4xl mx-auto px-4">
           <div className="text-center mb-8">
-            <span className="inline-block px-3 py-1 bg-[#00418d] text-white text-sm font-medium rounded-full mb-4">
+            <span className="inline-block px-3 py-1 bg-[#00418d] text-white text-body font-medium rounded-full mb-4">
               {post.category}
             </span>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
+            <h1 className="text-headingLg md:text-headingXl lg:text-headingXl font-bold mb-6 leading-tight">
               {post.title}
             </h1>
-            <p className="text-lg md:text-xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-headingSm md:text-headingSm text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
               {post.excerpt}
             </p>
 
             {/* Author and Meta Info */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-sm text-gray-400">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-body text-gray-400">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-[#00418d] rounded-full flex items-center justify-center text-sm font-semibold">
+                <div className="w-8 h-8 bg-[#00418d] rounded-full flex items-center justify-center text-body font-semibold">
                   {post.author.charAt(0)}
                 </div>
                 <span>By {post.author}</span>
@@ -1034,7 +1034,7 @@ export default function BlogPostPage() {
               {post.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full hover:bg-gray-200 transition-colors cursor-pointer"
+                  className="px-3 py-1 bg-gray-100 text-gray-700 text-body rounded-full hover:bg-gray-200 transition-colors cursor-pointer"
                 >
                   #{tag}
                 </span>
@@ -1049,10 +1049,10 @@ export default function BlogPostPage() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-1">{post.author}</h3>
-                  <p className="text-sm text-gray-600 mb-3">
+                  <p className="text-body text-gray-600 mb-3">
                     Expert in {post.category.toLowerCase()} and educational innovation. Passionate about leveraging technology to enhance learning experiences.
                   </p>
-                  <div className="flex gap-4 text-sm text-gray-500">
+                  <div className="flex gap-4 text-body text-gray-500">
                     <span>📝 {allBlogPosts.filter(p => p.author === post.author).length} articles</span>
                     <span>👥 {post.category} Specialist</span>
                   </div>
@@ -1074,7 +1074,7 @@ export default function BlogPostPage() {
                   <ArrowLeft className="w-6 h-6 text-[#00418d] group-hover:-translate-x-1 transition-transform duration-200" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm text-gray-500 mb-1">Previous Article</p>
+                  <p className="text-body text-gray-500 mb-1">Previous Article</p>
                   <h3 className="font-semibold text-gray-900 group-hover:text-[#00418d] transition-colors line-clamp-2">
                     {prevPost.title}
                   </h3>
@@ -1088,7 +1088,7 @@ export default function BlogPostPage() {
                 className="group flex items-center gap-4 p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 md:col-start-2"
               >
                 <div className="flex-1 min-w-0 text-right">
-                  <p className="text-sm text-gray-500 mb-1">Next Article</p>
+                  <p className="text-body text-gray-500 mb-1">Next Article</p>
                   <h3 className="font-semibold text-gray-900 group-hover:text-[#00418d] transition-colors line-clamp-2">
                     {nextPost.title}
                   </h3>
@@ -1103,7 +1103,7 @@ export default function BlogPostPage() {
 
         {/* Related Articles */}
         <div className="mt-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">Related Articles</h2>
+          <h2 className="text-headingMd font-bold text-gray-900 mb-8 text-center">Related Articles</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {allBlogPosts
               .filter(p => p.id !== post.id && p.category === post.category)
@@ -1125,7 +1125,7 @@ export default function BlogPostPage() {
                     <h3 className="font-semibold text-gray-900 mb-2 group-hover:text-[#00418d] transition-colors line-clamp-2">
                       {relatedPost.title}
                     </h3>
-                    <p className="text-sm text-gray-600 line-clamp-2">{relatedPost.excerpt}</p>
+                    <p className="text-body text-gray-600 line-clamp-2">{relatedPost.excerpt}</p>
                   </div>
                 </Link>
               ))}

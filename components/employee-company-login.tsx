@@ -46,31 +46,31 @@ export default function EmployeeCompanyLogin({ onLogin }: EmployeeCompanyLoginPr
         <div className="w-16 h-16 rounded-full bg-blue-500/20 flex items-center justify-center mx-auto mb-3">
           <Building2 className="w-8 h-8 text-blue-400" />
         </div>
-        <h2 className="text-2xl font-bold">Employee Login</h2>
-        <p className="text-gray-400 text-sm mt-1">Use credentials provided by your employer</p>
+        <h2 className="text-headingMd font-bold">Employee Login</h2>
+        <p className="text-gray-400 text-body mt-1">Use credentials provided by your employer</p>
       </div>
 
       {error && (
         <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-3 mb-4">
-          <p className="text-red-300 text-sm">{error}</p>
+          <p className="text-red-300 text-body">{error}</p>
         </div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm mb-1.5">Company Code</label>
+          <label className="block text-body mb-1.5">Company Code</label>
           <div className="relative">
             <Building2 className="absolute left-3 top-3.5 w-4 h-4 text-gray-400" />
             <input type="text" value={companyCode}
               onChange={(e) => setCompanyCode(e.target.value.toUpperCase())}
               placeholder="e.g. TCS-X7K2"
-              className="w-full bg-[#1a2540] border border-white/10 rounded-lg pl-10 pr-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-400 uppercase tracking-widest font-mono text-lg"
+              className="w-full bg-[#1a2540] border border-white/10 rounded-lg pl-10 pr-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-400 uppercase tracking-widest font-mono text-headingSm"
               disabled={isLoading} maxLength={12} />
           </div>
         </div>
 
         <div>
-          <label className="block text-sm mb-1.5">Username</label>
+          <label className="block text-body mb-1.5">Username</label>
           <div className="relative">
             <User className="absolute left-3 top-3.5 w-4 h-4 text-gray-400" />
             <input type="text" value={username}
@@ -82,7 +82,7 @@ export default function EmployeeCompanyLogin({ onLogin }: EmployeeCompanyLoginPr
         </div>
 
         <div>
-          <label className="block text-sm mb-1.5">Password</label>
+          <label className="block text-body mb-1.5">Password</label>
           <div className="relative">
             <Key className="absolute left-3 top-3.5 w-4 h-4 text-gray-400" />
             <input type={showPassword ? "text" : "password"} value={password}
@@ -104,7 +104,7 @@ export default function EmployeeCompanyLogin({ onLogin }: EmployeeCompanyLoginPr
       </form>
 
       <div className="mt-4 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
-        <p className="text-blue-300 text-xs text-center">
+        <p className="text-blue-300 text-caption text-center">
           Don't have credentials? Contact your HR/Employer to get your login details.
         </p>
       </div>

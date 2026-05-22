@@ -175,17 +175,17 @@ export default function ServicesAuthForm({ onLogin }: ServicesAuthFormProps) {
       {view !== "otp" && (
         <div className="flex rounded-lg overflow-hidden mb-6 border border-white/20">
           <button onClick={() => switchView("login")} disabled={isLoading}
-            className={`flex-1 py-3 text-sm font-semibold transition-all disabled:opacity-50 ${view === "login" ? "bg-white text-[#00418d]" : "text-white hover:bg-white/10"}`}>
+            className={`flex-1 py-3 text-body font-semibold transition-all disabled:opacity-50 ${view === "login" ? "bg-white text-[#00418d]" : "text-white hover:bg-white/10"}`}>
             Sign In
           </button>
           <button onClick={() => switchView("signup")} disabled={isLoading}
-            className={`flex-1 py-3 text-sm font-semibold transition-all disabled:opacity-50 ${view === "signup" ? "bg-white text-[#00418d]" : "text-white hover:bg-white/10"}`}>
+            className={`flex-1 py-3 text-body font-semibold transition-all disabled:opacity-50 ${view === "signup" ? "bg-white text-[#00418d]" : "text-white hover:bg-white/10"}`}>
             Register
           </button>
         </div>
       )}
 
-      <h1 className="text-3xl font-semibold text-center mb-2">
+      <h1 className="text-headingLg font-semibold text-center mb-2">
         {view === "login" ? "Sign In" : view === "signup" ? "Create Account" : "Verify OTP"}
       </h1>
       <p className="text-center text-gray-300 mb-6">
@@ -199,7 +199,7 @@ export default function ServicesAuthForm({ onLogin }: ServicesAuthFormProps) {
       )}
       {errors.general && (
         <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-3 mb-4">
-          <p className="text-red-300 text-sm">{errors.general}</p>
+          <p className="text-red-300 text-body">{errors.general}</p>
         </div>
       )}
 
@@ -215,7 +215,7 @@ export default function ServicesAuthForm({ onLogin }: ServicesAuthFormProps) {
               <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email" className={inputClass(errors.email)} disabled={isLoading} required />
             </div>
-            {errors.email && <p className="text-red-300 text-sm mt-1">{errors.email}</p>}
+            {errors.email && <p className="text-red-300 text-body mt-1">{errors.email}</p>}
           </div>
 
           <div>
@@ -232,7 +232,7 @@ export default function ServicesAuthForm({ onLogin }: ServicesAuthFormProps) {
                 {showPassword ? <EyeOff className="w-5 h-5 text-gray-400" /> : <Eye className="w-5 h-5 text-gray-400" />}
               </button>
             </div>
-            {errors.password && <p className="text-red-300 text-sm mt-1">{errors.password}</p>}
+            {errors.password && <p className="text-red-300 text-body mt-1">{errors.password}</p>}
           </div>
 
           <button type="submit" disabled={isLoading}
@@ -251,7 +251,7 @@ export default function ServicesAuthForm({ onLogin }: ServicesAuthFormProps) {
             Continue with Google
           </a>
 
-          <p className="text-center text-gray-300 text-sm">
+          <p className="text-center text-gray-300 text-body">
             Don&apos;t have an account?{" "}
             <button type="button" onClick={() => switchView("signup")} className="text-blue-400 hover:text-blue-300" disabled={isLoading}>Sign up</button>
           </p>
@@ -279,7 +279,7 @@ export default function ServicesAuthForm({ onLogin }: ServicesAuthFormProps) {
               <input type="text" value={name} onChange={(e) => setName(e.target.value)}
                 placeholder="Your full name" className={inputClass(errors.name)} disabled={isLoading} required />
             </div>
-            {errors.name && <p className="text-red-300 text-sm mt-1">{errors.name}</p>}
+            {errors.name && <p className="text-red-300 text-body mt-1">{errors.name}</p>}
           </div>
 
           <div>
@@ -289,17 +289,17 @@ export default function ServicesAuthForm({ onLogin }: ServicesAuthFormProps) {
               <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}
                 placeholder="Your email" className={inputClass(errors.email)} disabled={isLoading} required />
             </div>
-            {errors.email && <p className="text-red-300 text-sm mt-1">{errors.email}</p>}
+            {errors.email && <p className="text-red-300 text-body mt-1">{errors.email}</p>}
           </div>
 
           <div>
             <label className="block mb-2">Phone Number</label>
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"><span className="text-gray-400 text-sm">📱</span></div>
+              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"><span className="text-gray-400 text-body">📱</span></div>
               <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)}
                 placeholder="Phone with country code" className={inputClass(errors.phone)} disabled={isLoading} required />
             </div>
-            {errors.phone && <p className="text-red-300 text-sm mt-1">{errors.phone}</p>}
+            {errors.phone && <p className="text-red-300 text-body mt-1">{errors.phone}</p>}
           </div>
 
           <div>
@@ -314,7 +314,7 @@ export default function ServicesAuthForm({ onLogin }: ServicesAuthFormProps) {
                 {showPassword ? <EyeOff className="w-5 h-5 text-gray-400" /> : <Eye className="w-5 h-5 text-gray-400" />}
               </button>
             </div>
-            {errors.password && <p className="text-red-300 text-sm mt-1">{errors.password}</p>}
+            {errors.password && <p className="text-red-300 text-body mt-1">{errors.password}</p>}
           </div>
 
           <button type="submit" disabled={isLoading}
@@ -322,7 +322,7 @@ export default function ServicesAuthForm({ onLogin }: ServicesAuthFormProps) {
             {isLoading ? <><Loader2 className="w-4 h-4 animate-spin" />Sending OTP...</> : "Create Account"}
           </button>
 
-          <p className="text-center text-gray-300 text-sm">
+          <p className="text-center text-gray-300 text-body">
             Already have an account?{" "}
             <button type="button" onClick={() => switchView("login")} className="text-blue-400 hover:text-blue-300" disabled={isLoading}>Sign In</button>
           </p>
@@ -339,7 +339,7 @@ export default function ServicesAuthForm({ onLogin }: ServicesAuthFormProps) {
               className="w-full bg-[#333333] rounded px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
               disabled={isLoading} />
             <button type="button" onClick={() => sendOtp(phone, "phone")} disabled={isSendingOtp}
-              className="text-blue-400 text-sm mt-1 disabled:opacity-50">
+              className="text-blue-400 text-body mt-1 disabled:opacity-50">
               {isSendingOtp ? "Sending..." : "Resend Phone OTP"}
             </button>
           </div>
@@ -349,7 +349,7 @@ export default function ServicesAuthForm({ onLogin }: ServicesAuthFormProps) {
             {isLoading ? <><Loader2 className="w-4 h-4 animate-spin" />Verifying...</> : "Verify & Complete Registration"}
           </button>
 
-          <p className="text-center text-gray-300 text-sm">
+          <p className="text-center text-gray-300 text-body">
             <button type="button" onClick={() => switchView("signup")} className="text-blue-400 hover:text-blue-300" disabled={isLoading}>
               ← Back to Registration
             </button>

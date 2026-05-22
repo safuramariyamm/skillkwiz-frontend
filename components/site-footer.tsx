@@ -9,12 +9,12 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* About Us Column */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">About Us</h3>
-            <p className="text-sm mb-4">
+            <h3 className="text-headingSm font-semibold mb-4">About Us</h3>
+            <p className="text-body mb-4">
               SkillKwiz is at the forefront of transforming recruitment with
               innovative assessment solutions and best-in-class support.
             </p>
-            <div className="text-sm">
+            <div className="text-body">
               <Link href="/contact" className="hover:underline">
                 Contact
               </Link>
@@ -27,8 +27,8 @@ export default function Footer() {
 
           {/* Quick Links Column */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-            <ul className="space-y-2 text-sm">
+            <h3 className="text-headingSm font-semibold mb-4">Quick Links</h3>
+            <ul className="space-y-2 text-body">
               <li>
                 <Link href="/" className="hover:underline">
                   Home
@@ -54,8 +54,8 @@ export default function Footer() {
 
           {/* Contact Info Column */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Contact Info</h3>
-            <div className="space-y-2 text-sm">
+            <h3 className="text-headingSm font-semibold mb-4">Contact Info</h3>
+            <div className="space-y-2 text-body">
               <p>
                 <span className="block">Address: 5th Block,</span>
                 <span className="block">Jayanagar, Bangalore 560041</span>
@@ -79,7 +79,7 @@ export default function Footer() {
 
       {/* Copyright Bar */}
       <div className="border-t border-blue-700">
-        <div className="max-w-7xl mx-auto px-6 py-4 text-sm text-center">
+        <div className="max-w-7xl mx-auto px-6 py-4 text-body text-center">
           Copyright © 2025
         </div>
       </div>

@@ -97,7 +97,7 @@ export default function LetterCarousel() {
                   {slide.letters.map((letter, letterIndex) => (
                     <div
                       key={letterIndex}
-                      className="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center bg-gradient-to-br from-[#00418d] to-[#0066cc] text-white text-3xl md:text-4xl font-bold rounded-lg shadow-md transform hover:scale-110 transition-transform"
+                      className="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center bg-gradient-to-br from-[#00418d] to-[#0066cc] text-white text-headingLg md:text-headingXl font-bold rounded-lg shadow-md transform hover:scale-110 transition-transform"
                     >
                       {letter}
                     </div>
@@ -106,7 +106,7 @@ export default function LetterCarousel() {
 
                 {/* Content */}
                 <div className="text-center px-6 py-4">
-                  <h3 className="text-2xl font-bold text-white mb-2">
+                  <h3 className="text-headingMd font-bold text-white mb-2">
                     {slide.title}
                   </h3>
                   <p className="text-white/90">{slide.description}</p>

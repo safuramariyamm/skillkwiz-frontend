@@ -47,7 +47,7 @@ export default function EmployerRegistration({ onSubmit }: EmployerRegistrationP
   const [showAccountStep, setShowAccountStep] = useState(!user);
 
   const inputClass = (field: string) =>
-    `w-full bg-[#1e3a5f] border ${errors[field] ? "border-red-400" : "border-[#2d5184]"} rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-[#f73e5d] transition-colors text-sm`;
+    `w-full bg-[#1e3a5f] border ${errors[field] ? "border-red-400" : "border-[#2d5184]"} rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-[#f73e5d] transition-colors text-body`;
 
   const sendPhoneOtp = async () => {
     if (!formData.phone) { setErrors({ ...errors, phone: "Enter phone first" }); return; }
@@ -142,37 +142,37 @@ export default function EmployerRegistration({ onSubmit }: EmployerRegistrationP
   if (showAccountStep) {
     return (
       <div className="text-white">
-        <h2 className="text-2xl font-bold mb-2">Create Employer Account</h2>
+        <h2 className="text-headingMd font-bold mb-2">Create Employer Account</h2>
         <p className="text-gray-300 mb-5">Register to manage candidates and assessments</p>
         {serverError && (
           <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-3 mb-4 flex gap-2">
             <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
-            <p className="text-red-300 text-sm">{serverError}</p>
+            <p className="text-red-300 text-body">{serverError}</p>
           </div>
         )}
         <form onSubmit={handleCreateAccount} className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm mb-1">First Name *</label>
+              <label className="block text-body mb-1">First Name *</label>
               <input className={inputClass("firstName")} value={formData.firstName}
                 onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
                 placeholder="Jane" required />
             </div>
             <div>
-              <label className="block text-sm mb-1">Last Name *</label>
+              <label className="block text-body mb-1">Last Name *</label>
               <input className={inputClass("lastName")} value={formData.lastName}
                 onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
                 placeholder="Smith" required />
             </div>
           </div>
           <div>
-            <label className="block text-sm mb-1">Email *</label>
+            <label className="block text-body mb-1">Email *</label>
             <input className={inputClass("email")} type="email" value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               placeholder="jane@company.com" required />
           </div>
           <div>
-            <label className="block text-sm mb-1">Password *</label>
+            <label className="block text-body mb-1">Password *</label>
             <input className={inputClass("password")} type="password" value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
               placeholder="Min 8 characters" minLength={8} required />
@@ -181,7 +181,7 @@ export default function EmployerRegistration({ onSubmit }: EmployerRegistrationP
             className="w-full py-3 rounded-lg bg-[#f73e5d] hover:bg-[#d62f4f] text-white font-medium flex items-center justify-center gap-2 disabled:opacity-50 transition-colors">
             {isLoading ? <><Loader2 className="w-4 h-4 animate-spin" />Creating Account...</> : "Create Account & Continue"}
           </button>
-          <p className="text-center text-gray-400 text-xs">Already have an account? Use the Login tab above.</p>
+          <p className="text-center text-gray-400 text-caption">Already have an account? Use the Login tab above.</p>
         </form>
       </div>
     );
@@ -189,19 +189,19 @@ export default function EmployerRegistration({ onSubmit }: EmployerRegistrationP
 
   return (
     <div className="text-white">
-      <h2 className="text-2xl font-bold mb-1">Employer Profile</h2>
-      {user && <p className="text-gray-300 text-sm mb-4">Logged in as: {user.name}</p>}
+      <h2 className="text-headingMd font-bold mb-1">Employer Profile</h2>
+      {user && <p className="text-gray-300 text-body mb-4">Logged in as: {user.name}</p>}
 
       {serverError && (
         <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-3 mb-4 flex gap-2">
           <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
-          <p className="text-red-300 text-sm">{serverError}</p>
+          <p className="text-red-300 text-body">{serverError}</p>
         </div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm mb-1">Company Name *</label>
+          <label className="block text-body mb-1">Company Name *</label>
           <input className={inputClass("company")} value={formData.company}
             onChange={(e) => setFormData({ ...formData, company: e.target.value })}
             placeholder="Acme Corp" required />
@@ -209,7 +209,7 @@ export default function EmployerRegistration({ onSubmit }: EmployerRegistrationP
 
         {/* Email */}
         <div>
-          <label className="block text-sm mb-1">Work Email *</label>
+          <label className="block text-body mb-1">Work Email *</label>
           <div className="flex gap-2">
             <input className={inputClass("email") + " flex-1"} type="email"
               value={formData.email || user?.email || ""}
@@ -220,7 +220,7 @@ export default function EmployerRegistration({ onSubmit }: EmployerRegistrationP
 
         {/* Phone with OTP */}
         <div>
-          <label className="block text-sm mb-1">Phone *</label>
+          <label className="block text-body mb-1">Phone *</label>
           <div className="flex gap-2">
             <input className={inputClass("phone") + " flex-1"} type="tel"
               value={formData.phone}
@@ -228,7 +228,7 @@ export default function EmployerRegistration({ onSubmit }: EmployerRegistrationP
               placeholder="+91 9876543210" />
             {!phoneVerified && (
               <button type="button" onClick={sendPhoneOtp} disabled={otpLoading === "phone"}
-                className="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs rounded-lg whitespace-nowrap disabled:opacity-50">
+                className="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-caption rounded-lg whitespace-nowrap disabled:opacity-50">
                 {otpLoading === "phone" ? <Loader2 className="w-3 h-3 animate-spin" /> : phoneOtpSent ? "Resend" : "OTP"}
               </button>
             )}
@@ -240,14 +240,14 @@ export default function EmployerRegistration({ onSubmit }: EmployerRegistrationP
                 onChange={(e) => setFormData({ ...formData, phoneOtp: e.target.value })}
                 placeholder="6-digit OTP" maxLength={6} />
               <button type="button" onClick={verifyPhoneOtp} disabled={otpLoading === "phone"}
-                className="px-3 py-2 bg-green-600 hover:bg-green-700 text-white text-xs rounded-lg">Verify</button>
+                className="px-3 py-2 bg-green-600 hover:bg-green-700 text-white text-caption rounded-lg">Verify</button>
             </div>
           )}
-          {errors.phoneOtp && <p className="text-red-300 text-xs mt-1">{errors.phoneOtp}</p>}
+          {errors.phoneOtp && <p className="text-red-300 text-caption mt-1">{errors.phoneOtp}</p>}
         </div>
 
         <div>
-          <label className="block text-sm mb-1">Department *</label>
+          <label className="block text-body mb-1">Department *</label>
           <select className={inputClass("department")} value={formData.department}
             onChange={(e) => setFormData({ ...formData, department: e.target.value })} required>
             <option value="">Select Department</option>
@@ -258,12 +258,12 @@ export default function EmployerRegistration({ onSubmit }: EmployerRegistrationP
         </div>
 
         <div>
-          <label className="block text-sm mb-2">Authorized to hire?</label>
+          <label className="block text-body mb-2">Authorized to hire?</label>
           <div className="flex gap-3">
             {["yes", "no"].map((opt) => (
               <button key={opt} type="button"
                 onClick={() => setFormData({ ...formData, authorized: opt as "yes" | "no" })}
-                className={`flex-1 py-2 rounded-lg text-sm border ${formData.authorized === opt ? "bg-[#f73e5d] border-[#f73e5d]" : "bg-[#1e3a5f] border-[#2d5184]"}`}>
+                className={`flex-1 py-2 rounded-lg text-body border ${formData.authorized === opt ? "bg-[#f73e5d] border-[#f73e5d]" : "bg-[#1e3a5f] border-[#2d5184]"}`}>
                 {opt === "yes" ? "✅ Yes" : "❌ No"}
               </button>
             ))}
@@ -272,7 +272,7 @@ export default function EmployerRegistration({ onSubmit }: EmployerRegistrationP
 
         {formData.authorized === "yes" && (
           <div>
-            <label className="block text-sm mb-1">Authorization Details</label>
+            <label className="block text-body mb-1">Authorization Details</label>
             <textarea className={inputClass("authorizationDetails") + " h-20 resize-none"}
               value={formData.authorizationDetails}
               onChange={(e) => setFormData({ ...formData, authorizationDetails: e.target.value })}

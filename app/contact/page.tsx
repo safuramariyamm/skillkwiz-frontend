@@ -54,10 +54,10 @@ export default function ContactPage() {
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-[#00418d] to-[#0066cc] text-white py-16 md:py-20">
         <div className="max-w-7xl mx-auto px-4 md:px-6 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+          <h1 className="text-headingXl md:text-headingXl font-bold mb-4">
             Get In Touch
           </h1>
-          <p className="text-xl md:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto">
+          <p className="text-headingSm md:text-headingMd text-blue-100 mb-8 max-w-3xl mx-auto">
             Ready to transform your recruitment process? We're here to help you every step of the way.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -92,7 +92,7 @@ export default function ContactPage() {
             {/* Contact Information */}
             <div className="lg:col-span-1">
               <div className="bg-white rounded-xl shadow-lg p-8">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                <h2 className="text-headingMd font-bold text-gray-900 mb-6">
                   Contact Information
                 </h2>
 
@@ -103,7 +103,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-900 mb-1">Address</h3>
-                      <p className="text-gray-600 text-sm">
+                      <p className="text-gray-600 text-body">
                         5th Block, Jayanagar<br />
                         Bangalore 560041<br />
                         Karnataka, India
@@ -123,7 +123,7 @@ export default function ContactPage() {
                       >
                         +91-9740377330
                       </a>
-                      <p className="text-gray-600 text-sm mt-1">
+                      <p className="text-gray-600 text-body mt-1">
                         Mon-Fri: 9:00 AM - 6:00 PM IST
                       </p>
                     </div>
@@ -141,7 +141,7 @@ export default function ContactPage() {
                       >
                         info@skillkwiz.com
                       </a>
-                      <p className="text-gray-600 text-sm mt-1">
+                      <p className="text-gray-600 text-body mt-1">
                         General inquiries
                       </p>
                       <a
@@ -150,7 +150,7 @@ export default function ContactPage() {
                       >
                         sales@skillkwiz.com
                       </a>
-                      <p className="text-gray-600 text-sm">
+                      <p className="text-gray-600 text-body">
                         Sales inquiries
                       </p>
                     </div>
@@ -163,15 +163,15 @@ export default function ContactPage() {
                   <div className="space-y-3">
                     <div className="flex items-center gap-3">
                       <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                      <span className="text-sm text-gray-600">500+ Companies Served</span>
+                      <span className="text-body text-gray-600">500+ Companies Served</span>
                     </div>
                     <div className="flex items-center gap-3">
                       <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                      <span className="text-sm text-gray-600">24/7 Support Available</span>
+                      <span className="text-body text-gray-600">24/7 Support Available</span>
                     </div>
                     <div className="flex items-center gap-3">
                       <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                      <span className="text-sm text-gray-600">Free 14-Day Trial</span>
+                      <span className="text-body text-gray-600">Free 14-Day Trial</span>
                     </div>
                   </div>
                 </div>
@@ -182,7 +182,7 @@ export default function ContactPage() {
             <div className="lg:col-span-2">
               <div className="bg-white rounded-xl shadow-lg p-8">
                 <div className="mb-6">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                  <h2 className="text-headingMd font-bold text-gray-900 mb-2">
                     {activeTab === "contact" ? "Send us a Message" : "Sales Inquiry"}
                   </h2>
                   <p className="text-gray-600">
@@ -198,7 +198,7 @@ export default function ContactPage() {
                     <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
                     <div>
                       <h3 className="font-semibold text-green-900">Message Sent Successfully!</h3>
-                      <p className="text-green-700 text-sm mt-1">
+                      <p className="text-green-700 text-body mt-1">
                         Thank you for reaching out. Our team will get back to you within 24 hours.
                       </p>
                     </div>
@@ -210,7 +210,7 @@ export default function ContactPage() {
                     <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
                     <div>
                       <h3 className="font-semibold text-red-900">Failed to Send Message</h3>
-                      <p className="text-red-700 text-sm mt-1">
+                      <p className="text-red-700 text-body mt-1">
                         Please try again later or contact us directly.
                       </p>
                     </div>
@@ -220,7 +220,7 @@ export default function ContactPage() {
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="name" className="block text-body font-medium text-gray-700 mb-2">
                         Full Name *
                       </label>
                       <input
@@ -236,7 +236,7 @@ export default function ContactPage() {
                     </div>
 
                     <div>
-                      <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="email" className="block text-body font-medium text-gray-700 mb-2">
                         Email Address *
                       </label>
                       <input
@@ -254,7 +254,7 @@ export default function ContactPage() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="phone" className="block text-body font-medium text-gray-700 mb-2">
                         Phone Number
                       </label>
                       <input
@@ -269,7 +269,7 @@ export default function ContactPage() {
                     </div>
 
                     <div>
-                      <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="company" className="block text-body font-medium text-gray-700 mb-2">
                         Company Name {activeTab === "sales" && "*"}
                       </label>
                       <input
@@ -287,7 +287,7 @@ export default function ContactPage() {
 
                   {activeTab === "contact" && (
                     <div>
-                      <label htmlFor="inquiryType" className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="inquiryType" className="block text-body font-medium text-gray-700 mb-2">
                         Inquiry Type
                       </label>
                       <select
@@ -306,7 +306,7 @@ export default function ContactPage() {
                   )}
 
                   <div>
-                    <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
+                    <label htmlFor="message" className="block text-body font-medium text-gray-700 mb-2">
                       Message *
                     </label>
                     <textarea
@@ -351,13 +351,13 @@ export default function ContactPage() {
       {/* FAQ Section */}
       <section className="py-16 bg-gray-100">
         <div className="max-w-4xl mx-auto px-4 md:px-6">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+          <h2 className="text-headingLg font-bold text-center text-gray-900 mb-12">
             Frequently Asked Questions
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="bg-white rounded-lg p-6 shadow-md">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">
+              <h3 className="text-headingSm font-semibold text-gray-900 mb-3">
                 How quickly can I expect a response?
               </h3>
               <p className="text-gray-600">
@@ -367,7 +367,7 @@ export default function ContactPage() {
             </div>
 
             <div className="bg-white rounded-lg p-6 shadow-md">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">
+              <h3 className="text-headingSm font-semibold text-gray-900 mb-3">
                 Do you offer free trials?
               </h3>
               <p className="text-gray-600">
@@ -377,7 +377,7 @@ export default function ContactPage() {
             </div>
 
             <div className="bg-white rounded-lg p-6 shadow-md">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">
+              <h3 className="text-headingSm font-semibold text-gray-900 mb-3">
                 What industries do you serve?
               </h3>
               <p className="text-gray-600">
@@ -387,7 +387,7 @@ export default function ContactPage() {
             </div>
 
             <div className="bg-white rounded-lg p-6 shadow-md">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">
+              <h3 className="text-headingSm font-semibold text-gray-900 mb-3">
                 Is my data secure?
               </h3>
               <p className="text-gray-600">

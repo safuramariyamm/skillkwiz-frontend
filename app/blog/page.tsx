@@ -888,10 +888,10 @@ export default function BlogPage() {
       <section className="w-full bg-gradient-to-br from-gray-50 to-white py-16 md:py-20">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <div className="text-center mb-12 md:mb-16">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+            <h1 className="text-headingXl md:text-headingXl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
               Mastering Knowledge & Growth
             </h1>
-            <p className="text-lg md:text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed mb-8">
+            <p className="text-headingSm md:text-headingSm text-gray-600 max-w-4xl mx-auto leading-relaxed mb-8">
               In a world of constant change, continuous learning is the key to
               success. Explore insights, strategies, and trends that will empower
               your journey toward professional excellence and personal growth.
@@ -902,7 +902,7 @@ export default function BlogPage() {
               {["All Posts", "Career Development", "Learning Science", "Technology", "Skill Development"].map((category) => (
                 <button
                   key={category}
-                  className="px-4 py-2 bg-[#00418d] text-white rounded-full text-sm font-medium hover:bg-[#003580] transition-colors"
+                  className="px-4 py-2 bg-[#00418d] text-white rounded-full text-body font-medium hover:bg-[#003580] transition-colors"
                 >
                   {category}
                 </button>
@@ -911,7 +911,7 @@ export default function BlogPage() {
 
             {/* Featured Label */}
             <div className="text-center mb-8">
-              <span className="inline-block px-4 py-2 bg-[#f73e5d] text-white text-sm font-semibold rounded-full">
+              <span className="inline-block px-4 py-2 bg-[#f73e5d] text-white text-body font-semibold rounded-full">
                 Featured Articles
               </span>
             </div>
@@ -934,27 +934,27 @@ export default function BlogPage() {
                       className="w-full h-48 md:h-56 object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                     <div className="absolute top-4 left-4">
-                      <span className="px-3 py-1 bg-[#00418d] text-white text-xs font-medium rounded-full">
+                      <span className="px-3 py-1 bg-[#00418d] text-white text-caption font-medium rounded-full">
                         {post.category}
                       </span>
                     </div>
                   </div>
                   <div className="p-6">
-                    <div className="flex items-center text-xs text-gray-500 mb-3">
+                    <div className="flex items-center text-caption text-gray-500 mb-3">
                       <span>{post.date}</span>
                       <span className="mx-2">•</span>
                       <span>{post.readTime}</span>
                     </div>
-                    <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-3 group-hover:text-[#00418d] transition-colors line-clamp-2">
+                    <h3 className="text-headingSm md:text-headingSm font-bold text-gray-900 mb-3 group-hover:text-[#00418d] transition-colors line-clamp-2">
                       {post.title}
                     </h3>
-                    <p className="text-sm md:text-base text-gray-600 mb-4 line-clamp-3">
+                    <p className="text-body md:text-subhead text-gray-600 mb-4 line-clamp-3">
                       {post.excerpt}
                     </p>
                     <div className="flex items-center justify-between">
                       <a
                         href={`/blog/${post.slug}`}
-                        className="inline-flex items-center text-[#00418d] font-semibold text-sm hover:text-[#003580] transition-colors group-hover:translate-x-1 transform duration-200"
+                        className="inline-flex items-center text-[#00418d] font-semibold text-body hover:text-[#003580] transition-colors group-hover:translate-x-1 transform duration-200"
                       >
                         Read More
                         <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -994,26 +994,26 @@ export default function BlogPage() {
                     className="w-full h-48 md:h-56 object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                   <div className="absolute top-4 left-4">
-                    <span className="px-3 py-1 bg-[#f73e5d] text-white text-xs font-medium rounded-full">
+                    <span className="px-3 py-1 bg-[#f73e5d] text-white text-caption font-medium rounded-full">
                       {post.category}
                     </span>
                   </div>
                 </div>
                 <div className="p-6">
-                  <div className="flex items-center text-xs text-gray-500 mb-3">
+                  <div className="flex items-center text-caption text-gray-500 mb-3">
                     <span>{post.date}</span>
                     <span className="mx-2">•</span>
                     <span>{post.readTime}</span>
                   </div>
-                  <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-3 group-hover:text-[#00418d] transition-colors line-clamp-2">
+                  <h3 className="text-headingSm md:text-headingSm font-bold text-gray-900 mb-3 group-hover:text-[#00418d] transition-colors line-clamp-2">
                     {post.title}
                   </h3>
-                  <p className="text-sm md:text-base text-gray-600 mb-4 line-clamp-3">
+                  <p className="text-body md:text-subhead text-gray-600 mb-4 line-clamp-3">
                     {post.excerpt}
                   </p>
                   <a
                     href={`/blog/${post.slug}`}
-                    className="inline-flex items-center text-[#00418d] font-semibold text-sm hover:text-[#003580] transition-colors group-hover:translate-x-1 transform duration-200"
+                    className="inline-flex items-center text-[#00418d] font-semibold text-body hover:text-[#003580] transition-colors group-hover:translate-x-1 transform duration-200"
                   >
                     Read More
                     <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1028,10 +1028,10 @@ export default function BlogPage() {
           {/* Knowledge Articles */}
           <div className="mb-16">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              <h2 className="text-headingLg md:text-headingXl font-bold text-gray-900 mb-4">
                 Latest Insights & Articles
               </h2>
-              <p className="text-base md:text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              <p className="text-subhead md:text-headingSm text-gray-600 max-w-3xl mx-auto leading-relaxed">
                 Knowledge is the foundation of growth. Embrace new ideas, sharpen
                 your skills, and stay inspired with insights that empower you to
                 achieve more in both your personal and professional journey.
@@ -1054,26 +1054,26 @@ export default function BlogPage() {
                       className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                     <div className="absolute top-3 left-3">
-                      <span className="px-2 py-1 bg-[#c3dfff] text-[#00418d] text-xs font-medium rounded-full">
+                      <span className="px-2 py-1 bg-[#c3dfff] text-[#00418d] text-caption font-medium rounded-full">
                         {article.category}
                       </span>
                     </div>
                   </div>
                   <div className="p-5">
-                    <div className="flex items-center text-xs text-gray-500 mb-2">
+                    <div className="flex items-center text-caption text-gray-500 mb-2">
                       <span>{article.date}</span>
                       <span className="mx-2">•</span>
                       <span>{article.readTime}</span>
                     </div>
-                    <h3 className="text-base md:text-lg font-bold text-gray-900 mb-3 group-hover:text-[#00418d] transition-colors line-clamp-2 leading-tight">
+                    <h3 className="text-subhead md:text-headingSm font-bold text-gray-900 mb-3 group-hover:text-[#00418d] transition-colors line-clamp-2 leading-tight">
                       {article.title}
                     </h3>
-                    <p className="text-sm text-gray-600 mb-4 line-clamp-2 leading-relaxed">
+                    <p className="text-body text-gray-600 mb-4 line-clamp-2 leading-relaxed">
                       {article.excerpt}
                     </p>
                     <a
                       href={`/blog/${article.slug}`}
-                      className="inline-flex items-center text-[#00418d] font-semibold text-sm hover:text-[#003580] transition-colors group-hover:translate-x-1 transform duration-200"
+                      className="inline-flex items-center text-[#00418d] font-semibold text-body hover:text-[#003580] transition-colors group-hover:translate-x-1 transform duration-200"
                     >
                       Read Article
                       <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

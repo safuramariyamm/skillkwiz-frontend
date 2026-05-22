@@ -222,7 +222,7 @@ export default function WhyChooseSection() {
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
         {/* ── Heading ── */}
-        <h2 className="text-2xl sm:text-3xl font-bold text-center mb-2">
+        <h2 className="text-headingMd sm:text-headingLg font-bold text-center mb-2">
           Why Choose{" "}
           <span>
             Skill<span className="text-[#f73e5d]">Kwiz</span>
@@ -230,7 +230,7 @@ export default function WhyChooseSection() {
           ?
         </h2>
         <p
-          className="text-center mx-auto text-sm mb-10 sm:mb-11"
+          className="text-center mx-auto text-body mb-10 sm:mb-11"
           style={{ color: "rgba(255,255,255,0.65)", maxWidth: 480 }}
         >
           Discover our unique value propositions designed to enhance your recruitment strategy.
@@ -305,8 +305,8 @@ export default function WhyChooseSection() {
 
         {/* ── Bottom CTA ── */}
         <div className="text-center relative z-20 mt-4 md:mt-0">
-          <h3 className="text-xl sm:text-2xl font-bold mb-3">Join the Talent Revolution</h3>
-          <p className="max-w-2xl mx-auto mb-8 text-sm px-2">
+          <h3 className="text-headingSm sm:text-headingMd font-bold mb-3">Join the Talent Revolution</h3>
+          <p className="max-w-2xl mx-auto mb-8 text-body px-2">
             Take the first step towards transforming your hiring process. Make selections in line
             with our tried and tested platform.
           </p>

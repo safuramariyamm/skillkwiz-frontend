@@ -40,7 +40,7 @@ export default function AuthenticateSkillsSection() {
               : "opacity-0 translate-y-5"
           }`}
         >
-          <span className="bg-[#00418d]/10 text-[#00418d] px-5 py-2 rounded-full text-xs font-bold tracking-[0.25em] uppercase">
+          <span className="bg-[#00418d]/10 text-[#00418d] px-5 py-2 rounded-full text-caption font-bold tracking-[0.25em] uppercase">
             Smart Hiring Solution
           </span>
         </div>
@@ -53,14 +53,14 @@ export default function AuthenticateSkillsSection() {
               : "opacity-0 translate-y-6"
           }`}
         >
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black leading-[1.05] text-gray-900">
+          <h2 className="text-headingXl md:text-headingXl lg:text-6xl font-black leading-[1.05] text-gray-900">
             Authenticate Skills
             <span className="block text-[#00418d] mt-2">
               With Confidence
             </span>
           </h2>
 
-          <p className="mt-6 text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto">
+          <p className="mt-6 text-headingSm text-gray-600 leading-relaxed max-w-2xl mx-auto">
             SkillKwiz helps companies verify candidate expertise
             through secure assessments, intelligent evaluation,
             and trusted reporting systems.
@@ -103,11 +103,11 @@ export default function AuthenticateSkillsSection() {
                   </div>
 
                   <div>
-                    <h3 className="text-xl font-bold text-gray-900">
+                    <h3 className="text-headingSm font-bold text-gray-900">
                       Verified Assessments
                     </h3>
 
-                    <p className="mt-2 text-gray-600 leading-relaxed text-sm">
+                    <p className="mt-2 text-gray-600 leading-relaxed text-body">
                       Conduct secure evaluations and receive
                       authenticated reports instantly.
                     </p>
@@ -138,11 +138,11 @@ export default function AuthenticateSkillsSection() {
                   </div>
 
                   <div>
-                    <h3 className="text-xl font-bold text-gray-900">
+                    <h3 className="text-headingSm font-bold text-gray-900">
                       AI Evaluation
                     </h3>
 
-                    <p className="mt-2 text-gray-600 leading-relaxed text-sm">
+                    <p className="mt-2 text-gray-600 leading-relaxed text-body">
                       Intelligent workflows improve candidate
                       analysis with higher accuracy and efficiency.
                     </p>
@@ -173,11 +173,11 @@ export default function AuthenticateSkillsSection() {
                   </div>
 
                   <div>
-                    <h3 className="text-xl font-bold text-gray-900">
+                    <h3 className="text-headingSm font-bold text-gray-900">
                       Trusted Centers
                     </h3>
 
-                    <p className="mt-2 text-gray-600 leading-relaxed text-sm">
+                    <p className="mt-2 text-gray-600 leading-relaxed text-body">
                       Secure assessment centers ensure fair,
                       transparent, and trusted testing environments.
                     </p>
@@ -242,11 +242,11 @@ export default function AuthenticateSkillsSection() {
             {/* FLOATING STATS CARD — safe from screen edges on all sizes */}
             <div className="absolute bottom-2 right-2 md:bottom-6 md:left-6 bg-white/90 backdrop-blur-xl border border-white rounded-3xl px-5 py-4 shadow-2xl w-[calc(100%-160px)] max-w-[240px] sm:w-auto">
 
-              <div className="text-4xl font-black text-[#00418d]">
+              <div className="text-headingXl font-black text-[#00418d]">
                 98%
               </div>
 
-              <p className="mt-2 text-sm text-gray-600 leading-relaxed">
+              <p className="mt-2 text-body text-gray-600 leading-relaxed">
                 Candidate verification accuracy powered by AI systems.
               </p>
 
@@ -267,11 +267,11 @@ export default function AuthenticateSkillsSection() {
             {/* EXPERIENCE BADGE — in-bounds on mobile; negative offset only on md+ */}
             <div className="absolute -top-2 -left-2 md:top-1/2 md:-left-10 bg-[#00418d] text-white rounded-2xl md:rounded-3xl px-5 py-4 md:px-6 md:py-5 shadow-2xl">
 
-              <div className="text-3xl font-black">
+              <div className="text-headingLg font-black">
                 10K+
               </div>
 
-              <p className="text-sm mt-1 text-white/80">
+              <p className="text-body mt-1 text-white/80">
                 Verified Assessments
               </p>
 

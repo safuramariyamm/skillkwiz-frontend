@@ -71,8 +71,8 @@ export default function AuthCallbackPage() {
         {status === "loading" && (
           <>
             <Loader2 className="w-12 h-12 animate-spin text-blue-400 mx-auto mb-4" />
-            <h2 className="text-xl font-semibold mb-2">Signing you in with Google...</h2>
-            <p className="text-gray-400 text-sm">{message}</p>
+            <h2 className="text-headingSm font-semibold mb-2">Signing you in with Google...</h2>
+            <p className="text-gray-400 text-body">{message}</p>
           </>
         )}
         {status === "success" && (
@@ -80,8 +80,8 @@ export default function AuthCallbackPage() {
             <div className="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-4">
               <CheckCircle className="w-10 h-10 text-green-400" />
             </div>
-            <h2 className="text-xl font-semibold mb-2">Signed in successfully!</h2>
-            <p className="text-gray-400 text-sm">{message}</p>
+            <h2 className="text-headingSm font-semibold mb-2">Signed in successfully!</h2>
+            <p className="text-gray-400 text-body">{message}</p>
           </>
         )}
         {status === "error" && (
@@ -89,10 +89,10 @@ export default function AuthCallbackPage() {
             <div className="w-16 h-16 rounded-full bg-red-500/20 flex items-center justify-center mx-auto mb-4">
               <XCircle className="w-10 h-10 text-red-400" />
             </div>
-            <h2 className="text-xl font-semibold mb-2">Sign-in failed</h2>
-            <p className="text-gray-400 text-sm">{message}</p>
+            <h2 className="text-headingSm font-semibold mb-2">Sign-in failed</h2>
+            <p className="text-gray-400 text-body">{message}</p>
             <button onClick={() => router.replace("/services")}
-              className="mt-4 px-6 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-sm">
+              className="mt-4 px-6 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-body">
               Back to Login
             </button>
           </>

@@ -163,7 +163,7 @@ export default function TestimonialsSection() {
   return (
     <section className="py-16 bg-white">
       <div className="max-w-7xl mx-auto px-6">
-        <h2 className="text-3xl font-bold text-center mb-12">
+        <h2 className="text-headingLg font-bold text-center mb-12">
           What Our Clients Say
         </h2>
 
@@ -194,7 +194,7 @@ export default function TestimonialsSection() {
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
-            <div className="text-sm text-gray-600 font-medium">
+            <div className="text-body text-gray-600 font-medium">
               {activeIndex + 1} of {testimonials.length}
             </div>
             <button
@@ -247,13 +247,13 @@ export default function TestimonialsSection() {
 
                   <div className="text-center">
                     <h3
-                      className={`font-bold ${index === 1 ? "text-base md:text-lg" : "text-xs md:text-sm"
+                      className={`font-bold ${index === 1 ? "text-subhead md:text-headingSm" : "text-caption md:text-body"
                         }`}
                     >
                       {testimonial.name}
                     </h3>
                     <p
-                      className={`${index === 1 ? "text-xs md:text-sm" : "text-xs"
+                      className={`${index === 1 ? "text-caption md:text-body" : "text-caption"
                         } text-gray-200 mb-1`}
                     >
                       {testimonial.title}
@@ -262,8 +262,8 @@ export default function TestimonialsSection() {
                     {/* Company name for main testimonial */}
                     {index === 1 && testimonial.company && (
                       <div className="text-center mb-2">
-                        <span className="text-xs text-gray-300">at </span>
-                        <span className="text-xs font-medium text-gray-200">{testimonial.company}</span>
+                        <span className="text-caption text-gray-300">at </span>
+                        <span className="text-caption font-medium text-gray-200">{testimonial.company}</span>
                       </div>
                     )}
 
@@ -280,7 +280,7 @@ export default function TestimonialsSection() {
 
                     {/* LinkedIn verification for main testimonial */}
                     {index === 1 && testimonial.linkedin && (
-                      <div className="flex items-center justify-center gap-1 text-xs text-blue-300">
+                      <div className="flex items-center justify-center gap-1 text-caption text-blue-300">
                         <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
                           <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
                         </svg>
@@ -290,7 +290,7 @@ export default function TestimonialsSection() {
 
                     {/* Metrics for main testimonial */}
                     {index === 1 && testimonial.metrics && (
-                      <div className="text-xs text-[#f6c648] font-medium mt-1">
+                      <div className="text-caption text-[#f6c648] font-medium mt-1">
                         ✓ {testimonial.metrics}
                       </div>
                     )}
@@ -300,7 +300,7 @@ export default function TestimonialsSection() {
                 {/* Quote */}
                 <div className="flex-1 flex items-end">
                   <p
-                    className={`text-center leading-relaxed ${index === 1 ? "text-sm" : "text-xs"
+                    className={`text-center leading-relaxed ${index === 1 ? "text-body" : "text-caption"
                       } ${index !== 1 ? "line-clamp-4" : ""}`}
                   >
                     "{testimonial.quote}"
@@ -326,7 +326,7 @@ export default function TestimonialsSection() {
           </div>
 
           {/* Trust indicators */}
-          <div className="text-center mt-8 text-sm text-gray-600">
+          <div className="text-center mt-8 text-body text-gray-600">
             <p className="mb-2">Trusted by 500+ companies worldwide</p>
             <div className="flex justify-center items-center gap-4 opacity-60">
               <span className="flex items-center gap-1">

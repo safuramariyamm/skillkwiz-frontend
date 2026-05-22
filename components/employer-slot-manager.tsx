@@ -74,57 +74,57 @@ export default function EmployerSlotManager() {
     else alert(data.message);
   };
 
-  const inputClass = "w-full bg-[#1a2540] border border-white/10 rounded-lg px-3 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-blue-400 text-sm";
+  const inputClass = "w-full bg-[#1a2540] border border-white/10 rounded-lg px-3 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-blue-400 text-body";
 
   return (
     <div className="text-white">
       <div className="flex items-center justify-between mb-5">
-        <h2 className="text-xl font-semibold">Assessment Slots</h2>
+        <h2 className="text-headingSm font-semibold">Assessment Slots</h2>
         <button onClick={() => { setShowForm(!showForm); setError(""); setSuccess(""); }}
-          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-body font-medium transition-colors">
           <Plus className="w-4 h-4" /> {showForm ? "Cancel" : "Add Slot"}
         </button>
       </div>
 
-      {success && <div className="bg-green-500/20 border border-green-500/30 rounded-lg p-3 mb-4 flex items-center gap-2"><CheckCircle className="w-4 h-4 text-green-400" /><span className="text-green-300 text-sm">{success}</span></div>}
-      {error && <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-3 mb-4"><p className="text-red-300 text-sm">{error}</p></div>}
+      {success && <div className="bg-green-500/20 border border-green-500/30 rounded-lg p-3 mb-4 flex items-center gap-2"><CheckCircle className="w-4 h-4 text-green-400" /><span className="text-green-300 text-body">{success}</span></div>}
+      {error && <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-3 mb-4"><p className="text-red-300 text-body">{error}</p></div>}
 
       {showForm && (
         <form onSubmit={handleCreate} className="bg-white/5 border border-white/10 rounded-xl p-5 mb-5 space-y-4">
-          <h3 className="font-medium text-sm text-gray-300 uppercase tracking-wide">New Assessment Slot</h3>
+          <h3 className="font-medium text-body text-gray-300 uppercase tracking-wide">New Assessment Slot</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs text-gray-400 mb-1">Date</label>
+              <label className="block text-caption text-gray-400 mb-1">Date</label>
               <input type="date" value={form.date} onChange={e => setForm(p => ({ ...p, date: e.target.value }))} className={inputClass} />
             </div>
             <div>
-              <label className="block text-xs text-gray-400 mb-1">Time</label>
+              <label className="block text-caption text-gray-400 mb-1">Time</label>
               <input type="time" value={form.time} onChange={e => setForm(p => ({ ...p, time: e.target.value }))} className={inputClass} />
             </div>
             <div>
-              <label className="block text-xs text-gray-400 mb-1">Test Center Name</label>
+              <label className="block text-caption text-gray-400 mb-1">Test Center Name</label>
               <input type="text" value={form.center} onChange={e => setForm(p => ({ ...p, center: e.target.value }))} placeholder="e.g. TCS Bangalore Hub" className={inputClass} />
             </div>
             <div>
-              <label className="block text-xs text-gray-400 mb-1">Location / City</label>
+              <label className="block text-caption text-gray-400 mb-1">Location / City</label>
               <input type="text" value={form.location} onChange={e => setForm(p => ({ ...p, location: e.target.value }))} placeholder="e.g. Bangalore, Karnataka" className={inputClass} />
             </div>
             <div>
-              <label className="block text-xs text-gray-400 mb-1">Seat Capacity</label>
+              <label className="block text-caption text-gray-400 mb-1">Seat Capacity</label>
               <input type="number" value={form.capacity} onChange={e => setForm(p => ({ ...p, capacity: e.target.value }))} min="1" max="500" className={inputClass} />
             </div>
             <div>
-              <label className="block text-xs text-gray-400 mb-1">Skills to Test</label>
+              <label className="block text-caption text-gray-400 mb-1">Skills to Test</label>
               <div className="flex gap-2">
                 <input type="text" value={skillInput} onChange={e => setSkillInput(e.target.value)}
                   onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); addSkill(); } }}
                   placeholder="Add skill + Enter" className={`${inputClass} flex-1`} />
-                <button type="button" onClick={addSkill} className="bg-blue-600 px-3 rounded-lg text-sm">+</button>
+                <button type="button" onClick={addSkill} className="bg-blue-600 px-3 rounded-lg text-body">+</button>
               </div>
               {form.skills.length > 0 && (
                 <div className="flex flex-wrap gap-1 mt-2">
                   {form.skills.map(s => (
-                    <span key={s} className="bg-blue-500/20 text-blue-300 text-xs px-2 py-0.5 rounded-full flex items-center gap-1">
+                    <span key={s} className="bg-blue-500/20 text-blue-300 text-caption px-2 py-0.5 rounded-full flex items-center gap-1">
                       {s} <button type="button" onClick={() => setForm(p => ({ ...p, skills: p.skills.filter(x => x !== s) }))} className="hover:text-red-300">×</button>
                     </span>
                   ))}
@@ -133,7 +133,7 @@ export default function EmployerSlotManager() {
             </div>
           </div>
           <button type="submit" disabled={submitting}
-            className="w-full py-2.5 bg-green-600 hover:bg-green-700 rounded-lg text-sm font-medium disabled:opacity-50 flex items-center justify-center gap-2">
+            className="w-full py-2.5 bg-green-600 hover:bg-green-700 rounded-lg text-body font-medium disabled:opacity-50 flex items-center justify-center gap-2">
             {submitting ? <><Loader2 className="w-4 h-4 animate-spin" />Creating...</> : "Create Slot"}
           </button>
         </form>
@@ -152,19 +152,19 @@ export default function EmployerSlotManager() {
             <div key={slot._id} className="bg-white/5 border border-white/10 rounded-xl p-4 flex items-start justify-between gap-3">
               <div className="flex-1">
                 <div className="flex flex-wrap items-center gap-3 mb-2">
-                  <span className="flex items-center gap-1.5 text-sm font-medium"><Calendar className="w-4 h-4 text-blue-400" />{new Date(slot.date).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</span>
-                  <span className="flex items-center gap-1.5 text-sm"><Clock className="w-4 h-4 text-green-400" />{slot.time}</span>
-                  <span className={`text-xs px-2 py-0.5 rounded-full ${slot.bookedCount >= slot.capacity ? "bg-red-500/20 text-red-300" : "bg-green-500/20 text-green-300"}`}>
+                  <span className="flex items-center gap-1.5 text-body font-medium"><Calendar className="w-4 h-4 text-blue-400" />{new Date(slot.date).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</span>
+                  <span className="flex items-center gap-1.5 text-body"><Clock className="w-4 h-4 text-green-400" />{slot.time}</span>
+                  <span className={`text-caption px-2 py-0.5 rounded-full ${slot.bookedCount >= slot.capacity ? "bg-red-500/20 text-red-300" : "bg-green-500/20 text-green-300"}`}>
                     {slot.bookedCount}/{slot.capacity} seats
                   </span>
                 </div>
-                <div className="flex flex-wrap items-center gap-3 text-sm text-gray-400">
+                <div className="flex flex-wrap items-center gap-3 text-body text-gray-400">
                   <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5" />{slot.center}</span>
                   <span>{slot.location}</span>
                 </div>
                 {slot.skills.length > 0 && (
                   <div className="flex flex-wrap gap-1 mt-2">
-                    {slot.skills.map(s => <span key={s} className="bg-blue-500/10 text-blue-300 text-xs px-2 py-0.5 rounded-full">{s}</span>)}
+                    {slot.skills.map(s => <span key={s} className="bg-blue-500/10 text-blue-300 text-caption px-2 py-0.5 rounded-full">{s}</span>)}
                   </div>
                 )}
               </div>

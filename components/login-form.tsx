@@ -53,13 +53,13 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
 
   return (
     <div className="text-white">
-      <h1 className="text-3xl font-semibold text-center mb-2">Login</h1>
+      <h1 className="text-headingLg font-semibold text-center mb-2">Login</h1>
       <p className="text-center text-gray-300 mb-8">Sign in to access your account</p>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {errors.general && (
           <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-3">
-            <p className="text-red-300 text-sm">{errors.general}</p>
+            <p className="text-red-300 text-body">{errors.general}</p>
           </div>
         )}
 
@@ -86,7 +86,7 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
               className={`w-full bg-[#333333] rounded pl-10 pr-4 py-3 text-white placeholder-gray-400 focus:outline-none transition-colors ${errors.email ? "ring-2 ring-red-400 bg-red-900/20" : "focus:ring-2 focus:ring-blue-400"}`}
               disabled={isLoading} required />
           </div>
-          {errors.email && <p className="text-red-300 text-sm mt-1">{errors.email}</p>}
+          {errors.email && <p className="text-red-300 text-body mt-1">{errors.email}</p>}
         </div>
 
         <div>
@@ -105,11 +105,11 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
               {showPassword ? <EyeOff className="w-5 h-5 text-gray-400" /> : <Eye className="w-5 h-5 text-gray-400" />}
             </button>
           </div>
-          {errors.password && <p className="text-red-300 text-sm mt-1">{errors.password}</p>}
+          {errors.password && <p className="text-red-300 text-body mt-1">{errors.password}</p>}
         </div>
 
         <div className="text-right">
-          <a href="#" className="text-blue-400 hover:text-blue-300 text-sm">Forgot Password?</a>
+          <a href="#" className="text-blue-400 hover:text-blue-300 text-body">Forgot Password?</a>
         </div>
 
         <button type="submit" disabled={isLoading}

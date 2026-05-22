@@ -50,6 +50,16 @@ export default function Banner() {
   const [current, setCurrent] = useState(0);
   const [animating, setAnimating] = useState(false);
 
+  // Preload slides 2-4 in background so transitions are instant
+  useEffect(() => {
+    slides.forEach((s, i) => {
+      if (i === 0) return;
+      const img = new window.Image();
+      img.src = s.image;
+    });
+  }, []);
+
+  // Auto-advance carousel every 5s
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrent(prev => (prev + 1) % slides.length);
@@ -87,7 +97,9 @@ export default function Banner() {
           alt={slide.heading}
           fill
           className="object-cover object-center"
-          priority
+          priority={current === 0}
+          loading={current === 0 ? "eager" : "lazy"}
+          sizes="100vw"
         />
         {/* Overlay */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#000c2a]/80 via-[#000c2a]/50 to-transparent" />
@@ -97,13 +109,13 @@ export default function Banner() {
           <div className="max-w-7xl mx-auto px-6 w-full">
             <div className="max-w-xl">
               {/* Badge */}
-              <div className="inline-block bg-[#f6c648] text-[#00418d] font-bold text-sm px-4 py-1 rounded-full mb-4 animate-fade-in">
+              <div className="inline-block bg-[#f6c648] text-[#00418d] font-bold text-body px-4 py-1 rounded-full mb-4 animate-fade-in">
                 {slide.badge}
               </div>
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
+              <h1 className="text-headingLg md:text-headingXl lg:text-headingXl font-bold text-white mb-4 leading-tight">
                 {slide.heading}
               </h1>
-              <p className="text-base md:text-lg text-gray-200 mb-8">
+              <p className="text-subhead md:text-headingSm text-gray-200 mb-8">
                 {slide.subtext}
               </p>
               <Link

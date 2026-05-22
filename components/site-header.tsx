@@ -53,7 +53,7 @@ export default function SiteHeader() {
           <div className="hidden md:flex items-center gap-1">
             {navLinks.map((link) => (
               <Link key={link.href} href={link.href}
-                className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-all ${
+                className={`relative px-4 py-2 text-body font-medium rounded-lg transition-all ${
                   pathname === link.href
                     ? "text-[#00418d] font-semibold"
                     : "text-[#00418d]/80 hover:text-[#00418d] hover:bg-white/30"
@@ -71,8 +71,8 @@ export default function SiteHeader() {
              {isLoggedIn && user ? (
                <div className="relative" ref={dropdownRef}>
                  <button onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                   className="flex items-center gap-2 bg-[#00418d]/10 hover:bg-[#00418d]/20 rounded-full px-3 py-2 text-sm font-medium transition-all">
-                   <div className="w-7 h-7 rounded-full bg-[#f6c648] flex items-center justify-center text-[#00418d] font-bold text-xs">
+                   className="flex items-center gap-2 bg-[#00418d]/10 hover:bg-[#00418d]/20 rounded-full px-3 py-2 text-body font-medium transition-all">
+                   <div className="w-7 h-7 rounded-full bg-[#f6c648] flex items-center justify-center text-[#00418d] font-bold text-caption">
                      {user.name?.charAt(0).toUpperCase()}
                    </div>
                    <span className="max-w-[100px] truncate">{user.name}</span>
@@ -81,16 +81,16 @@ export default function SiteHeader() {
                  {isDropdownOpen && (
                    <div className="absolute right-0 mt-2 w-52 bg-white rounded-xl shadow-2xl py-2 text-gray-800 z-50 border border-gray-100">
                      <div className="px-4 py-3 border-b border-gray-100">
-                       <p className="font-semibold text-sm truncate">{user.name}</p>
-                       <p className="text-xs text-gray-500 truncate">{user.email}</p>
-                       <span className="inline-block mt-1 text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full capitalize">{user.role}</span>
+                       <p className="font-semibold text-body truncate">{user.name}</p>
+                       <p className="text-caption text-gray-500 truncate">{user.email}</p>
+                       <span className="inline-block mt-1 text-caption bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full capitalize">{user.role}</span>
                      </div>
                      <Link href="/services" onClick={() => setIsDropdownOpen(false)}
-                       className="flex items-center gap-2 px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors">
+                       className="flex items-center gap-2 px-4 py-2.5 text-body hover:bg-gray-50 transition-colors">
                        <User className="w-4 h-4 text-gray-400" /> Dashboard
                      </Link>
                      <button onClick={() => { logout(); setIsDropdownOpen(false); }}
-                       className="w-full flex items-center gap-2 px-4 py-2.5 text-sm hover:bg-red-50 text-red-600 transition-colors">
+                       className="w-full flex items-center gap-2 px-4 py-2.5 text-body hover:bg-red-50 text-red-600 transition-colors">
                        <LogOut className="w-4 h-4" /> Sign Out
                      </button>
                    </div>
@@ -99,11 +99,11 @@ export default function SiteHeader() {
              ) : (
                <>
                  <Link href="/services"
-                   className="px-5 py-2 bg-[#f73e5d] hover:bg-[#d62f4f] text-white rounded-full text-sm font-semibold transition-all shadow-md mr-2">
+                   className="px-5 py-2 bg-[#f73e5d] hover:bg-[#d62f4f] text-white rounded-full text-body font-semibold transition-all shadow-md mr-2">
                    Sign In
                  </Link>
                  <Link href="/services"
-                   className="px-5 py-2 bg-[#f6c648] hover:bg-[#e5b23d] text-[#00418d] rounded-full text-sm font-semibold transition-all shadow-md">
+                   className="px-5 py-2 bg-[#f6c648] hover:bg-[#e5b23d] text-[#00418d] rounded-full text-body font-semibold transition-all shadow-md">
                    Sign Up
                  </Link>
                </>
@@ -121,7 +121,7 @@ export default function SiteHeader() {
            <div className="md:hidden border-t border-[#00418d]/20 py-3 px-4">
              {navLinks.map((link) => (
                <Link key={link.href} href={link.href} onClick={() => setIsMenuOpen(false)}
-                 className={`block py-3 px-4 rounded-lg text-sm font-medium mb-1 ${
+                 className={`block py-3 px-4 rounded-lg text-body font-medium mb-1 ${
                    pathname === link.href ? "bg-[#00418d]/10 text-[#00418d]" : "text-[#00418d]/80 hover:bg-white/30"
                  }`}>
                  {link.label}
@@ -130,19 +130,19 @@ export default function SiteHeader() {
              <div className="border-t border-[#00418d]/20 mt-2 pt-3">
                {isLoggedIn && user ? (
                  <div className="flex items-center justify-between px-2">
-                   <span className="text-sm text-[#00418d]/80">{user.name} <span className="text-[#f6c648] capitalize">({user.role})</span></span>
-                   <button onClick={() => { logout(); setIsMenuOpen(false); }} className="text-red-500 text-sm flex items-center gap-1">
+                   <span className="text-body text-[#00418d]/80">{user.name} <span className="text-[#f6c648] capitalize">({user.role})</span></span>
+                   <button onClick={() => { logout(); setIsMenuOpen(false); }} className="text-red-500 text-body flex items-center gap-1">
                      <LogOut className="w-4 h-4" /> Logout
                    </button>
                  </div>
                ) : (
                  <>
                    <Link href="/services" onClick={() => setIsMenuOpen(false)}
-                     className="block w-full text-center py-2.5 mb-2 bg-[#f73e5d] text-white rounded-full text-sm font-semibold">
+                     className="block w-full text-center py-2.5 mb-2 bg-[#f73e5d] text-white rounded-full text-body font-semibold">
                        Sign In
                    </Link>
                    <Link href="/services" onClick={() => setIsMenuOpen(false)}
-                     className="block w-full text-center py-2.5 bg-[#f6c648] text-[#00418d] rounded-full text-sm font-semibold">
+                     className="block w-full text-center py-2.5 bg-[#f6c648] text-[#00418d] rounded-full text-body font-semibold">
                        Sign Up
                    </Link>
                  </>

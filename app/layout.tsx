@@ -11,6 +11,7 @@ const inter = Inter({
   weight: ["300", "400", "500", "600", "700", "800", "900"],
   variable: "--font-inter",
   display: "swap",
+  preload: true,
 });
 
 export const metadata: Metadata = {
@@ -23,7 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={inter.variable}>
       <body className={`${inter.className} bg-[#f0f7ff] min-h-screen`}>
         <AuthProvider>
-          <div className="flex min-h-screen flex-col font-[var(--font-inter)]">
+          <div className="flex min-h-screen flex-col">
             <SiteHeader />
             <main className="flex-grow page-enter">{children}</main>
             <SiteFooter />

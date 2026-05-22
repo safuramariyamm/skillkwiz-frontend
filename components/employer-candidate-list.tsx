@@ -64,8 +64,8 @@ export default function EmployerCandidateList() {
   return (
     <div className="text-white">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-2xl font-bold">Candidate List</h2>
-        {total > 0 && <span className="text-sm text-gray-300">{total} candidates found</span>}
+        <h2 className="text-headingMd font-bold">Candidate List</h2>
+        {total > 0 && <span className="text-body text-gray-300">{total} candidates found</span>}
       </div>
 
       {/* Search Bar */}
@@ -77,7 +77,7 @@ export default function EmployerCandidateList() {
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyDown={(e) => { if (e.key === "Enter") fetchCandidates(); }}
             placeholder="Search by name, skills..."
-            className="w-full bg-[#1e3a5f] border border-[#2d5184] rounded-lg pl-9 pr-4 py-2.5 text-white placeholder-gray-400 text-sm focus:outline-none focus:border-blue-400"
+            className="w-full bg-[#1e3a5f] border border-[#2d5184] rounded-lg pl-9 pr-4 py-2.5 text-white placeholder-gray-400 text-body focus:outline-none focus:border-blue-400"
           />
         </div>
         <div className="relative">
@@ -86,18 +86,18 @@ export default function EmployerCandidateList() {
             value={locationQuery}
             onChange={(e) => setLocationQuery(e.target.value)}
             placeholder="Location"
-            className="w-full sm:w-36 bg-[#1e3a5f] border border-[#2d5184] rounded-lg pl-9 pr-4 py-2.5 text-white placeholder-gray-400 text-sm focus:outline-none focus:border-blue-400"
+            className="w-full sm:w-36 bg-[#1e3a5f] border border-[#2d5184] rounded-lg pl-9 pr-4 py-2.5 text-white placeholder-gray-400 text-body focus:outline-none focus:border-blue-400"
           />
         </div>
         <button onClick={fetchCandidates}
-          className="px-5 py-2.5 bg-[#2d5184] hover:bg-[#3a6394] rounded-lg text-sm font-medium transition-colors">
+          className="px-5 py-2.5 bg-[#2d5184] hover:bg-[#3a6394] rounded-lg text-body font-medium transition-colors">
           Search
         </button>
       </div>
 
       {/* Filter Toggle */}
       <button onClick={() => setShowFilters(!showFilters)}
-        className="flex items-center gap-2 text-blue-400 hover:text-blue-300 text-sm mb-3">
+        className="flex items-center gap-2 text-blue-400 hover:text-blue-300 text-body mb-3">
         <Filter className="w-4 h-4" />
         {showFilters ? "Hide" : "Show"} Filters
         {showFilters ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
@@ -107,11 +107,11 @@ export default function EmployerCandidateList() {
         <div className="bg-[#1e3a5f] border border-[#2d5184] rounded-xl p-4 mb-4 space-y-4">
           {/* Job Family */}
           <div>
-            <label className="block text-xs text-gray-400 mb-2">Job Family</label>
+            <label className="block text-caption text-gray-400 mb-2">Job Family</label>
             <div className="flex flex-wrap gap-2">
               {jobFamilies.map((jf) => (
                 <button key={jf} onClick={() => setSelectedJobFamily(selectedJobFamily === jf ? "" : jf)}
-                  className={`px-3 py-1 rounded-full text-xs border capitalize ${selectedJobFamily === jf ? "bg-blue-600 border-blue-400" : "border-[#2d5184] hover:border-blue-400"
+                  className={`px-3 py-1 rounded-full text-caption border capitalize ${selectedJobFamily === jf ? "bg-blue-600 border-blue-400" : "border-[#2d5184] hover:border-blue-400"
                     }`}>
                   {jf}
                 </button>
@@ -121,11 +121,11 @@ export default function EmployerCandidateList() {
 
           {/* Gender */}
           <div>
-            <label className="block text-xs text-gray-400 mb-2">Gender</label>
+            <label className="block text-caption text-gray-400 mb-2">Gender</label>
             <div className="flex gap-2">
               {(["both", "male", "female"] as const).map((g) => (
                 <button key={g} onClick={() => setSelectedGender(g)}
-                  className={`px-3 py-1 rounded-full text-xs border capitalize ${selectedGender === g ? "bg-blue-600 border-blue-400" : "border-[#2d5184] hover:border-blue-400"
+                  className={`px-3 py-1 rounded-full text-caption border capitalize ${selectedGender === g ? "bg-blue-600 border-blue-400" : "border-[#2d5184] hover:border-blue-400"
                     }`}>
                   {g}
                 </button>
@@ -135,11 +135,11 @@ export default function EmployerCandidateList() {
 
           {/* Skills */}
           <div>
-            <label className="block text-xs text-gray-400 mb-2">Skills</label>
+            <label className="block text-caption text-gray-400 mb-2">Skills</label>
             <div className="flex flex-wrap gap-2">
               {skillOptions.map((skill) => (
                 <button key={skill} onClick={() => toggleSkill(skill)}
-                  className={`px-3 py-1 rounded-full text-xs border ${selectedSkills.includes(skill) ? "bg-blue-600 border-blue-400" : "border-[#2d5184] hover:border-blue-400"
+                  className={`px-3 py-1 rounded-full text-caption border ${selectedSkills.includes(skill) ? "bg-blue-600 border-blue-400" : "border-[#2d5184] hover:border-blue-400"
                     }`}>
                   {skill}
                 </button>
@@ -149,8 +149,8 @@ export default function EmployerCandidateList() {
 
           <div className="flex gap-3">
             <button onClick={() => { fetchCandidates(); setShowFilters(false); }}
-              className="px-4 py-2 bg-[#2d5184] hover:bg-[#3a6394] rounded-lg text-sm">Apply Filters</button>
-            <button onClick={clearFilters} className="px-4 py-2 border border-[#2d5184] rounded-lg text-sm text-gray-300 hover:border-blue-400">Clear</button>
+              className="px-4 py-2 bg-[#2d5184] hover:bg-[#3a6394] rounded-lg text-body">Apply Filters</button>
+            <button onClick={clearFilters} className="px-4 py-2 border border-[#2d5184] rounded-lg text-body text-gray-300 hover:border-blue-400">Clear</button>
           </div>
         </div>
       )}
@@ -158,7 +158,7 @@ export default function EmployerCandidateList() {
       {/* Candidates List */}
       {error && (
         <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-3 mb-3">
-          <p className="text-red-300 text-sm">{error}</p>
+          <p className="text-red-300 text-body">{error}</p>
         </div>
       )}
 
@@ -177,21 +177,21 @@ export default function EmployerCandidateList() {
             <div key={candidate._id}
               className="bg-[#1e3a5f] border border-[#2d5184] rounded-xl p-4 hover:border-blue-400 transition-colors">
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center shrink-0 text-sm font-bold">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center shrink-0 text-body font-bold">
                   {getInitials(candidate.firstName, candidate.lastName)}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between flex-wrap gap-2">
-                    <h3 className="font-semibold text-sm">{candidate.firstName} {candidate.lastName}</h3>
+                    <h3 className="font-semibold text-body">{candidate.firstName} {candidate.lastName}</h3>
                     {candidate.percentileScore !== null && candidate.percentileScore !== undefined && (
-                      <span className="text-xs bg-green-500/20 text-green-300 px-2 py-0.5 rounded-full">
+                      <span className="text-caption bg-green-500/20 text-green-300 px-2 py-0.5 rounded-full">
                         {candidate.percentileScore}th percentile
                       </span>
                     )}
                   </div>
-                  <p className="text-gray-400 text-xs mt-0.5">{candidate.email}</p>
+                  <p className="text-gray-400 text-caption mt-0.5">{candidate.email}</p>
                   {candidate.location?.city && (
-                    <p className="text-gray-400 text-xs flex items-center gap-1 mt-0.5">
+                    <p className="text-gray-400 text-caption flex items-center gap-1 mt-0.5">
                       <MapPin className="w-3 h-3" />{candidate.location.city}
                       {candidate.location.country ? `, ${candidate.location.country}` : ""}
                     </p>
@@ -199,10 +199,10 @@ export default function EmployerCandidateList() {
                   {candidate.skills?.length > 0 && (
                     <div className="flex flex-wrap gap-1 mt-2">
                       {candidate.skills.slice(0, 5).map((s: any) => (
-                        <span key={s.name} className="text-xs bg-[#2d5184] px-2 py-0.5 rounded-full">{s.name}</span>
+                        <span key={s.name} className="text-caption bg-[#2d5184] px-2 py-0.5 rounded-full">{s.name}</span>
                       ))}
                       {candidate.skills.length > 5 && (
-                        <span className="text-xs text-gray-400">+{candidate.skills.length - 5} more</span>
+                        <span className="text-caption text-gray-400">+{candidate.skills.length - 5} more</span>
                       )}
                     </div>
                   )}
@@ -217,12 +217,12 @@ export default function EmployerCandidateList() {
       {total > 10 && (
         <div className="flex justify-center gap-3 mt-5">
           <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}
-            className="px-4 py-2 bg-[#1e3a5f] border border-[#2d5184] rounded-lg text-sm disabled:opacity-40">
+            className="px-4 py-2 bg-[#1e3a5f] border border-[#2d5184] rounded-lg text-body disabled:opacity-40">
             Previous
           </button>
-          <span className="text-sm text-gray-400 flex items-center">Page {page}</span>
+          <span className="text-body text-gray-400 flex items-center">Page {page}</span>
           <button onClick={() => setPage((p) => p + 1)} disabled={candidates.length < 10}
-            className="px-4 py-2 bg-[#1e3a5f] border border-[#2d5184] rounded-lg text-sm disabled:opacity-40">
+            className="px-4 py-2 bg-[#1e3a5f] border border-[#2d5184] rounded-lg text-body disabled:opacity-40">
             Next
           </button>
         </div>
