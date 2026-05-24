@@ -10,7 +10,7 @@ const CARDS = [
     emoji: "📚",
     title: "Skill Library",
     description: "Extensive assessments covering technical, professional and soft skills for all roles and industries.",
-    tx: -260,
+    tx: -300,
     ty: 12,
     rot: -6,
   },
@@ -30,7 +30,7 @@ const CARDS = [
     emoji: "💰",
     title: "Flexible Pricing",
     description: "Credit-based model — pay only for what you use. Scale seamlessly with your organisation.",
-    tx: 260,
+    tx: 300,
     ty: 12,
     rot: 6,
   },
@@ -130,22 +130,22 @@ export default function WhyChooseSection() {
 
   const CardInner = ({ card }: { card: (typeof CARDS)[0] }) => (
     <div className="flex flex-col items-center text-center h-full">
-      {/* Icon circle */}
-      <div className="w-16 h-16 rounded-2xl bg-[#00418d]/8 flex items-center justify-center mb-5 overflow-hidden">
+      {/* GIF container — big and prominent */}
+      <div className="w-24 h-24 rounded-2xl bg-[#00418d]/8 flex items-center justify-center mb-6 overflow-hidden">
         <img
           src={card.icon}
           alt=""
           aria-hidden="true"
-          className="w-12 h-12 object-contain"
+          className="w-20 h-20 object-contain"
           loading="lazy"
           onError={(e) => {
             const p = (e.target as HTMLImageElement).parentElement;
-            if (p) p.innerHTML = `<span style="font-size:28px">${card.emoji}</span>`;
+            if (p) p.innerHTML = `<span style="font-size:52px">${card.emoji}</span>`;
           }}
         />
       </div>
-      <h3 className="sk-h4 text-[#00418d] mb-3">{card.title}</h3>
-      <p className="sk-caption text-gray-500 leading-relaxed">{card.description}</p>
+      <h3 className="sk-h3 text-[#00418d] mb-3">{card.title}</h3>
+      <p className="sk-body text-gray-500 leading-relaxed">{card.description}</p>
     </div>
   );
 
@@ -181,7 +181,7 @@ export default function WhyChooseSection() {
         {!isDesktop && (
           <div className="flex flex-col items-center gap-5 mb-14">
             {CARDS.map((card) => (
-              <div key={card.id} className="sk-card w-full max-w-sm p-8">
+              <div key={card.id} className="sk-card w-full max-w-lg p-8">
                 <CardInner card={card} />
               </div>
             ))}
@@ -190,14 +190,14 @@ export default function WhyChooseSection() {
 
         {/* Desktop: animated fan */}
         {isDesktop && (
-          <div className="relative flex items-center justify-center mb-16" style={{ height: 300 }}>
+          <div className="relative flex items-center justify-center mb-16" style={{ height: 350 }}>
             {CARDS.map((card, i) => (
               <div
                 key={card.id}
                 ref={(el) => { cardRefs.current[i] = el; }}
                 className="absolute bg-white rounded-2xl p-8 text-center"
                 style={{
-                  width: 220,
+                  width: 270,
                   cursor: "default",
                   willChange: "transform, opacity",
                   transformOrigin: "center bottom",
@@ -212,7 +212,18 @@ export default function WhyChooseSection() {
         )}
 
         {/* Stats row */}
-
+        <div className="grid grid-cols-3 gap-4 md:gap-8 max-w-2xl mx-auto mb-14">
+          {[
+            { num: "10K+", label: "Assessments" },
+            { num: "500+", label: "Companies" },
+            { num: "98%", label: "Accuracy" },
+          ].map((s) => (
+            <div key={s.label} className="text-center">
+              <p className="text-3xl md:text-4xl font-black text-[#f6c648]">{s.num}</p>
+              <p className="text-white/55 text-sm mt-1">{s.label}</p>
+            </div>
+          ))}
+        </div>
 
         {/* CTA */}
         <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
