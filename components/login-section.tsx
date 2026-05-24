@@ -69,7 +69,7 @@ export default function LoginSection() {
     <section className="bg-[#f0f7ff] sk-section-sm">
       <div className="sk-container">
         <div className="max-w-5xl mx-auto">
-          <div className="sk-card overflow-hidden flex flex-col md:flex-row min-h-[520px] rounded-3xl shadow-2xl shadow-[#00418d]/10">
+          <div className="sk-card overflow-hidden flex flex-col md:flex-row min-h-[520px] rounded-3xl shadow-2xl shadow-[#0a1628]/10">
 
             {/* Left — illustration */}
             <div className="w-full md:w-[48%] bg-white flex items-center justify-center p-8">

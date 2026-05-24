@@ -65,7 +65,7 @@ export default function TestimonialsSection() {
 
   return (
     /* White section — blends out of dark why-choose section */
-    <section className="bg-white sk-section">
+    <section className="bg-[#f0f7ff] sk-section">
       <div className="sk-container">
 
         {/* Header */}
@@ -86,10 +86,13 @@ export default function TestimonialsSection() {
         <div className="relative">
 
           {/* Nav arrows — desktop */}
-          <button onClick={prev} aria-label="Previous" className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-5 z-10 w-10 h-10 rounded-full bg-white shadow-md border border-gray-100 items-center justify-center text-[#00418d] hover:bg-[#00418d] hover:text-white transition-all duration-200">
+          <button onClick={prev} aria-label="Previous" className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-5 z-10 w-10 h-10 rounded-full bg-white shadow-md border border-gray-100 items-center justify-center text-[#00418d] hover:bg-[#0a1628] hover:text-white transition-all duration-200">
             <ChevronLeft className="w-5 h-5" />
           </button>
-          <button onClick={next} aria-label="Next" className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-5 z-10 w-10 h-10 rounded-full bg-white shadow-md border border-gray-100 items-center justify-center text-[#00418d] hover:bg-[#00418d] hover:text-white transition-all duration-200">
+          <button onClick={next} aria-label="Next" className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-5 z-10 w-10 h-10 rounded-full bg-white shadow-md border border-gray-100 items-center justify-center text-[#00418d] hover:bg-[#0a1628]
+          
+          
+      hover:text-white transition-all duration-200">
             <ChevronRight className="w-5 h-5" />
           </button>
 
@@ -130,7 +133,7 @@ export default function TestimonialsSection() {
             <button
               key={i}
               onClick={() => goTo(i)}
-              className={`rounded-full transition-all duration-300 ${i === active ? "w-8 h-2.5 bg-[#00418d]" : "w-2.5 h-2.5 bg-gray-200 hover:bg-gray-300"}`}
+              className={`rounded-full transition-all duration-300 ${i === active ? "w-8 h-2.5 bg-[#0a1628]" : "w-2.5 h-2.5 bg-gray-200 hover:bg-gray-300"}`}
               aria-label={`Go to ${i + 1}`}
             />
           ))}
