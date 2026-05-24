@@ -107,10 +107,10 @@ export default function Banner() {
 
       {/* ── Content ── */}
       <div
-        className="relative z-10 flex items-center"
-        style={{ minHeight: "clamp(480px, 70vh, 680px)" }}
+        className="relative z-10 flex items-start"
+        style={{ minHeight: "clamp(480px, 70vh, 680px)", paddingTop: "clamp(80px, 14vh, 140px)" }}
       >
-        <div className="sk-container w-full py-16">
+        <div className="sk-container w-full">
           <div className="max-w-2xl">
 
             {/* Badge */}

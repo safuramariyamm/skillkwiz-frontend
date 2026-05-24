@@ -82,19 +82,19 @@ export default function AuthenticateSkillsSection() {
         </div>
 
         {/* Two-column layout */}
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div className="grid lg:grid-cols-[58%_42%] gap-8 lg:gap-12 items-center">
 
           {/* Left — feature cards */}
           <div className={`transition-all duration-700 delay-150 ${visible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"}`}>
-            <div className="space-y-4">
+            <div className="space-y-5">
               {features.map((f) => (
-                <div key={f.title} className="sk-card p-6 flex items-start gap-5 rounded-2xl">
-                  <div className={`w-12 h-12 rounded-xl ${f.iconBg} ${f.iconColor} flex items-center justify-center shrink-0`}>
+                <div key={f.title} className="sk-card p-7 flex items-start gap-6 rounded-2xl">
+                  <div className={`w-20 h-20 rounded-2xl ${f.iconBg} ${f.iconColor} flex items-center justify-center shrink-0 [&>svg]:w-10 [&>svg]:h-10`}>
                     {f.icon}
                   </div>
                   <div>
-                    <h3 className="sk-h4 text-gray-900 mb-1.5">{f.title}</h3>
-                    <p className="sk-caption">{f.description}</p>
+                    <h3 className="sk-h3 text-gray-900 mb-2">{f.title}</h3>
+                    <p className="sk-body">{f.description}</p>
                   </div>
                 </div>
               ))}

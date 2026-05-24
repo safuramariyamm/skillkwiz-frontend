@@ -1,467 +1,291 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-  UserPlus,
-  Copy,
-  CheckCircle,
-  Loader2,
-  Mail,
-  Shield,
-  Clock,
-  Calendar,
-  Trash2,
-} from "lucide-react";
-import { apiCall } from "@/context/AuthContext";
+import { Search, MapPin, Filter, ChevronDown, ChevronUp, Loader2, User } from "lucide-react";
+import { apiGetCandidates } from "@/lib/api";
 
-interface Credential {
-  _id: string;
-  candidateName: string;
-  candidateEmail: string;
-  username: string;
-  status: "invited" | "registered" | "booked" | "assessed";
-  isUsed: boolean;
-  bookedSlot: {
-    date: string;
-    time: string;
-    center: string;
-    location: string;
-  } | null;
-  createdAt: string;
-}
-
-interface NewCredential {
-  candidateName: string;
-  candidateEmail: string;
-  username: string;
-  password: string;
-  companyCode: string;
-}
-
-export default function EmployerCredentialManager() {
-  const [credentials, setCredentials] = useState<Credential[]>([]);
-  const [stats, setStats] = useState({
-    total: 0,
-    invited: 0,
-    registered: 0,
-    booked: 0,
-    assessed: 0,
-  });
-
+export default function EmployerCandidateList() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [locationQuery, setLocationQuery] = useState("");
+  const [selectedJobFamily, setSelectedJobFamily] = useState("");
+  const [selectedGender, setSelectedGender] = useState<"male" | "female" | "both">("both");
+  const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
+  const [showFilters, setShowFilters] = useState(false);
+  const [candidates, setCandidates] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [showForm, setShowForm] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
-  const [newCred, setNewCred] = useState<NewCredential | null>(null);
-  const [copied, setCopied] = useState("");
-  const [form, setForm] = useState({
-    candidateName: "",
-    candidateEmail: "",
-  });
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
 
-  useEffect(() => {
-    fetchCredentials();
-  }, []);
+  const skillOptions = ["C#", "Java", "Python", "SQL", "React", "JavaScript", "Go", "AWS", "Spring Boot"];
+  const jobFamilies = ["software", "data", "design", "marketing", "finance", "operations", "other"];
 
-  const fetchCredentials = async () => {
+  const fetchCandidates = async () => {
     setLoading(true);
-
-    const { ok, data } = await apiCall("/employers/credentials");
-
-    if (ok) {
-      setCredentials(data.data.credentials || []);
-      setStats(data.data.stats || {});
-    }
-
-    setLoading(false);
-  };
-
-  const handleGenerate = async (e: React.FormEvent) => {
-    e.preventDefault();
-
     setError("");
+    try {
+      const params: Record<string, string> = { page: String(page), limit: "10" };
+      if (searchQuery) params.search = searchQuery;
+      if (locationQuery) params.city = locationQuery;
+      if (selectedJobFamily) params.jobFamily = selectedJobFamily;
+      if (selectedGender !== "both") params.gender = selectedGender;
+      if (selectedSkills.length > 0) params.skills = selectedSkills.join(",");
 
-    if (!form.candidateName.trim() || !form.candidateEmail.trim()) {
-      setError("Name and email are required");
-      return;
-    }
-
-    setSubmitting(true);
-
-    const { ok, data } = await apiCall("/employers/credentials", {
-      method: "POST",
-      body: JSON.stringify(form),
-    });
-
-    if (ok) {
-      setNewCred(data.data.credential);
-
-      setForm({
-        candidateName: "",
-        candidateEmail: "",
-      });
-
-      setShowForm(false);
-
-      fetchCredentials();
-    } else {
-      setError(data.message || "Failed to generate credentials");
-    }
-
-    setSubmitting(false);
-  };
-
-  const handleRevoke = async (id: string, name: string) => {
-    if (!confirm(`Revoke access for ${name}?`)) return;
-
-    const { ok, data } = await apiCall(
-      `/employers/credentials/${id}`,
-      {
-        method: "DELETE",
+      const res = await apiGetCandidates(params);
+      if (res.success) {
+        setCandidates(res.data.candidates || []);
+        setTotal(res.data.total || 0);
+      } else {
+        setError(res.message || "Failed to load candidates");
       }
+    } catch {
+      setError("Network error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => { fetchCandidates(); }, [page]);
+
+  const toggleSkill = (skill: string) => {
+    setSelectedSkills((prev) =>
+      prev.includes(skill) ? prev.filter((s) => s !== skill) : [...prev, skill]
     );
-
-    if (ok) {
-      fetchCredentials();
-    } else {
-      alert(data.message);
-    }
   };
 
-  const copyToClipboard = (text: string, key: string) => {
-    navigator.clipboard.writeText(text);
-
-    setCopied(key);
-
-    setTimeout(() => setCopied(""), 2000);
+  const clearFilters = () => {
+    setSearchQuery(""); setLocationQuery(""); setSelectedJobFamily("");
+    setSelectedGender("both"); setSelectedSkills([]);
   };
 
-  const statusConfig: Record<
-    string,
-    {
-      color: string;
-      label: string;
-    }
-  > = {
-    invited: {
-      color:
-        "bg-[#5c4a12]/30 text-[#f4d35e] border border-[#7a6218]/40",
-      label: "Invited",
-    },
-
-    registered: {
-      color:
-        "bg-[#1e3a5f]/40 text-[#9ec5ff] border border-[#2d5184]/40",
-      label: "Registered",
-    },
-
-    booked: {
-      color:
-        "bg-[#123524]/30 text-[#7ee2b8] border border-[#1f5b3f]/40",
-      label: "Slot Booked",
-    },
-
-    assessed: {
-      color:
-        "bg-[#3a1d5c]/30 text-[#d3b5ff] border border-[#5b2a8a]/40",
-      label: "Assessed",
-    },
-  };
+  const getInitials = (firstName: string, lastName: string) =>
+    `${firstName?.[0] || ""}${lastName?.[0] || ""}`.toUpperCase();
 
   return (
-    <div className="text-white min-h-screen bg-[#1a2540] rounded-2xl p-4">
-      {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
-        {[
-          {
-            label: "Total",
-            value: stats.total,
-            color: "text-white",
-          },
-
-          {
-            label: "Invited",
-            value: stats.invited,
-            color: "text-[#f4d35e]",
-          },
-
-          {
-            label: "Booked",
-            value: stats.booked,
-            color: "text-[#7ee2b8]",
-          },
-
-          {
-            label: "Assessed",
-            value: stats.assessed,
-            color: "text-[#d3b5ff]",
-          },
-        ].map((s) => (
-          <div
-            key={s.label}
-            className="bg-[#1e2f4d] border border-[#2d5184]/40 rounded-2xl p-4 text-center shadow-lg shadow-black/10"
-          >
-            <p className={`text-headingMd font-bold ${s.color}`}>
-              {s.value}
-            </p>
-
-            <p className="text-caption text-gray-400 mt-1">
-              {s.label}
-            </p>
-          </div>
-        ))}
-      </div>
-
+    <div className="text-white">
       {/* Header */}
       <div className="flex items-center justify-between mb-5">
-        <h2 className="text-headingSm font-semibold">
-          Candidate Access
-        </h2>
+        <div>
+          <h2 className="text-headingMd font-bold">Candidate List</h2>
+          {total > 0 && <p className="text-white/50 text-sm mt-0.5">{total} candidates found</p>}
+        </div>
+      </div>
 
+      {/* Search Bar */}
+      <div className="flex flex-col sm:flex-row gap-2.5 mb-3">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
+          <input
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => { if (e.key === "Enter") fetchCandidates(); }}
+            placeholder="Search by name, skills..."
+            className="w-full bg-white/8 border border-white/12 rounded-xl pl-9 pr-4 py-2.5 text-white placeholder-white/30 text-sm focus:outline-none focus:border-[#f6c648]/60 focus:bg-white/12 transition-all"
+          />
+        </div>
+        <div className="relative">
+          <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
+          <input
+            value={locationQuery}
+            onChange={(e) => setLocationQuery(e.target.value)}
+            placeholder="Location"
+            className="w-full sm:w-36 bg-white/8 border border-white/12 rounded-xl pl-9 pr-4 py-2.5 text-white placeholder-white/30 text-sm focus:outline-none focus:border-[#f6c648]/60 focus:bg-white/12 transition-all"
+          />
+        </div>
         <button
-          onClick={() => {
-            setShowForm(!showForm);
-            setError("");
-            setNewCred(null);
-          }}
-          className="flex items-center gap-2 bg-[#00418d] hover:bg-[#2d5184] transition-all duration-300 shadow-md shadow-[#00418d]/20 px-4 py-2 rounded-xl text-body font-medium"
+          onClick={fetchCandidates}
+          className="px-5 py-2.5 bg-[#00418d] hover:bg-[#003070] rounded-xl text-sm font-semibold transition-colors"
         >
-          <UserPlus className="w-4 h-4" />
-
-          {showForm ? "Cancel" : "Add Candidate"}
+          Search
         </button>
       </div>
 
-      {/* Add Candidate Form */}
-      {showForm && (
-        <form
-          onSubmit={handleGenerate}
-          className="bg-[#1e2f4d] border border-[#2d5184]/40 rounded-2xl p-5 mb-5 space-y-4 shadow-xl shadow-black/10"
-        >
-          <h3 className="text-body font-medium text-gray-300 uppercase tracking-wide">
-            Generate Credentials
-          </h3>
+      {/* Filter Toggle */}
+      <button
+        onClick={() => setShowFilters(!showFilters)}
+        className="flex items-center gap-2 text-[#f6c648]/80 hover:text-[#f6c648] text-sm font-medium mb-3 transition-colors"
+      >
+        <Filter className="w-3.5 h-3.5" />
+        {showFilters ? "Hide" : "Show"} Filters
+        {showFilters ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+      </button>
 
-          {error && (
-            <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-3">
-              <p className="text-red-300 text-body">{error}</p>
-            </div>
-          )}
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Name */}
-            <div>
-              <label className="block text-caption text-gray-400 mb-1">
-                Candidate Full Name
-              </label>
-
-              <input
-                type="text"
-                value={form.candidateName}
-                onChange={(e) =>
-                  setForm((p) => ({
-                    ...p,
-                    candidateName: e.target.value,
-                  }))
-                }
-                placeholder="e.g. Rahul Sharma"
-                className="w-full bg-[#162238] border border-[#2d5184]/40 rounded-xl px-3 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-[#00418d] focus:ring-2 focus:ring-[#00418d]/20 transition-all"
-              />
-            </div>
-
-            {/* Email */}
-            <div>
-              <label className="block text-caption text-gray-400 mb-1">
-                Candidate Email
-              </label>
-
-              <input
-                type="email"
-                value={form.candidateEmail}
-                onChange={(e) =>
-                  setForm((p) => ({
-                    ...p,
-                    candidateEmail: e.target.value,
-                  }))
-                }
-                placeholder="e.g. rahul@email.com"
-                className="w-full bg-[#162238] border border-[#2d5184]/40 rounded-xl px-3 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-[#00418d] focus:ring-2 focus:ring-[#00418d]/20 transition-all"
-              />
-            </div>
-          </div>
-
-          <button
-            type="submit"
-            disabled={submitting}
-            className="w-full py-3 bg-[#123524] hover:bg-[#1f5b3f] rounded-xl text-body font-medium disabled:opacity-50 flex items-center justify-center gap-2 transition-all duration-300"
-          >
-            {submitting ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                Generating...
-              </>
-            ) : (
-              <>
-                <Mail className="w-4 h-4" />
-                Generate & Email Credentials
-              </>
-            )}
-          </button>
-        </form>
-      )}
-
-      {/* Success Credentials */}
-      {newCred && (
-        <div className="bg-[#123524]/30 border border-[#1f5b3f]/50 rounded-2xl p-5 mb-5">
-          <div className="flex items-center gap-2 mb-4">
-            <CheckCircle className="w-5 h-5 text-[#7ee2b8]" />
-
-            <span className="text-[#7ee2b8] font-medium">
-              Credentials generated and emailed to{" "}
-              {newCred.candidateEmail}
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-body">
-            {[
-              {
-                label: "Company Code",
-                value: newCred.companyCode,
-              },
-
-              {
-                label: "Username",
-                value: newCred.username,
-              },
-
-              {
-                label: "Password",
-                value: newCred.password,
-              },
-            ].map((item) => (
-              <div
-                key={item.label}
-                className="bg-[#162238] border border-[#2d5184]/30 rounded-xl p-3 flex items-center justify-between"
-              >
-                <div>
-                  <p className="text-caption text-gray-400">
-                    {item.label}
-                  </p>
-
-                  <p className="font-mono font-bold break-all">
-                    {item.value}
-                  </p>
-                </div>
-
+      {/* Filter Panel */}
+      {showFilters && (
+        <div className="bg-white/5 border border-white/10 rounded-2xl p-5 mb-4 space-y-4">
+          <div>
+            <label className="block text-xs text-white/40 uppercase tracking-wider mb-2 font-semibold">Job Family</label>
+            <div className="flex flex-wrap gap-2">
+              {jobFamilies.map((jf) => (
                 <button
-                  onClick={() =>
-                    copyToClipboard(item.value, item.label)
-                  }
-                  className="text-gray-400 hover:text-white ml-2 transition-colors"
+                  key={jf}
+                  onClick={() => setSelectedJobFamily(selectedJobFamily === jf ? "" : jf)}
+                  className={`px-3 py-1.5 rounded-full text-xs font-semibold border capitalize transition-all ${
+                    selectedJobFamily === jf
+                      ? "bg-[#f6c648] border-[#f6c648] text-[#0a1628]"
+                      : "border-white/15 text-white/60 hover:border-white/30 hover:text-white"
+                  }`}
                 >
-                  {copied === item.label ? (
-                    <CheckCircle className="w-4 h-4 text-[#7ee2b8]" />
-                  ) : (
-                    <Copy className="w-4 h-4" />
-                  )}
+                  {jf}
                 </button>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
 
-          <p className="text-caption text-[#f4d35e] mt-4">
-            ⚠️ Save this password — it won't be shown again.
-          </p>
+          <div>
+            <label className="block text-xs text-white/40 uppercase tracking-wider mb-2 font-semibold">Gender</label>
+            <div className="flex gap-2">
+              {(["both", "male", "female"] as const).map((g) => (
+                <button
+                  key={g}
+                  onClick={() => setSelectedGender(g)}
+                  className={`px-3 py-1.5 rounded-full text-xs font-semibold border capitalize transition-all ${
+                    selectedGender === g
+                      ? "bg-[#f6c648] border-[#f6c648] text-[#0a1628]"
+                      : "border-white/15 text-white/60 hover:border-white/30 hover:text-white"
+                  }`}
+                >
+                  {g}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs text-white/40 uppercase tracking-wider mb-2 font-semibold">Skills</label>
+            <div className="flex flex-wrap gap-2">
+              {skillOptions.map((skill) => (
+                <button
+                  key={skill}
+                  onClick={() => toggleSkill(skill)}
+                  className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-all ${
+                    selectedSkills.includes(skill)
+                      ? "bg-[#00418d] border-[#00418d] text-white"
+                      : "border-white/15 text-white/60 hover:border-white/30 hover:text-white"
+                  }`}
+                >
+                  {skill}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex gap-2 pt-1">
+            <button
+              onClick={() => { fetchCandidates(); setShowFilters(false); }}
+              className="px-5 py-2 bg-[#00418d] hover:bg-[#003070] rounded-xl text-sm font-semibold transition-colors"
+            >
+              Apply Filters
+            </button>
+            <button
+              onClick={clearFilters}
+              className="px-5 py-2 border border-white/15 rounded-xl text-sm text-white/60 hover:text-white hover:border-white/30 transition-all"
+            >
+              Clear
+            </button>
+          </div>
         </div>
       )}
 
-      {/* Loading */}
-      {loading ? (
-        <div className="text-center py-10">
-          <Loader2 className="w-8 h-8 animate-spin mx-auto text-[#4d8fda]" />
+      {/* Error */}
+      {error && (
+        <div className="bg-red-500/15 border border-red-400/25 rounded-xl p-3 mb-3">
+          <p className="text-red-300 text-sm">{error}</p>
         </div>
-      ) : credentials.length === 0 ? (
-        /* Empty State */
-        <div className="text-center py-12 text-gray-400">
-          <Shield className="w-12 h-12 mx-auto mb-3 opacity-40" />
+      )}
 
-          <p>
-            No candidates added yet. Add a candidate to generate
-            login credentials.
-          </p>
+      {/* Candidates */}
+      {loading ? (
+        <div className="flex justify-center py-12">
+          <Loader2 className="w-8 h-8 animate-spin text-[#f6c648]" />
+        </div>
+      ) : candidates.length === 0 ? (
+        <div className="text-center py-14">
+          <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-4">
+            <User className="w-7 h-7 text-white/25" />
+          </div>
+          <p className="text-white/40 text-sm">No candidates found. Try adjusting your filters.</p>
         </div>
       ) : (
-        /* Candidates */
-        <div className="space-y-3">
-          {credentials.map((c) => (
+        <div className="space-y-2.5">
+          {candidates.map((candidate) => (
             <div
-              key={c._id}
-              className="bg-[#1e2f4d] border border-[#2d5184]/40 rounded-2xl p-4 hover:border-[#3a6394]/60 transition-all duration-300 flex items-start justify-between gap-3"
+              key={candidate._id}
+              className="bg-white rounded-2xl p-4 border border-gray-100 hover:border-[#00418d]/30 hover:shadow-lg hover:shadow-[#00418d]/8 transition-all duration-200 group"
             >
-              <div className="flex-1 min-w-0">
-                {/* Top Row */}
-                <div className="flex items-center gap-2 mb-1 flex-wrap">
-                  <p className="font-medium">
-                    {c.candidateName}
-                  </p>
-
-                  <span
-                    className={`text-caption px-2 py-0.5 rounded-full ${statusConfig[c.status]?.color}`}
-                  >
-                    {statusConfig[c.status]?.label}
-                  </span>
-
-                  {c.isUsed && (
-                    <span className="text-caption bg-[#00418d]/20 text-[#9ec5ff] border border-[#2d5184]/40 px-2 py-0.5 rounded-full">
-                      Logged in
-                    </span>
-                  )}
+              <div className="flex items-start gap-3.5">
+                {/* Avatar */}
+                <div className="w-11 h-11 rounded-xl bg-[#00418d] flex items-center justify-center shrink-0 text-white font-black text-sm shadow-sm">
+                  {getInitials(candidate.firstName, candidate.lastName)}
                 </div>
 
-                {/* Email */}
-                <p className="text-body text-gray-400">
-                  {c.candidateEmail}
-                </p>
-
-                {/* Username */}
-                <p className="text-caption text-gray-500 font-mono mt-0.5">
-                  Username: {c.username}
-                </p>
-
-                {/* Slot */}
-                {c.bookedSlot && (
-                  <div className="mt-3 flex items-center gap-3 flex-wrap text-caption text-[#7ee2b8]">
-                    <span className="flex items-center gap-1">
-                      <Calendar className="w-3 h-3" />
-                      {c.bookedSlot.date}
-                    </span>
-
-                    <span className="flex items-center gap-1">
-                      <Clock className="w-3 h-3" />
-                      {c.bookedSlot.time}
-                    </span>
-
-                    <span>{c.bookedSlot.center}</span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-start justify-between flex-wrap gap-2">
+                    <div>
+                      <h3 className="font-bold text-gray-900 text-sm leading-tight">
+                        {candidate.firstName} {candidate.lastName}
+                      </h3>
+                      <p className="text-gray-400 text-xs mt-0.5">{candidate.email}</p>
+                    </div>
+                    {candidate.percentileScore !== null && candidate.percentileScore !== undefined && (
+                      <span className="text-xs bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-1 rounded-full font-bold shrink-0">
+                        {candidate.percentileScore}th %ile
+                      </span>
+                    )}
                   </div>
-                )}
-              </div>
 
-              {/* Delete */}
-              {c.status === "invited" && (
-                <button
-                  onClick={() =>
-                    handleRevoke(c._id, c.candidateName)
-                  }
-                  className="text-[#ff8b8b] hover:text-white hover:bg-[#5c1f1f]/40 transition-all duration-300 p-2 rounded-lg flex-shrink-0"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
-              )}
+                  {candidate.location?.city && (
+                    <p className="text-gray-400 text-xs flex items-center gap-1 mt-1.5">
+                      <MapPin className="w-3 h-3 text-gray-300 shrink-0" />
+                      {candidate.location.city}
+                      {candidate.location.country ? `, ${candidate.location.country}` : ""}
+                    </p>
+                  )}
+
+                  {candidate.skills?.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 mt-2.5">
+                      {candidate.skills.slice(0, 5).map((s: any) => (
+                        <span
+                          key={s.name}
+                          className="text-xs bg-[#00418d]/8 text-[#00418d] border border-[#00418d]/15 px-2.5 py-0.5 rounded-full font-semibold"
+                        >
+                          {s.name}
+                        </span>
+                      ))}
+                      {candidate.skills.length > 5 && (
+                        <span className="text-xs text-gray-400 font-medium self-center">
+                          +{candidate.skills.length - 5} more
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Pagination */}
+      {total > 10 && (
+        <div className="flex justify-center gap-2.5 mt-5">
+          <button
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={page === 1}
+            className="px-4 py-2 bg-white/8 border border-white/12 rounded-xl text-sm font-medium disabled:opacity-30 hover:bg-white/12 transition-all"
+          >
+            ← Previous
+          </button>
+          <span className="text-sm text-white/40 flex items-center px-2">Page {page}</span>
+          <button
+            onClick={() => setPage((p) => p + 1)}
+            disabled={candidates.length < 10}
+            className="px-4 py-2 bg-white/8 border border-white/12 rounded-xl text-sm font-medium disabled:opacity-30 hover:bg-white/12 transition-all"
+          >
+            Next →
+          </button>
         </div>
       )}
     </div>
   );
 }
-
