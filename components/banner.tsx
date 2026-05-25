@@ -8,7 +8,7 @@ const slides = [
   {
     id: 1,
     image: "/images/homepage/Carousel/Pick - Laptop.jpg",
-    heading: "The World's Largest Skill Assessment Library",
+    heading: "World's Largest Skill Assessment Library",
     subtext: "Assessments in Secure Centers — Verified Skills, Simplified Hiring",
     cta: "Get Started Free",
     ctaHref: "/services",
