@@ -124,7 +124,7 @@ export default function EmployerSlotManager() {
               {form.skills.length > 0 && (
                 <div className="flex flex-wrap gap-1 mt-2">
                   {form.skills.map(s => (
-                    <span key={s} className="bg-[#00418d]/20 text-[#c3dfff] text-caption px-2 py-0.5 rounded-full flex items-center gap-1">
+                    <span key={s} className="bg-[#00418d]/20 text-black text-caption px-2 py-0.5 rounded-full flex items-center gap-1">
                       {s} <button type="button" onClick={() => setForm(p => ({ ...p, skills: p.skills.filter(x => x !== s) }))} className="hover:text-red-300">×</button>
                     </span>
                   ))}
