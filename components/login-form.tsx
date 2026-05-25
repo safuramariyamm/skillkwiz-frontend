@@ -148,12 +148,7 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
         </button>
 
         {/* Google OAuth */}
-        <a
-          href={GOOGLE_AUTH_URL}
-          className="w-full py-2.5 rounded border border-gray-500 text-white hover:bg-white/10 font-medium transition-all flex items-center justify-center gap-2 text-sm"
-        >
-          <span className="font-bold">G</span> Continue with Google
-        </a>
+      
 
         {/* Sign Up Link */}
         <div className="text-center pt-1">
