@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -10,9 +11,7 @@ const CARDS = [
     emoji: "📚",
     title: "Skill Library",
     description: "Extensive assessments covering technical, professional and soft skills for all roles and industries.",
-    tx: -300,
-    ty: 12,
-    rot: -6,
+    tx: -260, ty: 10, rot: -6,
   },
   {
     id: "card1",
@@ -20,9 +19,7 @@ const CARDS = [
     emoji: "🛡️",
     title: "Secure Testing",
     description: "Biometric verification and content-aware environments ensure authentic, tamper-proof results.",
-    tx: 0,
-    ty: -22,
-    rot: 0,
+    tx: 0, ty: -18, rot: 0,
   },
   {
     id: "card2",
@@ -30,9 +27,7 @@ const CARDS = [
     emoji: "💰",
     title: "Flexible Pricing",
     description: "Credit-based model — pay only for what you use. Scale seamlessly with your organisation.",
-    tx: 300,
-    ty: 12,
-    rot: 6,
+    tx: 260, ty: 10, rot: 6,
   },
 ];
 
@@ -53,25 +48,20 @@ export default function WhyChooseSection() {
     return () => mq.removeEventListener("change", handler);
   }, []);
 
-  const clearAllTimeouts = () => {
-    timeoutsRef.current.forEach(clearTimeout);
-    timeoutsRef.current = [];
-  };
+  const clearAllTimeouts = () => { timeoutsRef.current.forEach(clearTimeout); timeoutsRef.current = []; };
 
-  const applyStyle = (el: HTMLDivElement, props: Partial<CSSStyleDeclaration>) => {
-    Object.assign(el.style, props);
-  };
+  const applyStyle = (el: HTMLDivElement, props: Partial<CSSStyleDeclaration>) => { Object.assign(el.style, props); };
 
   const stackAll = useCallback(() => {
     CARDS.forEach((_, i) => {
       const el = cardRefs.current[i];
       if (!el) return;
       applyStyle(el, {
-        transform: `translate(0px, ${i * -4}px) rotate(${(i - 1) * 2.5}deg) scale(${1 - i * 0.03})`,
+        transform: `translate(0px, ${i * -3}px) rotate(${(i - 1) * 2.5}deg) scale(${1 - i * 0.03})`,
         opacity: i === 0 ? "1" : i === 1 ? "0.88" : "0.75",
         transition: "none",
         zIndex: String(3 - i),
-        boxShadow: "0 6px 30px rgba(0,65,141,0.2)",
+        boxShadow: "0 4px 20px rgba(0,65,141,0.12)",
       });
     });
   }, []);
@@ -84,13 +74,12 @@ export default function WhyChooseSection() {
       if (!el) return;
       applyStyle(el, {
         transition: "transform 0.28s cubic-bezier(0.34,1.56,0.64,1), opacity 0.2s, box-shadow 0.2s",
-        transform: "translate(0px, -44px) scale(1.07)",
+        transform: "translate(0px, -36px) scale(1.06)",
         opacity: "1",
-        boxShadow: "0 20px 50px rgba(0,65,141,0.28)",
+        boxShadow: "0 14px 36px rgba(0,65,141,0.2)",
       });
     }, 300);
     timeoutsRef.current.push(t1);
-
     CARDS.forEach((c, i) => {
       const t = setTimeout(() => {
         const el = cardRefs.current[i];
@@ -100,9 +89,7 @@ export default function WhyChooseSection() {
           transform: `translate(${c.tx}px, ${c.ty}px) rotate(${c.rot}deg) scale(1)`,
           opacity: "1",
           zIndex: c.id === "card1" ? "4" : "3",
-          boxShadow: c.id === "card1"
-            ? "0 16px 44px rgba(0,65,141,0.22)"
-            : "0 8px 24px rgba(0,65,141,0.14)",
+          boxShadow: c.id === "card1" ? "0 10px 32px rgba(0,65,141,0.18)" : "0 6px 18px rgba(0,65,141,0.10)",
         });
       }, 620 + i * 140);
       timeoutsRef.current.push(t);
@@ -116,12 +103,7 @@ export default function WhyChooseSection() {
     const section = sectionRef.current;
     if (!section) return;
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !hasAnimatedRef.current) {
-          hasAnimatedRef.current = true;
-          playAnimation();
-        }
-      },
+      ([entry]) => { if (entry.isIntersecting && !hasAnimatedRef.current) { hasAnimatedRef.current = true; playAnimation(); } },
       { threshold: 0.25 }
     );
     observer.observe(section);
@@ -129,80 +111,103 @@ export default function WhyChooseSection() {
   }, [isDesktop, stackAll, playAnimation]);
 
   const CardInner = ({ card }: { card: (typeof CARDS)[0] }) => (
-    <div className="flex flex-col items-center text-center h-full">
-      {/* GIF container — big and prominent */}
-      <div className="w-24 h-24 rounded-2xl bg-[#00418d]/8 flex items-center justify-center mb-6 overflow-hidden">
-        <img
-          src={card.icon}
-          alt=""
-          aria-hidden="true"
-          className="w-20 h-20 object-contain"
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", height: "100%" }}>
+      <div style={{
+        width: 68, height: 68, borderRadius: 12,
+        background: "rgba(0,65,141,0.07)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        marginBottom: 14, overflow: "hidden",
+      }}>
+        <img src={card.icon} alt="" aria-hidden="true"
+          style={{ width: 54, height: 54, objectFit: "contain" }}
           loading="lazy"
           onError={(e) => {
             const p = (e.target as HTMLImageElement).parentElement;
-            if (p) p.innerHTML = `<span style="font-size:52px">${card.emoji}</span>`;
+            if (p) p.innerHTML = `<span style="font-size:36px">${card.emoji}</span>`;
           }}
         />
       </div>
-      <h3 className="sk-h3 text-[#00418d] mb-3">{card.title}</h3>
-      <p className="sk-body text-gray-500 leading-relaxed">{card.description}</p>
+      <h3 style={{
+        fontFamily: "Georgia, serif", fontWeight: 700,
+        fontSize: 15, color: "#00418d", marginBottom: 8, letterSpacing: "-0.01em",
+      }}>{card.title}</h3>
+      <p style={{ color: "#6b7a8d", fontSize: 13, lineHeight: 1.6 }}>{card.description}</p>
     </div>
   );
 
   return (
-    <section ref={sectionRef} className="relative overflow-hidden" style={{ background: "linear-gradient(180deg, #f0f7ff 0%, #000c2a 18%, #000c2a 82%, #f0f7ff 100%)" }}>
+    <section ref={sectionRef} style={{
+      background: "#e8f3ff",
+      overflow: "hidden",
+    }}>
+      <div className="sk-container relative z-10" style={{ paddingTop: "clamp(48px, 6vw, 72px)", paddingBottom: "clamp(48px, 6vw, 72px)" }}>
 
-      {/* Globe decoration */}
-      <div className="absolute inset-0 flex items-center justify-center opacity-15 pointer-events-none" aria-hidden="true">
-        <img src="/images/homepage/home_globe.gif" alt="" className="w-full max-w-3xl" loading="lazy" />
-      </div>
-
-      <div className="sk-container relative z-10 sk-section">
-
-        {/* Eyebrow */}
-        <div className="flex justify-center mb-4">
-          <span className="sk-label text-white/50 bg-white/8 px-5 py-2 rounded-full border border-white/12">
-            Why Choose SkillKwiz
-          </span>
+        {/* Globe bg — subtler on light bg */}
+        <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", opacity: 0.05, pointerEvents: "none" }} aria-hidden="true">
+          <img src="/images/homepage/home_globe.gif" alt="" style={{ width: "100%", maxWidth: 700 }} loading="lazy" />
         </div>
 
-        {/* Heading */}
-        <h2 className="sk-h2 text-center text-white mb-4">
-          Built for{" "}
-          <span className="text-[#f6c648]">Precision</span>
-          {" & "}
-          <span className="text-[#f73e5d]">Trust</span>
-        </h2>
-        <p className="text-center text-white/55 max-w-xl mx-auto mb-16 text-base leading-relaxed">
-          Discover the value propositions that make SkillKwiz the most reliable assessment platform for modern recruiting.
-        </p>
+        {/* Header */}
+        <div style={{ textAlign: "center", marginBottom: "clamp(36px, 5vw, 56px)" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 16 }}>
+            <span style={{ width: 32, height: 1, background: "rgba(0,65,141,0.3)", display: "block" }} />
+            <span style={{
+              fontSize: 10, fontWeight: 700, letterSpacing: "0.16em",
+              textTransform: "uppercase", color: "rgba(0,65,141,0.6)",
+              fontFamily: "Georgia, serif",
+            }}>Why Choose SkillKwiz</span>
+            <span style={{ width: 32, height: 1, background: "rgba(0,65,141,0.3)", display: "block" }} />
+          </div>
 
-        {/* Mobile: vertical stack */}
+          <h2 style={{
+            fontFamily: "Georgia, 'Times New Roman', serif",
+            fontSize: "clamp(26px, 3.5vw, 44px)",
+            fontWeight: 900,
+            lineHeight: 1.1,
+            letterSpacing: "-0.025em",
+            color: "#0a1628",
+            marginBottom: 12,
+          }}>
+            Built for{" "}
+            <span style={{ color: "#00418d" }}>Precision</span>
+            {" & "}
+            <span style={{ color: "#f73e5d" }}>Trust</span>
+          </h2>
+          <p style={{ color: "#6b7a8d", fontSize: 14, maxWidth: 460, margin: "0 auto", lineHeight: 1.7 }}>
+            Discover the value propositions that make SkillKwiz the most reliable assessment platform for modern recruiting.
+          </p>
+        </div>
+
+        {/* Mobile cards */}
         {!isDesktop && (
-          <div className="flex flex-col items-center gap-5 mb-14">
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 14, marginBottom: 40 }}>
             {CARDS.map((card) => (
-              <div key={card.id} className="sk-card w-full max-w-lg p-8">
+              <div key={card.id} style={{
+                background: "#fff", borderRadius: 12,
+                padding: "24px 20px", width: "100%", maxWidth: 420,
+                boxShadow: "0 4px 20px rgba(0,65,141,0.10)",
+                border: "1px solid rgba(0,65,141,0.08)",
+              }}>
                 <CardInner card={card} />
               </div>
             ))}
           </div>
         )}
 
-        {/* Desktop: animated fan */}
+        {/* Desktop fan */}
         {isDesktop && (
-          <div className="relative flex items-center justify-center mb-16" style={{ height: 350 }}>
+          <div style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "center", height: 280, marginBottom: 48 }}>
             {CARDS.map((card, i) => (
-              <div
-                key={card.id}
-                ref={(el) => { cardRefs.current[i] = el; }}
-                className="absolute bg-white rounded-2xl p-8 text-center"
+              <div key={card.id} ref={(el) => { cardRefs.current[i] = el; }}
                 style={{
-                  width: 270,
-                  cursor: "default",
+                  position: "absolute",
+                  background: "#fff", borderRadius: 12,
+                  padding: "24px 20px",
+                  width: 230, textAlign: "center",
                   willChange: "transform, opacity",
                   transformOrigin: "center bottom",
-                  boxShadow: "0 6px 30px rgba(0,65,141,0.2)",
-                  borderRadius: 20,
+                  boxShadow: "0 4px 20px rgba(0,65,141,0.12)",
+                  border: "1px solid rgba(0,65,141,0.08)",
                 }}
               >
                 <CardInner card={card} />
@@ -211,39 +216,66 @@ export default function WhyChooseSection() {
           </div>
         )}
 
-        {/* Stats row */}
-        <div className="grid grid-cols-3 gap-4 md:gap-8 max-w-2xl mx-auto mb-14">
+        {/* Stats */}
+        <div style={{
+          display: "grid", gridTemplateColumns: "repeat(3, 1fr)",
+          gap: "clamp(12px, 3vw, 36px)",
+          maxWidth: 540, margin: "0 auto 40px",
+          padding: "24px 0", borderTop: "1px solid rgba(0,65,141,0.12)", borderBottom: "1px solid rgba(0,65,141,0.12)",
+        }}>
           {[
             { num: "10K+", label: "Assessments" },
             { num: "500+", label: "Companies" },
             { num: "98%", label: "Accuracy" },
-          ].map((s) => (
-            <div key={s.label} className="text-center">
-              <p className="text-3xl md:text-4xl font-black text-[#f6c648]">{s.num}</p>
-              <p className="text-white/55 text-sm mt-1">{s.label}</p>
+          ].map((s, i) => (
+            <div key={s.label} style={{ textAlign: "center", position: "relative" }}>
+              {i > 0 && <span style={{ position: "absolute", left: 0, top: "10%", height: "80%", width: 1, background: "rgba(0,65,141,0.12)", display: "block" }} />}
+              <p style={{ fontFamily: "Georgia, serif", fontSize: "clamp(22px, 3vw, 34px)", fontWeight: 900, color: "#00418d", lineHeight: 1 }}>{s.num}</p>
+              <p style={{ color: "#8899aa", fontSize: 11, marginTop: 6, letterSpacing: "0.08em", textTransform: "uppercase" }}>{s.label}</p>
             </div>
           ))}
         </div>
 
-        {/* CTA */}
-        <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-          <Link href="/services" className="btn-accent btn-lg">
-            Get Started ↗
-          </Link>
-          <Link href="/about" className="btn-ghost-white btn-md">
-            Learn More
-          </Link>
+        {/* CTAs */}
+        <div style={{ display: "flex", justifyContent: "center", gap: 12, flexWrap: "wrap" }}>
+          <Link href="/services" style={{
+            display: "inline-flex", alignItems: "center", gap: 8,
+            background: "#00418d", color: "#fff",
+            fontWeight: 700, fontSize: 13, letterSpacing: "0.03em",
+            padding: "12px 28px", borderRadius: 8,
+            textDecoration: "none",
+            boxShadow: "0 4px 16px rgba(0,65,141,0.25)",
+          }}>Get Started ↗</Link>
+          <Link href="/about" style={{
+            display: "inline-flex", alignItems: "center",
+            color: "#00418d", fontWeight: 600, fontSize: 13,
+            padding: "12px 24px", borderRadius: 8,
+            border: "1px solid rgba(0,65,141,0.25)",
+            textDecoration: "none",
+          }}>Learn More</Link>
         </div>
 
-        {/* Join revolution sub-cta */}
-        <div className="text-center mt-20 border-t border-white/10 pt-16">
-          <h3 className="sk-h3 text-white mb-4">Join the Talent Revolution</h3>
-          <p className="text-white/55 max-w-lg mx-auto mb-8 text-base leading-relaxed">
+        {/* Revolution sub-cta */}
+        <div style={{
+          textAlign: "center", marginTop: 56,
+          padding: "36px 24px",
+          borderTop: "1px solid rgba(0,65,141,0.1)",
+        }}>
+          <h3 style={{
+            fontFamily: "Georgia, serif", fontSize: "clamp(18px, 2.4vw, 28px)",
+            fontWeight: 900, color: "#0a1628", marginBottom: 12, letterSpacing: "-0.02em",
+          }}>Join the Talent Revolution</h3>
+          <p style={{ color: "#6b7a8d", maxWidth: 420, margin: "0 auto 24px", fontSize: 14, lineHeight: 1.7 }}>
             Take the first step towards transforming your hiring process with our tried and tested platform.
           </p>
-          <Link href="/services" className="btn-cta btn-lg">
-            Start Free Today
-          </Link>
+          <Link href="/services" style={{
+            display: "inline-flex", alignItems: "center", gap: 8,
+            background: "#f73e5d", color: "#fff",
+            fontWeight: 800, fontSize: 13, letterSpacing: "0.03em",
+            padding: "12px 30px", borderRadius: 8,
+            textDecoration: "none",
+            boxShadow: "0 4px 16px rgba(247,62,93,0.3)",
+          }}>Start Free Today</Link>
         </div>
       </div>
     </section>

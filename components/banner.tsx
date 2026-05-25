@@ -13,6 +13,7 @@ const slides = [
     cta: "Get Started Free",
     ctaHref: "/services",
     badge: "Hiring Simplified",
+    accent: "#f6c648",
   },
   {
     id: 2,
@@ -22,6 +23,7 @@ const slides = [
     cta: "Explore Skills",
     ctaHref: "/services",
     badge: "Skill Assessment",
+    accent: "#f73e5d",
   },
   {
     id: 3,
@@ -31,6 +33,7 @@ const slides = [
     cta: "Learn More",
     ctaHref: "/about",
     badge: "Secure & Trusted",
+    accent: "#f6c648",
   },
   {
     id: 4,
@@ -40,15 +43,14 @@ const slides = [
     cta: "Get Assessed",
     ctaHref: "/services",
     badge: "Verified Excellence",
+    accent: "#f73e5d",
   },
 ];
 
 export default function Banner() {
   const [current, setCurrent] = useState(0);
-  const [prev, setPrev] = useState<number | null>(null);
   const [transitioning, setTransitioning] = useState(false);
 
-  // Preload slides 2-4 in background
   useEffect(() => {
     slides.forEach((s, i) => {
       if (i === 0) return;
@@ -57,7 +59,6 @@ export default function Banner() {
     });
   }, []);
 
-  // Auto-advance
   useEffect(() => {
     const timer = setInterval(() => goTo((current + 1) % slides.length), 6000);
     return () => clearInterval(timer);
@@ -67,110 +68,141 @@ export default function Banner() {
   const goTo = (idx: number) => {
     if (transitioning || idx === current) return;
     setTransitioning(true);
-    setPrev(current);
     setCurrent(idx);
-    setTimeout(() => { setTransitioning(false); setPrev(null); }, 600);
+    setTimeout(() => setTransitioning(false), 600);
   };
 
   const slide = slides[current];
 
   return (
-    /* Top margin matches nav height (64px) */
-    <div className="relative w-full overflow-hidden" style={{ marginTop: "64px" }}>
+    <div className="relative w-full overflow-hidden" style={{ marginTop: "64px", minHeight: "clamp(520px, 80vh, 780px)" }}>
 
-      {/* ── Background image layer (crossfade) ── */}
+      {/* Background images */}
       {slides.map((s, i) => (
-        <div
-          key={s.id}
-          className="absolute inset-0 transition-opacity duration-700"
-          style={{
-            opacity: i === current ? 1 : 0,
-            zIndex: i === current ? 1 : 0,
-            willChange: "opacity",
-          }}
-        >
-          <Image
-            src={s.image}
-            alt=""
-            fill
-            className="object-cover object-center"
-            priority={i === 0}
-            loading={i === 0 ? "eager" : "lazy"}
-            sizes="100vw"
-          />
-          {/* Gradient overlay — left heavy for text legibility */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0a1628]/85 via-[#0a1628]/55 to-transparent" />
-          {/* Bottom blend into next section */}
-          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-[#f0f7ff]/30" />
+        <div key={s.id} className="absolute inset-0 transition-opacity duration-700"
+          style={{ opacity: i === current ? 1 : 0, zIndex: i === current ? 1 : 0 }}>
+          <Image src={s.image} alt="" fill className="object-cover object-center"
+            priority={i === 0} loading={i === 0 ? "eager" : "lazy"} sizes="100vw" />
+          {/* Split overlay — dark left 60%, fades right */}
+          <div className="absolute inset-0" style={{
+            background: "linear-gradient(105deg, #0a1628 0%, #0a1628 42%, rgba(10,22,40,0.75) 62%, rgba(10,22,40,0.15) 100%)"
+          }} />
         </div>
       ))}
 
-      {/* ── Content ── */}
-      <div
-        className="relative z-10 flex items-start"
-        style={{ minHeight: "clamp(480px, 70vh, 680px)", paddingTop: "clamp(80px, 14vh, 140px)" }}
-      >
-        <div className="sk-container w-full">
-          <div className="max-w-2xl">
+      {/* Diagonal accent line */}
+      <div className="absolute inset-0 z-[2] pointer-events-none overflow-hidden">
+        <div style={{
+          position: "absolute", left: "52%", top: 0, bottom: 0, width: "2px",
+          background: `linear-gradient(180deg, transparent 0%, ${slide.accent}60 30%, ${slide.accent} 50%, ${slide.accent}60 70%, transparent 100%)`,
+          transform: "rotate(8deg) scaleX(1)", transformOrigin: "top",
+          transition: "all 0.6s ease",
+        }} />
+      </div>
 
-            {/* Badge */}
-            <div
-              key={slide.badge}
-              className="inline-flex items-center gap-2 bg-[#f6c648] text-[#00418d] px-4 py-1.5 rounded-full mb-6"
-              style={{ animation: "fadeSlideUp 0.5s ease both" }}
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-[#00418d]" />
-              <span className="sk-label text-[#00418d]">{slide.badge}</span>
+      {/* Slide number — big typographic element */}
+      <div className="absolute right-6 top-1/2 -translate-y-1/2 z-[3] hidden lg:block pointer-events-none select-none">
+        <span style={{
+          fontSize: "clamp(120px, 18vw, 240px)",
+          fontWeight: 900,
+          lineHeight: 1,
+          color: "rgba(255,255,255,0.04)",
+          fontFamily: "Georgia, serif",
+          letterSpacing: "-0.04em",
+        }}>0{current + 1}</span>
+      </div>
+
+      {/* Content */}
+      <div className="absolute inset-0 z-[4] flex items-center" style={{ paddingTop: "clamp(60px, 10vh, 100px)" }}>
+        <div className="sk-container w-full">
+          <div style={{ maxWidth: "clamp(340px, 52%, 660px)" }}>
+
+            {/* Badge — pill with accent dot */}
+            <div key={`badge-${current}`} className="flex items-center gap-2.5 mb-7"
+              style={{ animation: "heroIn 0.5s ease both" }}>
+              <span style={{
+                background: slide.accent,
+                width: 8, height: 8, borderRadius: "50%", display: "inline-block", flexShrink: 0,
+              }} />
+              <span style={{
+                fontSize: 11, fontWeight: 700, letterSpacing: "0.14em",
+                color: slide.accent, textTransform: "uppercase", fontFamily: "Georgia, serif",
+              }}>{slide.badge}</span>
+              <span style={{ height: 1, width: 40, background: `${slide.accent}60`, display: "inline-block" }} />
             </div>
 
-            {/* Heading */}
-            <h1
-              key={slide.heading}
-              className="sk-h1 text-white mb-5 leading-[1.08]"
-              style={{ animation: "fadeSlideUp 0.55s 0.05s ease both" }}
-            >
-              {slide.heading}
-            </h1>
+            {/* Heading — editorial serif */}
+            <h1 key={`h-${current}`} style={{
+              fontFamily: "Georgia, 'Times New Roman', serif",
+              fontSize: "clamp(32px, 4.5vw, 64px)",
+              fontWeight: 900,
+              lineHeight: 1.08,
+              letterSpacing: "-0.02em",
+              color: "#fff",
+              marginBottom: "1.25rem",
+              animation: "heroIn 0.55s 0.05s ease both",
+            }}>{slide.heading}</h1>
 
             {/* Subtext */}
-            <p
-              key={slide.subtext}
-              className="text-gray-200 text-lg md:text-xl leading-relaxed mb-10 max-w-xl"
-              style={{ animation: "fadeSlideUp 0.6s 0.1s ease both" }}
-            >
-              {slide.subtext}
-            </p>
+            <p key={`s-${current}`} style={{
+              color: "rgba(255,255,255,0.65)",
+              fontSize: "clamp(15px, 1.4vw, 18px)",
+              lineHeight: 1.7,
+              marginBottom: "2.5rem",
+              maxWidth: 480,
+              animation: "heroIn 0.6s 0.1s ease both",
+            }}>{slide.subtext}</p>
 
             {/* CTAs */}
-            <div
-              className="flex flex-wrap gap-4"
-              style={{ animation: "fadeSlideUp 0.65s 0.15s ease both" }}
-            >
-              <Link href={slide.ctaHref} className="btn-cta btn-lg">
+            <div key={`cta-${current}`} className="flex flex-wrap gap-4"
+              style={{ animation: "heroIn 0.65s 0.15s ease both" }}>
+              <Link href={slide.ctaHref} style={{
+                display: "inline-flex", alignItems: "center", gap: 10,
+                background: slide.accent,
+                color: slide.accent === "#f6c648" ? "#0a1628" : "#fff",
+                fontWeight: 700, fontSize: 14, letterSpacing: "0.04em",
+                padding: "14px 28px", borderRadius: 4,
+                textDecoration: "none", transition: "transform 0.2s, box-shadow 0.2s",
+                boxShadow: `0 4px 24px ${slide.accent}50`,
+              }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)"; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = ""; }}
+              >
                 {slide.cta}
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
                 </svg>
               </Link>
-              <Link href="/about" className="btn-ghost-white btn-lg">
+              <Link href="/about" style={{
+                display: "inline-flex", alignItems: "center",
+                color: "rgba(255,255,255,0.8)",
+                fontWeight: 600, fontSize: 14,
+                padding: "14px 24px", borderRadius: 4,
+                border: "1px solid rgba(255,255,255,0.25)",
+                textDecoration: "none", transition: "all 0.2s",
+                background: "rgba(255,255,255,0.06)",
+              }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.14)"; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.06)"; }}
+              >
                 How it Works
               </Link>
             </div>
 
             {/* Trust bar */}
-            <div
-              className="flex flex-wrap items-center gap-5 mt-10"
-              style={{ animation: "fadeSlideUp 0.7s 0.2s ease both" }}
-            >
+            <div key={`trust-${current}`} className="flex flex-wrap items-center gap-6 mt-10"
+              style={{ animation: "heroIn 0.7s 0.2s ease both" }}>
               {[
                 { num: "10K+", label: "Verified Assessments" },
                 { num: "500+", label: "Companies Worldwide" },
                 { num: "98%", label: "Accuracy Rate" },
-              ].map((stat) => (
-                <div key={stat.label} className="flex items-center gap-2">
-                  <span className="text-[#f6c648] font-black text-xl">{stat.num}</span>
-                  <span className="text-white/60 text-sm">{stat.label}</span>
-                  <span className="w-px h-4 bg-white/20 last:hidden" />
+              ].map((stat, i) => (
+                <div key={stat.label} className="flex items-center gap-3">
+                  {i > 0 && <span style={{ width: 1, height: 28, background: "rgba(255,255,255,0.15)", display: "block" }} />}
+                  <div>
+                    <span style={{ color: slide.accent, fontWeight: 900, fontSize: "clamp(16px, 2vw, 22px)", fontFamily: "Georgia, serif", display: "block", lineHeight: 1 }}>{stat.num}</span>
+                    <span style={{ color: "rgba(255,255,255,0.45)", fontSize: 11, letterSpacing: "0.06em", textTransform: "uppercase" }}>{stat.label}</span>
+                  </div>
                 </div>
               ))}
             </div>
@@ -178,52 +210,56 @@ export default function Banner() {
         </div>
       </div>
 
-      {/* ── Slide dots ── */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+      {/* Bottom wave */}
+      <div className="absolute bottom-0 left-0 right-0 z-[5] pointer-events-none" style={{ height: 70 }}>
+        <svg viewBox="0 0 1440 70" fill="none" xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="none" style={{ width: "100%", height: "100%" }}>
+          <path d="M0 70 L0 40 Q360 5 720 35 Q1080 65 1440 30 L1440 70 Z" fill="#f0f7ff" />
+        </svg>
+      </div>
+
+      {/* Slide controls — vertical right side */}
+      <div className="absolute right-6 bottom-20 z-[5] flex flex-col gap-2">
         {slides.map((_, idx) => (
-          <button
-            key={idx}
-            onClick={() => goTo(idx)}
-            className={`rounded-full transition-all duration-300 ${
-              idx === current
-                ? "bg-[#f6c648] w-7 h-2.5"
-                : "bg-white/40 hover:bg-white/70 w-2.5 h-2.5"
-            }`}
-            aria-label={`Go to slide ${idx + 1}`}
-          />
+          <button key={idx} onClick={() => goTo(idx)} aria-label={`Slide ${idx + 1}`}
+            style={{
+              width: idx === current ? 3 : 2,
+              height: idx === current ? 32 : 16,
+              background: idx === current ? slide.accent : "rgba(255,255,255,0.3)",
+              border: "none", borderRadius: 2, cursor: "pointer",
+              transition: "all 0.3s ease",
+            }} />
         ))}
       </div>
 
-      {/* ── Arrow controls ── */}
-      <button
-        onClick={() => goTo((current - 1 + slides.length) % slides.length)}
-        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/15 hover:bg-white/30 text-white flex items-center justify-center transition-all duration-200 hover:scale-110"
-        aria-label="Previous"
-      >
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-        </svg>
-      </button>
-      <button
-        onClick={() => goTo((current + 1) % slides.length)}
-        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/15 hover:bg-white/30 text-white flex items-center justify-center transition-all duration-200 hover:scale-110"
-        aria-label="Next"
-      >
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-        </svg>
-      </button>
-
-      {/* ── Bottom wave blend into next section ── */}
-      <div className="absolute bottom-0 left-0 right-0 z-10 pointer-events-none" style={{ height: 60 }}>
-        <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style={{ width: "100%", height: "100%" }}>
-          <path d="M0 60 L0 30 Q360 0 720 30 Q1080 60 1440 30 L1440 60 Z" fill="#f0f7ff" />
-        </svg>
-      </div>
+      {/* Arrow controls */}
+      {[
+        { dir: "prev", side: "left-4", label: "Previous" },
+        { dir: "next", side: "right-14", label: "Next" },
+      ].map(({ dir, side, label }) => (
+        <button key={dir} onClick={() => goTo(dir === "next" ? (current + 1) % slides.length : (current - 1 + slides.length) % slides.length)}
+          className={`absolute ${side} bottom-16 z-[5]`}
+          aria-label={label}
+          style={{
+            width: 40, height: 40, borderRadius: "50%",
+            background: "rgba(255,255,255,0.1)",
+            border: "1px solid rgba(255,255,255,0.2)",
+            color: "#fff", display: "flex", alignItems: "center", justifyContent: "center",
+            cursor: "pointer", transition: "all 0.2s",
+          }}
+          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = slide.accent; }}
+          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.1)"; }}
+        >
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+              d={dir === "next" ? "M9 5l7 7-7 7" : "M15 19l-7-7 7-7"} />
+          </svg>
+        </button>
+      ))}
 
       <style jsx>{`
-        @keyframes fadeSlideUp {
-          from { opacity: 0; transform: translateY(18px); }
+        @keyframes heroIn {
+          from { opacity: 0; transform: translateY(22px); }
           to   { opacity: 1; transform: translateY(0); }
         }
       `}</style>

@@ -5,41 +5,16 @@ import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 import Image from "next/image";
 
 interface Testimonial {
-  id: number;
-  name: string;
-  title: string;
-  company: string;
-  quote: string;
-  image: string;
-  metrics: string;
+  id: number; name: string; title: string; company: string;
+  quote: string; image: string; metrics: string;
 }
 
 const testimonials: Testimonial[] = [
-  {
-    id: 1, name: "Jennifer Cooper", title: "CEO & Founder", company: "TechFlow Solutions",
-    quote: "Since implementing SkillKwiz, our hiring efficiency has skyrocketed. We've reduced time-to-hire by 40% while dramatically improving candidate quality.",
-    image: "/images/homepage/5.png", metrics: "40% faster hiring",
-  },
-  {
-    id: 2, name: "Michael Donovan", title: "VP of Talent Acquisition", company: "GlobalTech Corp",
-    quote: "Managing technical recruitment for a Fortune 500 company, we needed a solution that could scale. SkillKwiz's enterprise-grade security has been game-changing.",
-    image: "/images/homepage/6.png", metrics: "2,000+ assessments/quarter",
-  },
-  {
-    id: 3, name: "Sarah Johnson", title: "Head of People Operations", company: "InnovateLabs",
-    quote: "What impressed me most is the customization. We built assessment frameworks tailored to our unique tech stack — the platform adapts to our needs.",
-    image: "/images/homepage/7.png", metrics: "Custom frameworks built",
-  },
-  {
-    id: 4, name: "David Chen", title: "Engineering Director", company: "DataFlow Systems",
-    quote: "SkillKwiz saves our engineering team countless hours. Their technical assessments accurately predict real-world performance.",
-    image: "/images/homepage/5.png", metrics: "Dozens of hires monthly",
-  },
-  {
-    id: 5, name: "Emily Rodriguez", title: "Senior Recruiter", company: "Nexus Technologies",
-    quote: "I've worked with every major assessment platform, and SkillKwiz stands out for its user experience, accuracy, and responsive support team.",
-    image: "/images/homepage/6.png", metrics: "10+ years recruiting",
-  },
+  { id: 1, name: "Jennifer Cooper", title: "CEO & Founder", company: "TechFlow Solutions", quote: "Since implementing SkillKwiz, our hiring efficiency has skyrocketed. We've reduced time-to-hire by 40% while dramatically improving candidate quality.", image: "/images/homepage/5.png", metrics: "40% faster hiring" },
+  { id: 2, name: "Michael Donovan", title: "VP of Talent Acquisition", company: "GlobalTech Corp", quote: "Managing technical recruitment for a Fortune 500 company, we needed a solution that could scale. SkillKwiz's enterprise-grade security has been game-changing.", image: "/images/homepage/6.png", metrics: "2,000+ assessments/quarter" },
+  { id: 3, name: "Sarah Johnson", title: "Head of People Operations", company: "InnovateLabs", quote: "What impressed me most is the customization. We built assessment frameworks tailored to our unique tech stack — the platform adapts to our needs.", image: "/images/homepage/7.png", metrics: "Custom frameworks built" },
+  { id: 4, name: "David Chen", title: "Engineering Director", company: "DataFlow Systems", quote: "SkillKwiz saves our engineering team countless hours. Their technical assessments accurately predict real-world performance.", image: "/images/homepage/5.png", metrics: "Dozens of hires monthly" },
+  { id: 5, name: "Emily Rodriguez", title: "Senior Recruiter", company: "Nexus Technologies", quote: "I've worked with every major assessment platform, and SkillKwiz stands out for its user experience, accuracy, and responsive support team.", image: "/images/homepage/6.png", metrics: "10+ years recruiting" },
 ];
 
 export default function TestimonialsSection() {
@@ -58,143 +33,162 @@ export default function TestimonialsSection() {
   }, []);
 
   const goTo = (idx: number) => { setActive(idx); resetInterval(); };
-  const prev = () => goTo((active - 1 + testimonials.length) % testimonials.length);
-  const next = () => goTo((active + 1) % testimonials.length);
-
-  const getCard = (offset: number) => testimonials[(active + offset + testimonials.length) % testimonials.length];
+  const t = testimonials[active];
 
   return (
-    /* White section — blends out of dark why-choose section */
-    <section className="bg-[#f0f7ff] sk-section">
-      <div className="sk-container">
+    <section style={{ background: "#e8f3ff", overflow: "hidden" }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto", padding: "clamp(40px, 5vw, 64px) clamp(16px, 4vw, 48px)" }}>
 
-        {/* Header */}
-        <div className="text-center mb-14">
-          <span className="sk-label text-[#00418d]/50 bg-[#00418d]/6 px-5 py-2 rounded-full border border-[#00418d]/12 mb-4 inline-block">
-            Client Stories
-          </span>
-          <h2 className="sk-h2 text-gray-900 mt-4">
-            Trusted by Recruiting Teams{" "}
-            <span className="text-[#00418d]">Worldwide</span>
-          </h2>
-          <p className="sk-body max-w-xl mx-auto mt-4">
-            Hear from the companies that have transformed their hiring with SkillKwiz.
-          </p>
-        </div>
-
-        {/* Carousel */}
-        <div className="relative">
-
-          {/* Nav arrows — desktop */}
-          <button onClick={prev} aria-label="Previous" className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-5 z-10 w-10 h-10 rounded-full bg-white shadow-md border border-gray-100 items-center justify-center text-[#00418d] hover:bg-[#0a1628] hover:text-white transition-all duration-200">
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-          <button onClick={next} aria-label="Next" className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-5 z-10 w-10 h-10 rounded-full bg-white shadow-md border border-gray-100 items-center justify-center text-[#00418d] hover:bg-[#0a1628]
-          
-          
-      hover:text-white transition-all duration-200">
-            <ChevronRight className="w-5 h-5" />
-          </button>
-
-          {/* Cards row */}
-          <div className="flex items-center justify-center gap-4 overflow-hidden px-0 md:px-12 min-h-[320px] md:min-h-[280px]">
-
-            {/* Side card — left */}
-            <div className="hidden md:block w-[28%] shrink-0">
-              <SideCard t={getCard(-1)} />
+        {/* Top row — label + arrows */}
+        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 32, flexWrap: "wrap", gap: 16 }}>
+          <div>
+            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 10 }}>
+              <span style={{ width: 28, height: 1, background: "#00418d", display: "block" }} />
+              <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "#00418d", fontFamily: "Georgia, serif" }}>
+                Client Stories
+              </span>
             </div>
-
-            {/* Center card — active */}
-            <div className="w-full md:w-[44%] shrink-0">
-              <MainCard t={getCard(0)} />
-            </div>
-
-            {/* Side card — right */}
-            <div className="hidden md:block w-[28%] shrink-0">
-              <SideCard t={getCard(1)} />
-            </div>
+            <h2 style={{
+              fontFamily: "Georgia, 'Times New Roman', serif",
+              fontSize: "clamp(22px, 2.8vw, 36px)",
+              fontWeight: 900, lineHeight: 1.1,
+              letterSpacing: "-0.025em", color: "#0a1628",
+              margin: 0,
+            }}>
+              Trusted by Recruiting Teams{" "}
+              <span style={{ color: "#00418d" }}>Worldwide</span>
+            </h2>
           </div>
 
-          {/* Mobile nav */}
-          <div className="flex md:hidden justify-between items-center mt-6 px-4">
-            <button onClick={prev} className="btn-primary btn-sm">
-              <ChevronLeft className="w-4 h-4" />
+          {/* Nav arrows */}
+          <div className="hidden md:flex" style={{ gap: 8, alignItems: "center" }}>
+            <button onClick={() => goTo((active - 1 + testimonials.length) % testimonials.length)}
+              style={{
+                width: 38, height: 38, borderRadius: "50%",
+                border: "1.5px solid rgba(0,65,141,0.2)",
+                background: "#fff", cursor: "pointer",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                color: "#00418d", transition: "all 0.2s",
+              }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "#00418d"; (e.currentTarget as HTMLElement).style.color = "#fff"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "#fff"; (e.currentTarget as HTMLElement).style.color = "#00418d"; }}
+            >
+              <ChevronLeft style={{ width: 16, height: 16 }} />
             </button>
-            <span className="text-sm text-gray-500">{active + 1} of {testimonials.length}</span>
-            <button onClick={next} className="btn-primary btn-sm">
-              <ChevronRight className="w-4 h-4" />
+            <span style={{ color: "#a0b4c8", fontSize: 12, fontWeight: 600, minWidth: 48, textAlign: "center" }}>
+              {String(active + 1).padStart(2, "0")} / {String(testimonials.length).padStart(2, "0")}
+            </span>
+            <button onClick={() => goTo((active + 1) % testimonials.length)}
+              style={{
+                width: 38, height: 38, borderRadius: "50%",
+                border: "1.5px solid rgba(0,65,141,0.2)",
+                background: "#fff", cursor: "pointer",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                color: "#00418d", transition: "all 0.2s",
+              }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "#00418d"; (e.currentTarget as HTMLElement).style.color = "#fff"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "#fff"; (e.currentTarget as HTMLElement).style.color = "#00418d"; }}
+            >
+              <ChevronRight style={{ width: 16, height: 16 }} />
             </button>
           </div>
         </div>
 
-        {/* Dots */}
-        <div className="flex justify-center gap-2 mt-8">
-          {testimonials.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => goTo(i)}
-              className={`rounded-full transition-all duration-300 ${i === active ? "w-8 h-2.5 bg-[#0a1628]" : "w-2.5 h-2.5 bg-gray-200 hover:bg-gray-300"}`}
-              aria-label={`Go to ${i + 1}`}
-            />
-          ))}
+        {/* Main testimonial */}
+        <div key={active} style={{
+          background: "#fff", borderRadius: 16,
+          border: "1px solid rgba(0,65,141,0.1)",
+          padding: "clamp(20px, 3vw, 32px)",
+          boxShadow: "0 4px 24px rgba(0,65,141,0.07)",
+          animation: "fadeUp 0.4s ease both",
+          display: "grid", gridTemplateColumns: "auto 1fr", gap: "clamp(16px, 3vw, 36px)",
+          alignItems: "start",
+        }}>
+
+          {/* Person card */}
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", minWidth: 120 }}>
+            <div style={{
+              width: 88, height: 88, borderRadius: 10,
+              overflow: "hidden", marginBottom: 10,
+              border: "2px solid #daeeff",
+              boxShadow: "0 4px 16px rgba(0,65,141,0.12)",
+            }}>
+              <Image src={t.image} alt={t.name} width={88} height={88} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            </div>
+            <p style={{ fontFamily: "Georgia, serif", fontWeight: 700, fontSize: 13, color: "#0a1628", textAlign: "center", margin: 0 }}>{t.name}</p>
+            <p style={{ color: "#8899aa", fontSize: 11, textAlign: "center", marginTop: 3 }}>{t.title}</p>
+            <p style={{ color: "#00418d", fontSize: 11, fontWeight: 700, textAlign: "center", marginTop: 2 }}>{t.company}</p>
+            <div style={{ display: "flex", gap: 2, marginTop: 8 }}>
+              {[...Array(5)].map((_, i) => <Star key={i} style={{ width: 10, height: 10, fill: "#f6c648", color: "#f6c648" }} />)}
+            </div>
+          </div>
+
+          {/* Quote area */}
+          <div>
+            <div style={{
+              fontFamily: "Georgia, serif", fontSize: 72, color: "#d0e4f5",
+              lineHeight: 0.75, marginBottom: 10, userSelect: "none", fontWeight: 900,
+            }}>"</div>
+            <p style={{
+              fontFamily: "Georgia, 'Times New Roman', serif",
+              fontSize: "clamp(14px, 1.8vw, 20px)",
+              lineHeight: 1.6, color: "#1a2e44",
+              fontStyle: "italic", marginBottom: 16,
+              letterSpacing: "-0.01em",
+            }}>{t.quote}</p>
+
+            {/* Metric chip */}
+            <div style={{
+              display: "inline-flex", alignItems: "center", gap: 8,
+              background: "#f0f7ff", borderRadius: 6,
+              padding: "8px 14px",
+              borderLeft: "3px solid #00418d",
+            }}>
+              <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#00418d", flexShrink: 0 }} />
+              <span style={{ fontSize: 12, fontWeight: 700, color: "#00418d" }}>✓ {t.metrics}</span>
+            </div>
+          </div>
         </div>
 
-        {/* Trust badges */}
-        <div className="flex flex-wrap justify-center items-center gap-6 mt-12 pt-10 border-t border-gray-100">
-          <p className="text-sm text-gray-400 font-medium">Trusted by 500+ companies worldwide</p>
-          <div className="flex items-center gap-1.5 text-sm text-gray-500">
-            <span className="w-2 h-2 rounded-full bg-green-400" />
-            Verified Reviews
+        {/* Dots + trust bar */}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 20, flexWrap: "wrap", gap: 12 }}>
+          {/* Dots */}
+          <div style={{ display: "flex", gap: 6 }}>
+            {testimonials.map((_, i) => (
+              <button key={i} onClick={() => goTo(i)}
+                style={{
+                  width: i === active ? 24 : 8, height: 8,
+                  borderRadius: 4,
+                  background: i === active ? "#00418d" : "rgba(0,65,141,0.2)",
+                  border: "none", cursor: "pointer", transition: "all 0.3s",
+                  padding: 0,
+                }}
+              />
+            ))}
           </div>
-          <div className="flex items-center gap-1.5 text-sm text-gray-500">
-            <span className="w-2 h-2 rounded-full bg-[#00418d]" />
-            SOC 2 Certified
+
+          {/* Trust chips */}
+          <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
+            {[
+              { dot: "#4ade80", text: "Verified Reviews" },
+              { dot: "#00418d", text: "SOC 2 Certified" },
+              { dot: null, text: "Trusted by 500+ companies" },
+            ].map((chip, i) => (
+              <div key={i} style={{ display: "flex", alignItems: "center", gap: 5 }}>
+                {chip.dot && <span style={{ width: 6, height: 6, borderRadius: "50%", background: chip.dot }} />}
+                <span style={{ fontSize: 11, color: "#7a8799", fontWeight: 600 }}>{chip.text}</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(12px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
     </section>
-  );
-}
-
-function MainCard({ t }: { t: Testimonial }) {
-  return (
-    <div className="sk-card p-7 md:p-8 bg-[#00418d] border-none rounded-3xl text-white">
-      <div className="flex items-center gap-4 mb-5">
-        <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-white/30 shrink-0">
-          <Image src={t.image} alt={t.name} width={56} height={56} className="w-full h-full object-cover" />
-        </div>
-        <div>
-          <p className="font-bold text-base">{t.name}</p>
-          <p className="text-white/65 text-sm">{t.title}</p>
-          <p className="text-[#f6c648] text-xs font-medium mt-0.5">{t.company}</p>
-        </div>
-        <div className="ml-auto">
-          <div className="flex gap-0.5">
-            {[...Array(5)].map((_, i) => <Star key={i} className="w-3.5 h-3.5 fill-[#f6c648] text-[#f6c648]" />)}
-          </div>
-        </div>
-      </div>
-      <p className="text-white/85 leading-relaxed text-sm md:text-base">"{t.quote}"</p>
-      <div className="mt-5 pt-4 border-t border-white/15">
-        <span className="text-xs text-[#f6c648] font-semibold">✓ {t.metrics}</span>
-      </div>
-    </div>
-  );
-}
-
-function SideCard({ t }: { t: Testimonial }) {
-  return (
-    <div className="sk-card p-5 rounded-2xl opacity-60 hover:opacity-80 transition-opacity duration-300">
-      <div className="flex items-center gap-3 mb-3">
-        <div className="w-10 h-10 rounded-full overflow-hidden border border-gray-100 shrink-0">
-          <Image src={t.image} alt={t.name} width={40} height={40} className="w-full h-full object-cover" />
-        </div>
-        <div>
-          <p className="font-semibold text-sm text-gray-900">{t.name}</p>
-          <p className="text-gray-500 text-xs">{t.company}</p>
-        </div>
-      </div>
-      <p className="text-gray-600 text-xs leading-relaxed line-clamp-4">"{t.quote}"</p>
-    </div>
   );
 }

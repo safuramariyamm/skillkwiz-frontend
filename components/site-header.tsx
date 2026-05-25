@@ -41,13 +41,13 @@ export default function SiteHeader() {
   return (
     <header className="w-full fixed top-0 left-0 z-50">
       <nav
-        className={`w-full md:w-[88%] lg:w-[72%] mx-auto rounded-b-3xl transition-all duration-300
+        className={`w-full transition-all duration-300
           ${scrolled
-            ? "bg-white/95 backdrop-blur-md shadow-lg shadow-[#00418d]/10"
-            : "bg-[#daeeff] shadow-md"
+            ? "bg-white/95 backdrop-blur-md shadow-md shadow-[#00418d]/10"
+            : "bg-[#daeeff]"
           }`}
       >
-        <div className="flex items-center justify-between px-5 h-16">
+        <div className="max-w-screen-xl mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-10 h-16">
 
           {/* Logo */}
           <Link href="/" className="flex items-center flex-shrink-0">
@@ -71,7 +71,7 @@ export default function SiteHeader() {
                 className={`relative px-4 py-2 text-sm font-medium rounded-xl transition-all duration-200
                   ${pathname === link.href
                     ? "text-[#00418d] font-semibold bg-[#00418d]/8"
-                    : "text-[#00418d]/75 hover:text-[#00418d] hover:bg-[#00418d]/8"
+                    : "text-[#0a1628] hover:text-[#00418d] hover:bg-[#00418d]/8"
                   }`}
               >
                 {link.label}
@@ -146,7 +146,7 @@ export default function SiteHeader() {
 
         {/* Mobile menu */}
         {isMenuOpen && (
-          <div className="md:hidden border-t border-[#00418d]/15 py-3 px-3">
+          <div className="md:hidden border-t border-[#00418d]/15 py-3 px-4 sm:px-6">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -155,7 +155,7 @@ export default function SiteHeader() {
                 className={`flex items-center py-2.5 px-4 rounded-xl text-sm font-medium mb-1 transition-colors
                   ${pathname === link.href
                     ? "bg-[#00418d]/10 text-[#00418d] font-semibold"
-                    : "text-[#00418d]/75 hover:bg-[#00418d]/8 hover:text-[#00418d]"
+                    : "text-[#0a1628] hover:bg-[#00418d]/8 hover:text-[#00418d]"
                   }`}
               >
                 {link.label}
