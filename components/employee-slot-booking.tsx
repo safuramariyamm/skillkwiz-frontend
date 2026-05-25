@@ -93,13 +93,13 @@ export default function EmployeeSlotBooking() {
           <CheckCircle className="w-14 h-14 text-green-400" />
         </div>
         <h2 className="text-headingMd font-bold mb-2">Slot Booked Successfully!</h2>
-        <p className="text-gray-400 mb-4">Your assessment slot has been confirmed. Check your email for details.</p>
+        <p className="text-black mb-4">Your assessment slot has been confirmed. Check your email for details.</p>
            <div className="bg-white/5 border border-white/10 rounded-xl p-4 max-w-sm mx-auto text-left space-y-2">
-          <h3 className="text-body font-medium text-center mb-2">Booking Confirmation</h3>
+          <h3 className="text-body text-black font-medium text-center mb-2">Booking Confirmation</h3>
           <div className="space-y-2 text-body">
-            <div className="flex items-center gap-2"><Calendar className="w-4 h-4 text-[#4d8fda]" /><span>{new Date(confirmed.date).toLocaleDateString("en-IN", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}</span></div>
-            <div className="flex items-center gap-2"><Clock className="w-4 h-4 text-green-400" /><span>{confirmed.time}</span></div>
-            <div className="flex items-center gap-2"><MapPin className="w-4 h-4 text-red-400" /><span>{confirmed.center}, {confirmed.location}</span></div>
+            <div className="flex items-center gap-2"><Calendar className="w-4 h-4 text-black" /><span>{new Date(confirmed.date).toLocaleDateString("en-IN", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}</span></div>
+            <div className="flex items-center gap-2"><Clock className="w-4 h-4 text-black" /><span>{confirmed.time}</span></div>
+            <div className="flex items-center gap-2"><MapPin className="w-4 h-4 text-black" /><span>{confirmed.center}, {confirmed.location}</span></div>
             {confirmed.skills.length > 0 && (
               <div className="flex flex-wrap gap-1 mt-2">
                 {confirmed.skills.map(s => <span key={s} className="bg-[#00418d]/20 text-[#c3dfff] text-caption px-2 py-0.5 rounded-full">{s}</span>)}
@@ -114,24 +114,24 @@ export default function EmployeeSlotBooking() {
 
   if (alreadyBooked && !confirmed) {
     return (
-      <div className="text-white text-center py-10">
+      <div className="text-black text-center py-10">
         <CheckCircle className="w-16 h-16 text-green-400 mx-auto mb-4" />
          <h2 className="text-headingSm font-semibold mb-1">You've Already Booked a Slot</h2>
-        <p className="text-gray-400 text-body">No rescheduling is allowed. Please check your email for booking details.</p>
+        <p className="text-black text-body">No rescheduling is allowed. Please check your email for booking details.</p>
       </div>
     );
   }
 
   return (
-    <div className="text-white">
+    <div className="text-black">
       <h2 className="text-headingSm font-semibold mb-2">Available Assessment Slots</h2>
-      <p className="text-gray-400 text-body mb-4">Select your preferred slot. <span className="text-yellow-300">You can only book once — no rescheduling.</span></p>
+      <p className="text-black text-body mb-4">Select your preferred slot. <span className="text-yellow-300">You can only book once — no rescheduling.</span></p>
 
-      {error && <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-3 mb-4"><p className="text-red-300 text-body">{error}</p></div>}
+      {error && <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-3 mb-4"><p className="text-white text-body">{error}</p></div>}
       {loading ? (
         <div className="text-center py-10"><Loader2 className="w-8 h-8 animate-spin mx-auto text-[#4d8fda]" /></div>
       ) : slots.length === 0 ? (
-        <div className="text-center py-10 text-gray-500">
+        <div className="text-center py-10 text-black">
           <Calendar className="w-12 h-12 mx-auto mb-3 opacity-40" />
           <p>No assessment slots available yet. Check back later or contact your employer.</p>
         </div>
@@ -142,10 +142,10 @@ export default function EmployeeSlotBooking() {
               <div className="flex items-start justify-between gap-2">
                 <div className="flex-1">
                   <div className="flex flex-wrap items-center gap-2 mb-2">
-                     <span className="flex items-center gap-1 font-medium"><Calendar className="w-4 h-4 text-[#4d8fda]" />{new Date(slot.date).toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "short", year: "numeric" })}</span>
-                     <span className="flex items-center gap-1 text-body text-gray-300"><Clock className="w-4 h-4 text-green-400" />{slot.time}</span>
+                     <span className="flex items-center gap-1 font-medium"><Calendar className="w-4 h-4 text-black" />{new Date(slot.date).toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "short", year: "numeric" })}</span>
+                     <span className="flex items-center gap-1 text-body text-gray-300"><Clock className="w-4 h-4 text-black" />{slot.time}</span>
                   </div>
-                  <div className="flex flex-wrap items-center gap-2 text-body text-gray-400 mb-2">
+                  <div className="flex flex-wrap items-center gap-2 text-body text-black mb-2">
                      <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5" />{slot.center}</span>
                      <span>{slot.location}</span>
                   </div>
