@@ -20,12 +20,12 @@ const STATS = [
 
 /* Two image cards per side, each with its own float speed */
 const LEFT_IMAGES  = [
-  { src: "/images/homepage/skills_1.png", rotate: "-6deg",  offsetY: 0,   speed: 3.8, size: { w: 170, h: 240 } },
-  { src: "/images/homepage/skills_3.png", rotate:  "4deg",  offsetY: 110, speed: 5.1, size: { w: 150, h: 210 } },
+  { src: "/images/homepage/skills_1.png", rotate: "-6deg",  offsetY: 0,   speed: 3.8, size: { w: 200, h: 300 } },
+  { src: "/images/homepage/skills_3.png", rotate:  "4deg",  offsetY: 110, speed: 5.1, size: { w: 200, h: 300 } },
 ];
 const RIGHT_IMAGES = [
-  { src: "/images/homepage/skills_2.png", rotate:  "7deg",  offsetY: 20,  speed: 4.4, size: { w: 165, h: 230 } },
-  { src: "/images/homepage/skills_4.png", rotate: "-5deg",  offsetY: 130, speed: 3.2, size: { w: 145, h: 200 } },
+  { src: "/images/homepage/skills_2.png", rotate:  "7deg",  offsetY: 20,  speed: 4.4, size: { w: 200, h: 300 } },
+  { src: "/images/homepage/skills_4.png", rotate: "-5deg",  offsetY: 130, speed: 3.2, size: { w: 200, h: 300 } },
 ];
 
 export default function AuthenticateSkillsSection() {
