@@ -1,6 +1,5 @@
-/* authenticate-skills-section.module.css */
+/* Simplified CSS Module - Vercel Safe */
 
-/* Container animations */
 .fadeInUp {
   opacity: 0;
   transform: translateY(20px);
@@ -34,25 +33,17 @@
   transform: translateX(0);
 }
 
-/* Card container - INCREASED for larger cards */
 .cardContainer {
   position: relative;
-  height: 520px; /* Increased from 380px for larger 300px cards */
+  height: 520px;
 }
 
-/* Base card styles - LARGER SIZE */
 .card {
   position: absolute;
   border-radius: 20px;
   overflow: hidden;
-  border: 4px solid #fff; /* Thicker border for larger cards */
-  box-shadow: 0 18px 50px rgba(0, 65, 141, 0.25); /* Stronger shadow */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.card:hover {
-  transform: scale(1.02);
-  box-shadow: 0 22px 55px rgba(0, 65, 141, 0.3);
+  border: 4px solid #fff;
+  box-shadow: 0 18px 50px rgba(0, 65, 141, 0.25);
 }
 
 /* Left side animations */
@@ -117,11 +108,7 @@
   animation: floatB_right 5s ease-in-out infinite, zB_right 5s step-end infinite;
 }
 
-/* ============================================ */
-/* RESPONSIVE LAYOUT - Cards below on mobile */
-/* ============================================ */
-
-/* Desktop: 3 columns with cards on sides */
+/* Responsive */
 @media (min-width: 769px) {
   .threeColumnLayout {
     display: grid;
@@ -140,7 +127,6 @@
   }
 }
 
-/* Mobile/Tablet: Stack layout with cards BELOW text */
 @media (max-width: 768px) {
   .threeColumnLayout {
     display: flex;
@@ -165,18 +151,13 @@
     justify-content: center;
     gap: 20px;
     flex-wrap: wrap;
-    position: relative;
-    height: auto;
     min-height: 260px;
   }
   
   .mobileCard {
     position: relative !important;
-    left: auto !important;
-    right: auto !important;
-    top: auto !important;
     width: 150px !important;
-    height: 210px !important;
+    height: 220px !important;
     border-radius: 16px;
     overflow: hidden;
     border: 3px solid #fff;
@@ -184,27 +165,14 @@
     animation: none !important;
   }
   
-  .mobileCard {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
-  }
-  
   .visible .mobileCard {
     opacity: 1;
     transform: translateY(0);
-  }
-  
-  .visible .mobileCard:first-child {
-    transition-delay: 0.1s;
-  }
-  
-  .visible .mobileCard:last-child {
-    transition-delay: 0.2s;
+    transition: opacity 0.5s ease, transform 0.5s ease;
   }
 }
 
-/* Step cards - responsive grid */
+/* Steps grid */
 .stepsGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -212,7 +180,6 @@
   margin-top: 36px;
 }
 
-/* Mobile: Stack steps vertically */
 @media (max-width: 768px) {
   .stepsGrid {
     grid-template-columns: 1fr;
@@ -225,7 +192,6 @@
   }
 }
 
-/* Tablet: 2 columns */
 @media (min-width: 769px) and (max-width: 1024px) {
   .stepsGrid {
     grid-template-columns: repeat(2, 1fr);
@@ -236,22 +202,15 @@
   }
 }
 
-/* Step card styles */
 .stepCard {
   background: #fff;
   border-radius: 12px;
   padding: 14px;
   border: 1px solid #daeeff;
-  box-shadow: 0 2px 8px rgba(0, 65, 141, 0.05);
   display: flex;
   gap: 12px;
   align-items: flex-start;
   position: relative;
-  transition: box-shadow 0.2s;
-}
-
-.stepCard:hover {
-  box-shadow: 0 4px 18px rgba(0, 65, 141, 0.12);
 }
 
 .stepConnector {
@@ -262,7 +221,6 @@
   width: 14px;
   height: 1.5px;
   background: #c8dff5;
-  display: block;
   z-index: 1;
 }
 
@@ -299,7 +257,6 @@
   line-height: 1.55;
 }
 
-/* Stats pills - responsive */
 .statsContainer {
   display: flex;
   justify-content: center;
@@ -308,31 +265,11 @@
   margin-bottom: 22px;
 }
 
-@media (max-width: 480px) {
-  .statsContainer {
-    gap: 6px;
-    margin-bottom: 18px;
-  }
-  
-  .statPill {
-    padding: 5px 10px;
-  }
-  
-  .statNumber {
-    font-size: 12px;
-  }
-  
-  .statLabel {
-    font-size: 8px;
-  }
-}
-
 .statPill {
   background: #fff;
   border-radius: 24px;
   padding: 7px 14px;
   border: 1px solid #daeeff;
-  box-shadow: 0 1px 4px rgba(0, 65, 141, 0.07);
   display: flex;
   align-items: center;
   gap: 6px;
