@@ -10,11 +10,12 @@ import EmployerRegistration from "@/components/employer-registeration";
 import EmployerProfile from "@/components/employer-profile";
 import EmployerSlotManager from "@/components/employer-slot-manager";
 import EmployerCredentialManager from "@/components/employer-credential-manager";
+import EmployerBilling from "@/components/employer-billing";
 import SuccessMessage from "@/components/success-message";
 import { DarkPageSkeleton } from "@/components/page-skeleton";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
-type EmployerTab = "profile" | "slots" | "credentials";
+type EmployerTab = "profile" | "slots" | "credentials" | "billing";
 type EmployeeScreen = "profile" | "booking";
 
 // ── Service feature cards shown before login ──────────────────────────────────
@@ -58,6 +59,7 @@ export default function ServicesPage() {
   const [employerHasProfile, setEmployerHasProfile] = useState<boolean | null>(null);
   const [employerProfileLoading, setEmployerProfileLoading] = useState(false);
   const [employerRegistered, setEmployerRegistered] = useState(false);
+  const [justRegisteredEmployer, setJustRegisteredEmployer] = useState<any>(null);
 
   const [companyEmployee, setCompanyEmployee] = useState<any>(null);
   const [employeeScreen, setEmployeeScreen] = useState<EmployeeScreen>("profile");
@@ -401,6 +403,7 @@ export default function ServicesPage() {
                       { key: "profile", label: "Profile", icon: "🏢" },
                       { key: "slots", label: "Manage Slots", icon: "📅" },
                       { key: "credentials", label: "Candidates", icon: "👥" },
+                      { key: "billing", label: "Credits & Billing", icon: "💳" },
                     ] as { key: EmployerTab; label: string; icon: string }[]).map((tab) => (
                       <button
                         key={tab.key}
@@ -418,17 +421,20 @@ export default function ServicesPage() {
 
                   {/* Panel */}
                   <div className="sk-card rounded-3xl p-7">
-                    {employerTab === "profile" && <EmployerProfile employerData={null} />}
+                    {employerTab === "profile" && <EmployerProfile employerData={justRegisteredEmployer} />}
                     {employerTab === "slots" && <EmployerSlotManager />}
                     {employerTab === "credentials" && <EmployerCredentialManager />}
+                    {employerTab === "billing" && <EmployerBilling />}
                   </div>
                 </>
               ) : (
                 <div className="sk-card rounded-3xl p-7">
                   {employerHasProfile === false && (
-                    <EmployerRegistration onSubmit={() => {
+                    <EmployerRegistration onSubmit={(employer: any) => {
                       setEmployerHasProfile(true);
                       setEmployerRegistered(true);
+                      setEmployerTab("profile");
+                      setJustRegisteredEmployer(employer);
                     }} />
                   )}
                   {employerHasProfile === null && (

@@ -16,7 +16,7 @@ export default function EmployerProfile({ employerData: initialData }: EmployerP
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    fetchProfile();
+    if (!initialData) fetchProfile();
   }, []);
 
   const fetchProfile = async () => {
