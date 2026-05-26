@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
-import { paymentAPI } from "@/lib/payment";
+import { paymentApi } from "@/lib/payment";
 
 interface CreditBalance {
   credits: number;
@@ -18,7 +18,7 @@ export const useCredits = () => {
   const fetchBalance = useCallback(async () => {
     try {
       setLoading(true);
-      const res = await paymentAPI.getBalance();
+      const res = await paymentApi.getBalance();
       if (res.success) setBalance(res.data);
       else setError(res.message);
     } catch {
