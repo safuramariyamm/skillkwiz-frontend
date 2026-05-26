@@ -1,27 +1,22 @@
 "use client";
 
-import {
-  PayPalButtons,
-  PayPalScriptProvider,
-} from "@paypal/react-paypal-js";
+import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
+
+const API_BASE =
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
 interface Props {
+  planId: string;
   amount: number;
   plan: string;
   credits: number;
 }
 
-export default function PaypalCheckout({
-  amount,
-  plan,
-  credits,
-}: Props) {
+export default function PaypalCheckout({ planId, amount, plan, credits }: Props) {
   return (
     <PayPalScriptProvider
       options={{
-        clientId:
-          process.env
-            .NEXT_PUBLIC_PAYPAL_CLIENT_ID!,
+        clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID!,
         currency: "USD",
       }}
     >
@@ -32,66 +27,58 @@ export default function PaypalCheckout({
           label: "paypal",
         }}
         createOrder={async () => {
-          const res = await fetch(
-            "http://localhost:5000/api/payments/create-order",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type":
-                  "application/json",
-              },
-              credentials: "include",
-              body: JSON.stringify({
-                amount,
-                planName: plan,
-                credits,
-              }),
-            }
-          );
+          const token =
+            typeof window !== "undefined"
+              ? localStorage.getItem("sk_token")
+              : null;
+
+          const res = await fetch(`${API_BASE}/payments/create-order`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            },
+            credentials: "include",
+            body: JSON.stringify({ planId }),
+          });
 
           const data = await res.json();
 
-          if (!data.orderID) {
+          if (!data.success || !data.data?.orderId) {
             throw new Error(
-              "Failed to create PayPal order"
+              data.message || "Failed to create PayPal order"
             );
           }
 
-          return data.orderID;
+          return data.data.orderId;
         }}
-        onApprove={async (data) => {
-          const res = await fetch(
-            "http://localhost:5000/api/payments/capture-order",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type":
-                  "application/json",
-              },
-              credentials: "include",
-              body: JSON.stringify({
-                orderID: data.orderID,
-              }),
-            }
-          );
+        onApprove={async (approveData) => {
+          const token =
+            typeof window !== "undefined"
+              ? localStorage.getItem("sk_token")
+              : null;
 
-          const captureData =
-            await res.json();
+          const res = await fetch(`${API_BASE}/payments/capture-order`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            },
+            credentials: "include",
+            body: JSON.stringify({ orderId: approveData.orderID }),
+          });
 
-          console.log(
-            "PAYMENT SUCCESS:",
-            captureData
-          );
+          const captureData = await res.json();
 
-          alert(
-            "Payment Successful!"
-          );
+          if (!captureData.success) {
+            throw new Error(captureData.message || "Payment capture failed");
+          }
+
+          console.log("PAYMENT SUCCESS:", captureData);
+          window.location.href = "/employer/payment/success";
         }}
         onError={(err) => {
-          console.error(
-            "PAYPAL ERROR:",
-            err
-          );
+          console.error("PAYPAL ERROR:", err);
         }}
       />
     </PayPalScriptProvider>
