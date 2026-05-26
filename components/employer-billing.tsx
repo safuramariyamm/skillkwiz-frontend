@@ -147,6 +147,7 @@ export default function EmployerBilling() {
       options={{
         clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || "",
         currency: "USD",
+        intent: "capture",
       }}
     >
       <div className="space-y-6">
