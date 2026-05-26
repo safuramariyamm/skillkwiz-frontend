@@ -88,11 +88,11 @@ export default function EmployeeSlotBooking() {
 
   if (confirmed) {
     return (
-      <div className="text-white text-center py-8">
+      <div className="text-black text-center py-8">
         <div className="w-24 h-24 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-4">
-          <CheckCircle className="w-14 h-14 text-green-400" />
+          <CheckCircle className="w-14 h-14 text-black" />
         </div>
-        <h2 className="text-headingMd font-bold mb-2">Slot Booked Successfully!</h2>
+        <h2 className="text-headingMd font-bold mb-2 text-black">Slot Booked Successfully!</h2>
         <p className="text-black mb-4">Your assessment slot has been confirmed. Check your email for details.</p>
            <div className="bg-white/5 border border-white/10 rounded-xl p-4 max-w-sm mx-auto text-left space-y-2">
           <h3 className="text-body text-black font-medium text-center mb-2">Booking Confirmation</h3>
@@ -115,7 +115,7 @@ export default function EmployeeSlotBooking() {
   if (alreadyBooked && !confirmed) {
     return (
       <div className="text-black text-center py-10">
-        <CheckCircle className="w-16 h-16 text-green-400 mx-auto mb-4" />
+        <CheckCircle className="w-16 h-16 text-black mx-auto mb-4" />
          <h2 className="text-headingSm font-semibold mb-1">You've Already Booked a Slot</h2>
         <p className="text-black text-body">No rescheduling is allowed. Please check your email for booking details.</p>
       </div>
