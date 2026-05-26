@@ -83,7 +83,7 @@ export default function EmployeeDashboard() {
   };
 
   return (
-    <div className="text-white">
+    <div className="text-black">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-headingMd font-semibold">My Assessment Dashboard</h2>

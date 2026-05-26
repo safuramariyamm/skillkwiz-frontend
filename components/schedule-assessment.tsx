@@ -108,16 +108,16 @@ export default function ScheduleAssessment({ candidateData }: ScheduleAssessment
             <CheckCircle className="w-14 h-14 text-green-400" />
           </div>
           <h2 className="text-headingLg font-bold mb-2">Slot Booked Successfully!</h2>
-          <p className="text-gray-300 mb-6">Your assessment has been scheduled. A confirmation email will be sent to you.</p>
+          <p className="text-black mb-6">Your assessment has been scheduled. A confirmation email will be sent to you.</p>
           <div className="bg-white/10 rounded-xl p-6 text-left max-w-md mx-auto mb-6">
             <h3 className="font-semibold text-headingSm mb-4 text-center">Booking Details</h3>
             <div className="space-y-3 text-body">
-              <div className="flex justify-between"><span className="text-gray-400">Company</span><span className="font-medium capitalize">{bookedAssessment.company}</span></div>
-              <div className="flex justify-between"><span className="text-gray-400">Date</span><span>{formatDate(bookedAssessment.scheduledDate)}</span></div>
-              <div className="flex justify-between"><span className="text-gray-400">Time</span><span>{bookedAssessment.scheduledTime}</span></div>
-              <div className="flex justify-between"><span className="text-gray-400">Centre</span><span>{bookedAssessment.centre}</span></div>
-              <div className="flex justify-between"><span className="text-gray-400">Location</span><span>{bookedAssessment.country} - {bookedAssessment.zipCode}</span></div>
-              <div><span className="text-gray-400">Skills</span><div className="flex flex-wrap gap-1 mt-1">{bookedAssessment.skills.map((s) => <span key={s} className="bg-blue-500/20 text-blue-300 text-caption px-2 py-0.5 rounded">{s}</span>)}</div></div>
+              <div className="flex justify-between"><span className="text-black">Company</span><span className="font-medium capitalize">{bookedAssessment.company}</span></div>
+              <div className="flex justify-between"><span className="text-black">Date</span><span>{formatDate(bookedAssessment.scheduledDate)}</span></div>
+              <div className="flex justify-between"><span className="text-black">Time</span><span>{bookedAssessment.scheduledTime}</span></div>
+              <div className="flex justify-between"><span className="text-black">Centre</span><span>{bookedAssessment.centre}</span></div>
+              <div className="flex justify-between"><span className="text-black">Location</span><span>{bookedAssessment.country} - {bookedAssessment.zipCode}</span></div>
+              <div><span className="text-black">Skills</span><div className="flex flex-wrap gap-1 mt-1">{bookedAssessment.skills.map((s) => <span key={s} className="bg-blue-500/20 text-blue-300 text-caption px-2 py-0.5 rounded">{s}</span>)}</div></div>
             </div>
           </div>
           <button onClick={() => setBookedAssessment(null)} className="bg-gradient-to-r from-[#4ECDC4] to-[#2d8a84] text-white px-8 py-3 rounded-full font-semibold hover:opacity-90 transition-all">
@@ -152,7 +152,7 @@ export default function ScheduleAssessment({ candidateData }: ScheduleAssessment
   }
 
   return (
-    <div className="text-white">
+    <div className="text-black">
       {/* Stats */}
       {!historyLoading && bookingHistory.length > 0 && (
         <div className="grid grid-cols-3 gap-3 mb-6">
@@ -177,7 +177,7 @@ export default function ScheduleAssessment({ candidateData }: ScheduleAssessment
               </button>
             ))}
           </div>
-          <p className="mt-2 text-caption text-gray-400 bg-white/5 p-2 rounded">
+          <p className="mt-2 text-caption text-black bg-white/5 p-2 rounded">
             Skills: <strong className="text-white">{(companySkills[selectedCompany] || []).join(", ")}</strong>
           </p>
         </div>
@@ -190,8 +190,8 @@ export default function ScheduleAssessment({ candidateData }: ScheduleAssessment
               <div key={field} className="flex-1">
                 <input type="number" placeholder={field.toUpperCase()} value={date[field as keyof typeof date]}
                   onChange={(e) => setDate((p) => ({ ...p, [field]: e.target.value }))}
-                  className="w-full bg-[#333333] rounded px-3 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-blue-400 text-center" />
-                <p className="text-caption text-gray-500 text-center mt-0.5 capitalize">{field === "mm" ? "Month" : field === "dd" ? "Day" : "Year"}</p>
+                  className="w-full bg-[#333333] rounded px-3 py-2.5 text-black focus:outline-none focus:ring-2 focus:ring-blue-400 text-center" />
+                <p className="text-caption text-black text-center mt-0.5 capitalize">{field === "mm" ? "Month" : field === "dd" ? "Day" : "Year"}</p>
               </div>
             ))}
           </div>
@@ -203,11 +203,11 @@ export default function ScheduleAssessment({ candidateData }: ScheduleAssessment
           <div className="flex gap-2 items-center">
             <input type="number" placeholder="HH" min="1" max="12" value={time.hh}
               onChange={(e) => setTime((p) => ({ ...p, hh: e.target.value.padStart(2, "0") }))}
-              className="w-20 bg-[#333333] rounded px-3 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-blue-400 text-center" />
-            <span className="text-gray-400 text-headingSm">:</span>
+              className="w-20 bg-[#333333] rounded px-3 py-2.5 text-black focus:outline-none focus:ring-2 focus:ring-blue-400 text-center" />
+            <span className="text-black text-headingSm">:</span>
             <input type="number" placeholder="MM" min="0" max="59" step="15" value={time.mm}
               onChange={(e) => setTime((p) => ({ ...p, mm: e.target.value.padStart(2, "0") }))}
-              className="w-20 bg-[#333333] rounded px-3 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-blue-400 text-center" />
+              className="w-20 bg-[#333333] rounded px-3 py-2.5 text-black focus:outline-none focus:ring-2 focus:ring-blue-400 text-center" />
             <select value={time.period} onChange={(e) => setTime((p) => ({ ...p, period: e.target.value }))}
               className="bg-[#333333] rounded px-3 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-blue-400">
               <option>AM</option><option>PM</option>
