@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useCredits } from "@/hooks/useCredits";
-import { paymentAPI } from "@/lib/payment";
+import { paymentApi } from "@/lib/payment";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
 } from "recharts";
@@ -16,7 +16,7 @@ export default function EmployerDashboard() {
   const [history, setHistory] = useState<any>(null);
 
   useEffect(() => {
-    paymentAPI.getHistory(1).then((res) => res.success && setHistory(res.data));
+    paymentApi.getHistory(1).then((res) => res.success && setHistory(res.data));
   }, []);
 
   // Build monthly usage chart from ledger
