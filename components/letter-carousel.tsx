@@ -68,29 +68,28 @@ export default function LetterCarousel() {
     <div className="max-w-7xl mx-auto px-6 mt-12">
       <div className="relative overflow-hidden rounded-xl bg-white shadow-lg">
         <div className="relative h-[300px] w-full">
+          {/* Single background image for active slide only */}
+          <div className="absolute inset-0 z-0">
+            <Image
+              key={slides[currentSlide].backgroundImage}
+              src={slides[currentSlide].backgroundImage || "/placeholder.svg"}
+              alt={`${slides[currentSlide].title} background`}
+              fill
+              className="object-cover"
+              priority={currentSlide === 0}
+              sizes="(max-width: 1280px) 100vw, 1280px"
+              quality={75}
+            />
+            <div className="absolute inset-0 bg-black/30" />
+          </div>
+
           {slides.map((slide, index) => (
             <div
               key={index}
-              className={`absolute inset-0 w-full h-full transition-all duration-500 ease-in-out ${
-                index === currentSlide
-                  ? "opacity-100 translate-x-0"
-                  : index < currentSlide
-                  ? "opacity-0 -translate-x-full"
-                  : "opacity-0 translate-x-full"
+              className={`absolute inset-0 w-full h-full transition-opacity duration-500 ease-in-out ${
+                index === currentSlide ? "opacity-100 z-10" : "opacity-0 pointer-events-none z-0"
               }`}
             >
-              {/* Background Image with Overlay */}
-              <div className="absolute inset-0 z-0">
-                <Image
-                  src={slide.backgroundImage || "/placeholder.svg"}
-                  alt={`${slide.title} background`}
-                  fill
-                  className="object-cover"
-                  priority={index === 0}
-                />
-                <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px]"></div>
-              </div>
-
               <div className="flex flex-col h-full relative z-10">
                 {/* Letters row */}
                 <div className="flex justify-center items-center py-8 gap-4">

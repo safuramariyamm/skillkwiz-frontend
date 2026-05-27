@@ -85,8 +85,8 @@
 }
 
 @layer base {
-  * { @apply border-border; }
-  body { @apply bg-background text-foreground; }
+  * { border-color: hsl(var(--border)); }
+  body { background-color: hsl(var(--background)); color: hsl(var(--foreground)); }
 }
 
 /* ─── Typography Reset ─────────────────────────────────────────────────────── */
@@ -150,9 +150,7 @@
   /* Base button — shared by all variants */
   .btn {
     @apply inline-flex items-center justify-center gap-2 font-semibold rounded-full
-           transition-all duration-200 select-none;
-    /* GPU-only transforms — no layout reflow */
-    will-change: transform, opacity;
+           transition-[transform,box-shadow,background-color,color] duration-200 select-none;
   }
   .btn:hover { transform: translateY(-1px); }
   .btn:active { transform: translateY(0) scale(0.98); }
@@ -262,8 +260,9 @@
   }
 }
 
-/* ─── Section divider wave utility ────────────────────────────────────────── */
-@layer utilities {
-  /* smooth scroll behaviour site-wide */
-  html { scroll-behavior: smooth; }
+/* ─── Reduced motion: disable entrance animations ─────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .page-enter {
+    animation: none;
+  }
 }

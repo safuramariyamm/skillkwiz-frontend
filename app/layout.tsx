@@ -8,10 +8,11 @@ import { AuthProvider } from "@/context/AuthContext";
 
 const inter = Inter({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800", "900"],
+  weight: ["400", "600", "700"],
   variable: "--font-inter",
   display: "swap",
   preload: true,
+  adjustFontFallback: true,
 });
 
 export const metadata: Metadata = {
@@ -26,7 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <AuthProvider>
           <div className="flex min-h-screen flex-col">
             <SiteHeader />
-            <main className="flex-grow page-enter">{children}</main>
+            <main className="flex-grow">{children}</main>
             <SiteFooter />
           </div>
         </AuthProvider>

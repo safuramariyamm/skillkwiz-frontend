@@ -77,18 +77,26 @@ export default function Banner() {
   return (
     <div className="relative w-full overflow-hidden" style={{ marginTop: "64px", minHeight: "clamp(520px, 80vh, 780px)" }}>
 
-      {/* Background images */}
-      {slides.map((s, i) => (
-        <div key={s.id} className="absolute inset-0 transition-opacity duration-700"
-          style={{ opacity: i === current ? 1 : 0, zIndex: i === current ? 1 : 0 }}>
-          <Image src={s.image} alt="" fill className="object-cover object-center"
-            priority={i === 0} loading={i === 0 ? "eager" : "lazy"} sizes="100vw" />
-          {/* Split overlay — dark left 60%, fades right */}
-          <div className="absolute inset-0" style={{
-            background: "linear-gradient(105deg, #0a1628 0%, #0a1628 42%, rgba(10,22,40,0.75) 62%, rgba(10,22,40,0.15) 100%)"
-          }} />
-        </div>
-      ))}
+      {/* Background — only mount the active slide (avoids 4× full-screen image decode) */}
+      <div className="absolute inset-0 z-[1]">
+        <Image
+          key={slide.image}
+          src={slide.image}
+          alt=""
+          fill
+          className="object-cover object-center"
+          priority={current === 0}
+          sizes="100vw"
+          quality={75}
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(105deg, #0a1628 0%, #0a1628 42%, rgba(10,22,40,0.75) 62%, rgba(10,22,40,0.15) 100%)",
+          }}
+        />
+      </div>
 
       {/* Diagonal accent line */}
       <div className="absolute inset-0 z-[2] pointer-events-none overflow-hidden">

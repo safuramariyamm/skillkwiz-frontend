@@ -15,6 +15,13 @@ export default function SiteHeader() {
   const { user, isLoggedIn, logout } = useAuth();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  const dashboardHref =
+    user?.role === "admin"
+      ? "/dashboard/admin/overview"
+      : user?.role === "employer"
+        ? "/dashboard/employer/overview"
+        : "/dashboard/employee/booking";
+
   const navLinks = [
     { href: "/", label: "Home" },
     { href: "/about", label: "About Us" },
@@ -107,7 +114,7 @@ export default function SiteHeader() {
                       </span>
                     </div>
                     <Link
-                      href="/services"
+                      href={dashboardHref}
                       onClick={() => setIsDropdownOpen(false)}
                       className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                     >

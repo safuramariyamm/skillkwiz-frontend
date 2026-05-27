@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import ServicesAuthForm from "@/components/services-auth-form";
 import EmployeeCompanyLogin from "@/components/employee-company-login";
@@ -10,9 +12,17 @@ import EmployerRegistration from "@/components/employer-registeration";
 import EmployerProfile from "@/components/employer-profile";
 import EmployerSlotManager from "@/components/employer-slot-manager";
 import EmployerCredentialManager from "@/components/employer-credential-manager";
-import EmployerBilling from "@/components/employer-billing";
 import SuccessMessage from "@/components/success-message";
 import { DarkPageSkeleton } from "@/components/page-skeleton";
+
+const EmployerBilling = dynamic(() => import("@/components/employer-billing"), {
+  ssr: false,
+  loading: () => (
+    <div className="flex justify-center py-12">
+      <div className="h-8 w-8 animate-spin rounded-full border-2 border-slate-200 border-t-[#00418d]" />
+    </div>
+  ),
+});
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 type EmployerTab = "profile" | "slots" | "credentials" | "billing";
@@ -53,6 +63,7 @@ const SERVICE_FEATURES = [
 ];
 
 export default function ServicesPage() {
+  const router = useRouter();
   const { user, isLoggedIn, isLoading, logout } = useAuth();
 
   const [employerTab, setEmployerTab] = useState<EmployerTab>("profile");
@@ -114,19 +125,13 @@ export default function ServicesPage() {
   }, [isLoggedIn, user?.role, companyEmployee?.id]);
 
   const handleEmployerLogin = () => {
-    const token = localStorage.getItem("sk_ce_token") || localStorage.getItem("sk_token");
-    setEmployerProfileLoading(true);
-    fetch(`${API_BASE}/employers/me`, { headers: { Authorization: `Bearer ${token}` } })
-      .then(r => r.json())
-      .then(data => {
-        if (data.data?.employer) { setEmployerHasProfile(true); setEmployerRegistered(true); }
-        else setEmployerHasProfile(false);
-      })
-      .catch(() => setEmployerHasProfile(false))
-      .finally(() => setEmployerProfileLoading(false));
+    router.push("/dashboard/employer/overview");
   };
 
-  const handleCompanyEmployeeLogin = (u: any) => setCompanyEmployee(u);
+  const handleCompanyEmployeeLogin = (u: any) => {
+    setCompanyEmployee(u);
+    router.push("/dashboard/employee/booking");
+  };
 
   const handleCompanyEmployeeLogout = () => {
     setCompanyEmployee(null);
