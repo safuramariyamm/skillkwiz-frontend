@@ -1,15 +1,15 @@
 // ─── middleware.ts ─────────────────────────────────────────────────────────────
-// Next.js Edge Middleware — protects /dashboard/* routes based on JWT role.
+// Next.js Edge Middleware — protects /dashboard/* AND /admin/* routes.
 // Place this file at the PROJECT ROOT (same level as app/).
 
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-// Role → allowed path prefixes
+// Role → allowed dashboard path prefixes
 const ROLE_PATHS: Record<string, string> = {
-  admin: "/dashboard/admin",
-  employer: "/dashboard/employer",
-  employee: "/dashboard/employee",
+  admin:           "/dashboard/admin",
+  employer:        "/dashboard/employer",
+  employee:        "/dashboard/employee",
   companyEmployee: "/dashboard/employee",
 };
 
@@ -25,10 +25,12 @@ const PUBLIC_PATHS = [
   "/_next",
   "/images",
   "/favicon",
+  // Admin login is public — admins visit it directly
+  "/admin/login",
 ];
 
 function isPublic(pathname: string) {
-  return PUBLIC_PATHS.some((p) => pathname.startsWith(p));
+  return PUBLIC_PATHS.some((p) => pathname === p || pathname.startsWith(p + "/") || pathname.startsWith(p + "?"));
 }
 
 /**
@@ -52,62 +54,102 @@ export function middleware(request: NextRequest) {
   // Let public paths through
   if (isPublic(pathname)) return NextResponse.next();
 
-  // Only gate /dashboard/* routes
-  if (!pathname.startsWith("/dashboard")) return NextResponse.next();
-
   const token = request.cookies.get("sk_token")?.value;
 
-  // No token → redirect to login
-  if (!token) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/auth/callback";
-    url.searchParams.set("reason", "unauthenticated");
-    url.searchParams.set("redirect", pathname);
-    return NextResponse.redirect(url);
+  // ─── Admin routes: /admin/* ───────────────────────────────────────────────
+  if (pathname.startsWith("/admin")) {
+    // No token → redirect to admin login
+    if (!token) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/admin/login";
+      url.searchParams.set("reason", "unauthenticated");
+      return NextResponse.redirect(url);
+    }
+
+    const payload = decodeJwtPayload(token);
+
+    // Malformed token
+    if (!payload) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/admin/login";
+      url.searchParams.set("reason", "invalid_token");
+      return NextResponse.redirect(url);
+    }
+
+    // Expired token
+    if (payload.exp && Date.now() / 1000 > payload.exp) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/admin/login";
+      url.searchParams.set("reason", "session_expired");
+      return NextResponse.redirect(url);
+    }
+
+    // CRITICAL: Only admin role is allowed — employers and employees are REJECTED
+    const role: string = payload.isCompanyEmployee ? "companyEmployee" : payload.role;
+    if (role !== "admin") {
+      const url = request.nextUrl.clone();
+      url.pathname = "/admin/login";
+      url.searchParams.set("reason", "unauthorized");
+      return NextResponse.redirect(url);
+    }
+
+    // /admin → redirect to dashboard
+    if (pathname === "/admin" || pathname === "/admin/") {
+      return NextResponse.redirect(new URL("/admin/dashboard", request.url));
+    }
+
+    return NextResponse.next();
   }
 
-  const payload = decodeJwtPayload(token);
+  // ─── Dashboard routes: /dashboard/* ──────────────────────────────────────
+  if (pathname.startsWith("/dashboard")) {
+    // No token → redirect to login
+    if (!token) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/auth/callback";
+      url.searchParams.set("reason", "unauthenticated");
+      url.searchParams.set("redirect", pathname);
+      return NextResponse.redirect(url);
+    }
 
-  // Malformed token → redirect to login
-  if (!payload) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/auth/callback";
-    url.searchParams.set("reason", "invalid_token");
-    return NextResponse.redirect(url);
-  }
+    const payload = decodeJwtPayload(token);
 
-  // Token expired?
-  if (payload.exp && Date.now() / 1000 > payload.exp) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/auth/callback";
-    url.searchParams.set("reason", "session_expired");
-    return NextResponse.redirect(url);
-  }
+    if (!payload) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/auth/callback";
+      url.searchParams.set("reason", "invalid_token");
+      return NextResponse.redirect(url);
+    }
 
-  const role: string = payload.isCompanyEmployee
-    ? "companyEmployee"
-    : payload.role;
-  const allowedPrefix = ROLE_PATHS[role];
+    if (payload.exp && Date.now() / 1000 > payload.exp) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/auth/callback";
+      url.searchParams.set("reason", "session_expired");
+      return NextResponse.redirect(url);
+    }
 
-  // Unknown role
-  if (!allowedPrefix) {
-    return NextResponse.redirect(new URL("/", request.url));
-  }
+    const role: string = payload.isCompanyEmployee ? "companyEmployee" : payload.role;
+    const allowedPrefix = ROLE_PATHS[role];
 
-  // User is hitting a dashboard path that doesn't belong to their role
-  if (!pathname.startsWith(allowedPrefix)) {
-    return NextResponse.redirect(new URL(allowedPrefix, request.url));
-  }
+    if (!allowedPrefix) {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
 
-  // /dashboard → redirect to role root
-  if (pathname === "/dashboard" || pathname === "/dashboard/") {
-    return NextResponse.redirect(new URL(allowedPrefix, request.url));
+    if (!pathname.startsWith(allowedPrefix)) {
+      return NextResponse.redirect(new URL(allowedPrefix, request.url));
+    }
+
+    if (pathname === "/dashboard" || pathname === "/dashboard/") {
+      return NextResponse.redirect(new URL(allowedPrefix, request.url));
+    }
+
+    return NextResponse.next();
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  // Run middleware on all dashboard routes
-  matcher: ["/dashboard/:path*"],
+  // Run middleware on dashboard AND admin routes
+  matcher: ["/dashboard/:path*", "/admin/:path*"],
 };

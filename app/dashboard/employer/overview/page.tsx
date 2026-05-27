@@ -15,8 +15,14 @@ import {
   EmptyState,
 } from "@/components/dashboard/shared";
 import { CreditsAreaChart } from "@/components/dashboard/charts";
-import { useCredits, useEmployerProfile, useCredentials, useAssessments, useSlots } from "@/hooks";
-import { paymentsAPI } from "@/services/api";
+import {
+  useCredits,
+  useEmployerProfile,
+  useCredentials,
+  useAssessments,
+  useSlots,
+  usePaymentHistory,
+} from "@/hooks";
 import { ledgerToChart } from "@/lib/dashboard-data";
 
 export default function EmployerOverviewPage() {
@@ -26,6 +32,7 @@ export default function EmployerOverviewPage() {
   const { data: candidates, loading: candLoading } = useCredentials();
   const { data: assessments, loading: assessLoading } = useAssessments();
   const { data: slots, loading: slotsLoading } = useSlots();
+  const { data: paymentData } = usePaymentHistory(1);
 
   const [chartData, setChartData] = useState<{ month: string; used: number; purchased: number }[]>([]);
   const [activity, setActivity] = useState<{ title: string; time: string; icon: React.ReactNode; bg: string }[]>([]);
@@ -41,27 +48,26 @@ export default function EmployerOverviewPage() {
   const assessmentCount = assessments?.length ?? 0;
 
   useEffect(() => {
-    paymentsAPI.history(1, 10).then((res) => {
-      if (res.ok && res.data) {
-        const payload = res.data.data ?? res.data;
-        setChartData(ledgerToChart(payload.ledger || []));
-        const txns = payload.transactions || [];
-        setActivity(
-          txns.slice(0, 5).map((t: any) => ({
-            title: `${t.planName || "Plan"} — $${t.amount} (${t.paymentGateway})`,
-            time: new Date(t.createdAt).toLocaleDateString("en-US", {
-              month: "short",
-              day: "numeric",
-              hour: "2-digit",
-              minute: "2-digit",
-            }),
-            icon: <ShoppingCart size={14} className="text-[#1e40af]" />,
-            bg: "bg-[#eff6ff]",
-          }))
-        );
-      }
-    });
-  }, []);
+    if (!paymentData) return;
+    const payload = (paymentData as any).data ?? paymentData;
+    const ledger = payload?.ledger ?? (paymentData as any)?.ledger ?? [];
+    const txns = payload?.transactions ?? (paymentData as any)?.transactions ?? [];
+
+    setChartData(ledgerToChart(ledger));
+    setActivity(
+      txns.slice(0, 5).map((t: any) => ({
+        title: `${t.planName || "Plan"} — $${t.amount} (${t.paymentGateway})`,
+        time: new Date(t.createdAt).toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+        icon: <ShoppingCart size={14} className="text-[#1e40af]" />,
+        bg: "bg-[#eff6ff]",
+      }))
+    );
+  }, [paymentData]);
 
   const loading = creditsLoading || candLoading || assessLoading || slotsLoading;
 
@@ -128,9 +134,9 @@ export default function EmployerOverviewPage() {
       <SectionCard title="Credits Usage">
         {chartData.length === 0 ? (
           <EmptyState message="No credit activity yet. Purchase credits to get started." />
-        ) :
+        ) : (
           <CreditsAreaChart data={chartData} height={200} />
-        }
+        )}
       </SectionCard>
 
       <SectionCard title="Recent Payments">

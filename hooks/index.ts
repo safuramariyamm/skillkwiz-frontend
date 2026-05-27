@@ -1,4 +1,7 @@
+// hooks/index.ts
 // ─── SkillKwiz Dashboard Hooks ────────────────────────────────────────────────
+// useCredits and usePlan come from their own files (lib/payment.ts based).
+// All other hooks live here and use services/api.ts.
 
 "use client";
 
@@ -33,6 +36,12 @@ import type {
   BlogPost,
 } from "@/types/dashboard";
 
+// ─── Re-export canonical hooks (do NOT redefine them here) ───────────────────
+export { useCredits } from "./useCredits";
+export { usePlan }    from "./usePlan";
+
+// ─── Core async helper ────────────────────────────────────────────────────────
+
 function unwrap<T>(body: any): T | null {
   if (!body) return null;
   if (body.data !== undefined && typeof body.data === "object" && !Array.isArray(body.data)) {
@@ -45,9 +54,9 @@ function useAsync<T>(
   fetcher: () => Promise<{ ok: boolean; data: any; message?: string }>,
   deps: any[] = []
 ) {
-  const [data, setData] = useState<T | null>(null);
+  const [data,    setData]    = useState<T | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error,   setError]   = useState<string | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -63,23 +72,19 @@ function useAsync<T>(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
 
-  useEffect(() => {
-    load();
-  }, [load]);
+  useEffect(() => { load(); }, [load]);
 
   return { data, loading, error, reload: load };
 }
 
-export function useCredits() {
-  return useAsync<CreditBalance>(() => paymentsAPI.balance());
-}
+// ─── Payments ─────────────────────────────────────────────────────────────────
 
 export function usePlans() {
-  const [plans, setPlans] = useState<Record<string, any>>({});
+  const [plans,   setPlans]   = useState<Record<string, any>>({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    paymentsAPI.plans().then((d) => {
+    paymentsAPI.plans().then((d: any) => {
       if (d.success) setPlans(d.data);
       setLoading(false);
     });
@@ -96,6 +101,8 @@ export function usePaymentHistory(page = 1) {
     pagination: { total: number };
   }>(() => paymentsAPI.history(page), [page]);
 }
+
+// ─── Employer ─────────────────────────────────────────────────────────────────
 
 export function useEmployerProfile() {
   return useAsync<{ employer: { company: string; firstName: string; lastName: string } }>(
@@ -117,8 +124,8 @@ export function useSlots() {
 }
 
 export function useEmployerCandidates() {
-  const result = useAsync<{ credentials: any[]; stats?: object }>(() =>
-    employerCandidatesAPI.list()
+  const result = useAsync<{ credentials: any[]; stats?: object }>(
+    () => employerCandidatesAPI.list()
   );
   const candidates: Candidate[] =
     result.data?.credentials?.map(mapCredentialToCandidate) ?? [];
@@ -132,10 +139,12 @@ export function useCredentials() {
   return { ...result, data: credentials };
 }
 
+// ─── Admin ────────────────────────────────────────────────────────────────────
+
 export function useAdminRevenue() {
   const summary = useAsync(() => adminRevenueAPI.summary());
-  const monthly = useAsync<{ monthly: { month: string; total: number }[] }>(() =>
-    adminRevenueAPI.monthly(6)
+  const monthly = useAsync<{ monthly: { month: string; total: number }[] }>(
+    () => adminRevenueAPI.monthly(6)
   );
   return { summary, monthly };
 }
@@ -162,12 +171,14 @@ export function useBlogPosts() {
   return { ...result, data: posts };
 }
 
+// ─── Employee ─────────────────────────────────────────────────────────────────
+
 export function useEmployeeSlots() {
   return useAsync<{ slots: any[] }>(() => employeeAPI.availableSlots());
 }
 
 export function useEmployeeStatus() {
-  return useAsync<{ status: string; companyCode?: string }>(() =>
-    employeeAPI.myStatus()
+  return useAsync<{ status: string; companyCode?: string }>(
+    () => employeeAPI.myStatus()
   );
 }

@@ -1,17 +1,15 @@
 // components/dashboard/layout/TopBar.tsx
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import { Bell, ChevronDown, User, LogOut, Settings } from "lucide-react";
 import { useLayout } from "./DashboardLayout";
 import { authAPI } from "@/services/api";
-import { useRouter } from "next/navigation";
 
-// Build breadcrumb from pathname
 function useBreadcrumb() {
   const pathname = usePathname();
-  const parts = pathname.split("/").filter(Boolean); // ["dashboard","admin","overview"]
+  const parts = pathname.split("/").filter(Boolean);
   return parts.map((p, i) => ({
     label: p.charAt(0).toUpperCase() + p.slice(1),
     href: "/" + parts.slice(0, i + 1).join("/"),
@@ -20,9 +18,9 @@ function useBreadcrumb() {
 }
 
 const MOCK_NOTIFS = [
-  { id: 1, text: "Acme Corp purchased Growth plan", time: "2m ago", unread: true },
-  { id: 2, text: "12 candidates invited by TechHire", time: "8m ago", unread: true },
-  { id: 3, text: "Assessment 'React Senior' completed", time: "15m ago", unread: true },
+  { id: 1, text: "Acme Corp purchased Growth plan",       time: "2m ago",  unread: true },
+  { id: 2, text: "12 candidates invited by TechHire",     time: "8m ago",  unread: true },
+  { id: 3, text: "Assessment 'React Senior' completed",   time: "15m ago", unread: true },
 ];
 
 interface Props {
@@ -30,28 +28,31 @@ interface Props {
 }
 
 export default function TopBar({ role }: Props) {
-  const crumbs = useBreadcrumb();
-  const router = useRouter();
-  const [notifOpen, setNotifOpen] = useState(false);
+  const crumbs      = useBreadcrumb();
+  const router      = useRouter();
+  const [notifOpen,   setNotifOpen]   = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
-  const notifRef = useRef<HTMLDivElement>(null);
+  const notifRef   = useRef<HTMLDivElement>(null);
   const profileRef = useRef<HTMLDivElement>(null);
 
   // Close dropdowns on outside click
   useEffect(() => {
     const handler = (e: MouseEvent) => {
-      if (notifRef.current && !notifRef.current.contains(e.target as Node))
-        setNotifOpen(false);
-      if (profileRef.current && !profileRef.current.contains(e.target as Node))
-        setProfileOpen(false);
+      if (notifRef.current   && !notifRef.current.contains(e.target as Node))   setNotifOpen(false);
+      if (profileRef.current && !profileRef.current.contains(e.target as Node)) setProfileOpen(false);
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
   const handleLogout = () => {
+    // 1. Clear localStorage
     authAPI.logout();
-    router.push("/");
+    // 2. Clear the cookie the middleware reads — without this the
+    //    middleware still sees a valid token and redirects back to dashboard
+    document.cookie = "sk_token=; path=/; max-age=0; SameSite=Strict";
+    // 3. Hard-navigate to home so Next.js re-evaluates middleware from scratch
+    window.location.href = "/";
   };
 
   const roleLabel =
@@ -129,8 +130,7 @@ export default function TopBar({ role }: Props) {
         <div className="relative" ref={profileRef}>
           <button
             onClick={() => setProfileOpen((p) => !p)}
-            className="flex items-center gap-2 hover:bg-[#f0f7ff] px-2 py-1.5 rounded-lg
-              transition-colors"
+            className="flex items-center gap-2 hover:bg-[#f0f7ff] px-2 py-1.5 rounded-lg transition-colors"
           >
             <div className="w-8 h-8 rounded-full bg-[#00418d] flex items-center justify-center
               text-white text-xs font-semibold">
@@ -158,7 +158,8 @@ export default function TopBar({ role }: Props) {
               <button
                 onClick={handleLogout}
                 className="w-full flex items-center gap-2.5 px-3 py-2 text-sm
-                  text-[#f73e5d] hover:bg-[#fff0f2] transition-colors">
+                  text-[#f73e5d] hover:bg-[#fff0f2] transition-colors"
+              >
                 <LogOut size={15} /> Log out
               </button>
             </div>

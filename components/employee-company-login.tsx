@@ -10,34 +10,62 @@ interface EmployeeCompanyLoginProps {
 }
 
 export default function EmployeeCompanyLogin({ onLogin }: EmployeeCompanyLoginProps) {
-  const [companyCode, setCompanyCode] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [companyCode,   setCompanyCode]   = useState("");
+  const [username,      setUsername]      = useState("");
+  const [password,      setPassword]      = useState("");
+  const [showPassword,  setShowPassword]  = useState(false);
+  const [isLoading,     setIsLoading]     = useState(false);
+  const [error,         setError]         = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+
     if (!companyCode.trim() || !username.trim() || !password) {
-      setError("All fields are required"); return;
+      setError("All fields are required");
+      return;
     }
+
     setIsLoading(true);
     try {
       const res = await fetch(`${API_BASE}/auth/employee-login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ companyCode: companyCode.toUpperCase().trim(), username: username.trim(), password }),
+        body: JSON.stringify({
+          companyCode: companyCode.toUpperCase().trim(),
+          username:    username.trim(),
+          password,
+        }),
       });
+
       const data = await res.json();
-      if (!res.ok) { setError(data.message || "Login failed"); return; }
-      localStorage.setItem("sk_ce_token", data.data.accessToken);
-      localStorage.setItem("sk_ce_refresh_token", data.data.refreshToken);
-      localStorage.setItem("sk_user", JSON.stringify(data.data.user));
-      onLogin(data.data.user, data.data.accessToken);
-    } catch { setError("Network error. Please try again."); }
-    finally { setIsLoading(false); }
+
+      if (!res.ok) {
+        setError(data.message || "Login failed");
+        return;
+      }
+
+      const { accessToken, refreshToken, user } = data.data;
+
+      // ── Store under BOTH keys ────────────────────────────────────────────────
+      // sk_ce_token  → used by the old services page
+      // sk_token     → used by services/api.ts (every dashboard API call)
+      // cookie       → used by middleware.ts to protect /dashboard/* routes
+      localStorage.setItem("sk_ce_token",         accessToken);
+      localStorage.setItem("sk_ce_refresh_token", refreshToken);
+      localStorage.setItem("sk_token",            accessToken);   // ← KEY FIX
+      localStorage.setItem("sk_refresh_token",    refreshToken);
+      localStorage.setItem("sk_user",             JSON.stringify(user));
+
+      // Write cookie so Next.js middleware lets the employee into /dashboard/employee/*
+      document.cookie = `sk_token=${accessToken}; path=/; SameSite=Strict`;
+
+      onLogin(user, accessToken);
+    } catch {
+      setError("Network error. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -61,11 +89,17 @@ export default function EmployeeCompanyLogin({ onLogin }: EmployeeCompanyLoginPr
           <label className="block text-body mb-1.5">Company Code</label>
           <div className="relative">
             <Building2 className="absolute left-3 top-3.5 w-4 h-4 text-gray-400" />
-            <input type="text" value={companyCode}
+            <input
+              type="text"
+              value={companyCode}
               onChange={(e) => setCompanyCode(e.target.value.toUpperCase())}
               placeholder="e.g. TCS-X7K2"
-              className="w-full bg-[#1a2540] border border-white/10 rounded-lg pl-10 pr-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-400 uppercase tracking-widest font-mono text-headingSm"
-              disabled={isLoading} maxLength={12} />
+              className="w-full bg-[#1a2540] border border-white/10 rounded-lg pl-10 pr-4 py-3
+                text-white placeholder-gray-500 focus:outline-none focus:border-blue-400
+                uppercase tracking-widest font-mono text-headingSm"
+              disabled={isLoading}
+              maxLength={12}
+            />
           </div>
         </div>
 
@@ -73,11 +107,16 @@ export default function EmployeeCompanyLogin({ onLogin }: EmployeeCompanyLoginPr
           <label className="block text-body mb-1.5">Username</label>
           <div className="relative">
             <User className="absolute left-3 top-3.5 w-4 h-4 text-gray-400" />
-            <input type="text" value={username}
+            <input
+              type="text"
+              value={username}
               onChange={(e) => setUsername(e.target.value.toUpperCase())}
               placeholder="e.g. TCS-001"
-              className="w-full bg-[#1a2540] border border-white/10 rounded-lg pl-10 pr-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-400 uppercase font-mono"
-              disabled={isLoading} />
+              className="w-full bg-[#1a2540] border border-white/10 rounded-lg pl-10 pr-4 py-3
+                text-white placeholder-gray-500 focus:outline-none focus:border-blue-400
+                uppercase font-mono"
+              disabled={isLoading}
+            />
           </div>
         </div>
 
@@ -85,21 +124,36 @@ export default function EmployeeCompanyLogin({ onLogin }: EmployeeCompanyLoginPr
           <label className="block text-body mb-1.5">Password</label>
           <div className="relative">
             <Key className="absolute left-3 top-3.5 w-4 h-4 text-gray-400" />
-            <input type={showPassword ? "text" : "password"} value={password}
+            <input
+              type={showPassword ? "text" : "password"}
+              value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
-              className="w-full bg-[#1a2540] border border-white/10 rounded-lg pl-10 pr-12 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-blue-400"
-              disabled={isLoading} />
-            <button type="button" onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-3.5 text-gray-400 hover:text-white">
+              className="w-full bg-[#1a2540] border border-white/10 rounded-lg pl-10 pr-12 py-3
+                text-white placeholder-gray-500 focus:outline-none focus:border-blue-400"
+              disabled={isLoading}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-3.5 text-gray-400 hover:text-white"
+            >
               {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             </button>
           </div>
         </div>
 
-        <button type="submit" disabled={isLoading}
-          className="w-full py-3 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2 mt-2">
-          {isLoading ? <><Loader2 className="w-4 h-4 animate-spin" />Logging in...</> : "Login to Assessment Portal"}
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="w-full py-3 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700
+            text-white font-semibold hover:opacity-90 disabled:opacity-50
+            flex items-center justify-center gap-2 mt-2"
+        >
+          {isLoading
+            ? <><Loader2 className="w-4 h-4 animate-spin" />Logging in...</>
+            : "Login to Assessment Portal"
+          }
         </button>
       </form>
 

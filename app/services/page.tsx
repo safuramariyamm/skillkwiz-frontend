@@ -139,7 +139,10 @@ export default function ServicesPage() {
     setEmployeeScreen("profile");
     localStorage.removeItem("sk_ce_token");
     localStorage.removeItem("sk_ce_refresh_token");
+    localStorage.removeItem("sk_token");
+    localStorage.removeItem("sk_refresh_token");
     localStorage.removeItem("sk_user");
+    document.cookie = "sk_token=; path=/; max-age=0; SameSite=Strict";
   };
 
   const handleEmployeeRegistrationComplete = () => {

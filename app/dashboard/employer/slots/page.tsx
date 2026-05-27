@@ -19,16 +19,18 @@ function SlotCard({
   onDelete: (id: string) => void;
   deleting: string | null;
 }) {
-  const full      = slot.booked >= slot.capacity;
-  const pct       = Math.round((slot.booked / slot.capacity) * 100);
-  const barColor  = full ? "bg-emerald-400" : pct >= 60 ? "bg-amber-400" : "bg-[#00418d]";
+  const full     = slot.booked >= slot.capacity;
+  const pct      = Math.round((slot.booked / slot.capacity) * 100);
+  const barColor = full ? "bg-emerald-400" : pct >= 60 ? "bg-amber-400" : "bg-[#00418d]";
 
   return (
-    <div className={`rounded-xl border p-4 flex flex-col gap-3 transition-all
-      ${full
-        ? "bg-emerald-50 border-emerald-200"
-        : "bg-white border-[#e2edf7] hover:border-[#00418d]/40 hover:shadow-sm"
-      }`}>
+    <div
+      className={`rounded-xl border p-4 flex flex-col gap-3 transition-all
+        ${full
+          ? "bg-emerald-50 border-emerald-200"
+          : "bg-white border-[#e2edf7] hover:border-[#00418d]/40 hover:shadow-sm"
+        }`}
+    >
       <div className="flex items-start justify-between">
         <div>
           <p className="text-xs text-gray-400 mb-0.5">{slot.date}</p>
@@ -58,7 +60,6 @@ function SlotCard({
         </div>
       </div>
 
-      {/* Actions */}
       {!full && (
         <div className="flex items-center gap-2">
           <Btn size="sm" icon={<Edit2 size={11} />} className="flex-1 justify-center">
@@ -80,11 +81,12 @@ function SlotCard({
 export default function EmployerSlotsPage() {
   const { data: slots = [], loading, reload } = useSlots();
   const [selectedDate, setSelectedDate] = useState("");
-  const [deleting, setDeleting] = useState<string|null>(null);
+  const [deleting,     setDeleting]     = useState<string | null>(null);
 
-  // New slot form state
-  const [form, setForm] = useState({ date:"", time:"", capacity:"5" });
-  const [saving, setSaving] = useState(false);
+  // ─── Create form state ────────────────────────────────────────────────────────
+  const [form,        setForm]        = useState({ date: "", time: "", capacity: "5" });
+  const [saving,      setSaving]      = useState(false);
+  const [createError, setCreateError] = useState("");
 
   const handleDelete = async (id: string) => {
     if (!confirm("Delete this slot?")) return;
@@ -101,18 +103,33 @@ export default function EmployerSlotsPage() {
   }, [slots, selectedDate]);
 
   const handleCreate = async () => {
-    if (!form.date || !form.time) return;
+    if (!form.date || !form.time) {
+      setCreateError("Date and time are required.");
+      return;
+    }
     setSaving(true);
-    await slotsAPI.create({
-      date: form.date,
-      time: form.time,
-      center: "Online",
+    setCreateError("");
+
+    const res = await slotsAPI.create({
+      date:     form.date,
+      time:     form.time,
+      center:   "Online",
       location: "Remote",
       capacity: Number(form.capacity),
     });
+
     setSaving(false);
-    setForm({ date:"", time:"", capacity:"5" });
-    reload();
+
+    if (res.ok) {
+      setForm({ date: "", time: "", capacity: "5" });
+      reload();
+    } else if (res.status === 403) {
+      setCreateError(
+        "You need an active plan to create slots. Go to Billing to purchase one."
+      );
+    } else {
+      setCreateError(res.message || "Failed to create slot.");
+    }
   };
 
   const dates = [...new Set(slots.map((s) => s.date))];
@@ -122,35 +139,52 @@ export default function EmployerSlotsPage() {
       <PageHeader
         title="Slot Manager"
         subtitle="Manage assessment time slots"
-        actions={<Btn variant="primary" icon={<Plus size={14} />}>Add Slot</Btn>}
+        actions={
+          <Btn
+            variant="primary"
+            icon={<Plus size={14} />}
+            onClick={() =>
+              document.getElementById("add-slot-form")?.scrollIntoView({ behavior: "smooth" })
+            }
+          >
+            Add Slot
+          </Btn>
+        }
       />
 
       {/* Date tabs */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1">
-        {dates.map((d) => (
-          <button
-            key={d}
-            onClick={() => setSelectedDate(d)}
-            className={`flex-shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm
-              font-medium transition-all border
-              ${selectedDate === d
-                ? "bg-[#00418d] text-white border-[#00418d]"
-                : "bg-white text-gray-500 border-[#e2edf7] hover:bg-[#f0f7ff]"
-              }`}
-          >
-            <Calendar size={13} />
-            {d}
-          </button>
-        ))}
-      </div>
+      {dates.length > 0 && (
+        <div className="flex items-center gap-2 overflow-x-auto pb-1">
+          {dates.map((d) => (
+            <button
+              key={d}
+              onClick={() => setSelectedDate(d)}
+              className={`flex-shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm
+                font-medium transition-all border
+                ${selectedDate === d
+                  ? "bg-[#00418d] text-white border-[#00418d]"
+                  : "bg-white text-gray-500 border-[#e2edf7] hover:bg-[#f0f7ff]"
+                }`}
+            >
+              <Calendar size={13} />
+              {d}
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* Slot grid */}
       {loading ? (
         <SkeletonTable rows={3} />
-      ) : slots.filter((s) => s.date === selectedDate).length === 0 ? (
+      ) : selectedDate && slots.filter((s) => s.date === selectedDate).length === 0 ? (
         <EmptyState
           title="No slots for this date"
           description="Add slots below to start accepting bookings."
+        />
+      ) : !selectedDate ? (
+        <EmptyState
+          title="No slots yet"
+          description="Create your first slot below."
         />
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3">
@@ -168,12 +202,12 @@ export default function EmployerSlotsPage() {
       )}
 
       {/* Add new slot form */}
-      <SectionCard title="Add New Slot">
+      <SectionCard title="Add New Slot" id="add-slot-form">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
-            { key:"date",     label:"Date",     type:"date",   placeholder:"" },
-            { key:"time",     label:"Time",     type:"time",   placeholder:"" },
-            { key:"capacity", label:"Capacity", type:"number", placeholder:"5" },
+            { key: "date",     label: "Date",     type: "date",   placeholder: "" },
+            { key: "time",     label: "Time",     type: "time",   placeholder: "" },
+            { key: "capacity", label: "Capacity", type: "number", placeholder: "5" },
           ].map((f) => (
             <div key={f.key}>
               <label className="block text-xs font-medium text-gray-600 mb-1.5">{f.label}</label>
@@ -188,6 +222,13 @@ export default function EmployerSlotsPage() {
             </div>
           ))}
         </div>
+
+        {createError && (
+          <p className="text-xs text-red-500 mt-3 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+            {createError}
+          </p>
+        )}
+
         <div className="flex justify-end mt-4">
           <Btn variant="primary" onClick={handleCreate} disabled={saving}>
             {saving ? "Creating…" : "Create Slot"}

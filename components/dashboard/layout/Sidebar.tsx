@@ -64,7 +64,8 @@ export default function Sidebar({ role, collapsed }: Props) {
 
   const handleLogout = () => {
     authAPI.logout();
-    router.push("/");
+    document.cookie = "sk_token=; path=/; max-age=0; SameSite=Strict";
+    window.location.href = "/";
   };
 
   return (
