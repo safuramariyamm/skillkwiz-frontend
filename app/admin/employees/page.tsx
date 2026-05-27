@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import AdminLayout from "@/app/admin/layout/AdminLayout";
 import {
   Users, Search, ChevronLeft, ChevronRight,
-  RefreshCw, Building2, Calendar, Hash, UserCheck,
+  RefreshCw, Building2, Calendar,
 } from "lucide-react";
 import {
   PageHeader, SectionCard, Badge, SkeletonTable, EmptyState, Btn,
@@ -31,16 +31,13 @@ interface Employee {
   createdAt: string;
 }
 
-interface EmployeesResult {
-  employees: Employee[];
-  pagination: { total: number; page: number; limit: number; pages: number };
-}
-
 export default function AdminEmployeesPage() {
   const [page,    setPage]    = useState(1);
   const [search,  setSearch]  = useState("");
   const [inputQ,  setInputQ]  = useState("");
-  const [data,    setData]    = useState<EmployeesResult | null>(null);
+  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [total,   setTotal]   = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error,   setError]   = useState("");
 
@@ -48,9 +45,13 @@ export default function AdminEmployeesPage() {
     setLoading(true);
     setError("");
     try {
-      // FIX: call the new /api/admin/employees endpoint (CompanyCredential records)
       const res = await adminAPI.getEmployees({ page, search });
-      setData(res.data);
+      // The fetch wrapper puts the full JSON body in res.data
+      // Backend returns: { success: true, data: { employees: [...], pagination: {...} } }
+      const payload = res.data?.data ?? res.data;
+      setEmployees(payload?.employees ?? []);
+      setTotal(payload?.pagination?.total ?? 0);
+      setTotalPages(Math.max(1, payload?.pagination?.pages ?? 1));
     } catch (e: any) {
       setError(e?.message || "Failed to load employees");
     } finally {
@@ -60,14 +61,7 @@ export default function AdminEmployeesPage() {
 
   useEffect(() => { load(); }, [load]);
 
-  const applySearch = () => {
-    setSearch(inputQ);
-    setPage(1);
-  };
-
-  const employees  = data?.employees ?? [];
-  const total      = data?.pagination?.total ?? 0;
-  const totalPages = Math.max(1, data?.pagination?.pages ?? 1);
+  const applySearch = () => { setSearch(inputQ); setPage(1); };
 
   return (
     <AdminLayout section="employees">
@@ -93,9 +87,7 @@ export default function AdminEmployeesPage() {
             <div className="flex gap-2">
               <Btn variant="primary" size="sm" onClick={applySearch}>Search</Btn>
               {search && (
-                <Btn size="sm" onClick={() => {
-                  setSearch(""); setInputQ(""); setPage(1);
-                }}>Clear</Btn>
+                <Btn size="sm" onClick={() => { setSearch(""); setInputQ(""); setPage(1); }}>Clear</Btn>
               )}
             </div>
           </div>
@@ -113,20 +105,12 @@ export default function AdminEmployeesPage() {
           {loading ? (
             <SkeletonTable rows={8} />
           ) : error ? (
-            <EmptyState
-              icon={<Users size={24} />}
-              title="Failed to load employees"
-              description={error}
-            />
+            <EmptyState icon={<Users size={24} />} title="Failed to load employees" description={error} />
           ) : employees.length === 0 ? (
             <EmptyState
               icon={<Users size={24} />}
               title="No company employees found"
-              description={
-                search
-                  ? "Try adjusting your search criteria."
-                  : "Employees will appear here once employers generate credentials for them."
-              }
+              description={search ? "Try adjusting your search criteria." : "Employees will appear here once employers generate credentials for them."}
             />
           ) : (
             <div className="overflow-x-auto -mx-4 px-4">
@@ -182,40 +166,26 @@ export default function AdminEmployeesPage() {
             </div>
           )}
 
-          {/* Pagination */}
           {totalPages > 1 && (
             <div className="flex items-center justify-between mt-4 pt-4 border-t border-[#e2edf7]">
               <span className="text-xs text-gray-400">Page {page} of {totalPages} · {total} total</span>
               <div className="flex items-center gap-1">
-                <button
-                  disabled={page === 1}
-                  onClick={() => setPage(p => p - 1)}
-                  className="p-1.5 rounded-lg border border-[#e2edf7] text-gray-500 hover:bg-[#f0f7ff] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-                >
+                <button disabled={page === 1} onClick={() => setPage(p => p - 1)}
+                  className="p-1.5 rounded-lg border border-[#e2edf7] text-gray-500 hover:bg-[#f0f7ff] disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
                   <ChevronLeft size={14} />
                 </button>
                 {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                   const pg = Math.max(1, Math.min(page - 2, totalPages - 4)) + i;
                   if (pg < 1 || pg > totalPages) return null;
                   return (
-                    <button
-                      key={pg}
-                      onClick={() => setPage(pg)}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                        pg === page
-                          ? "bg-[#00418d] text-white"
-                          : "border border-[#e2edf7] text-gray-600 hover:bg-[#f0f7ff]"
-                      }`}
-                    >
+                    <button key={pg} onClick={() => setPage(pg)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${pg === page ? "bg-[#00418d] text-white" : "border border-[#e2edf7] text-gray-600 hover:bg-[#f0f7ff]"}`}>
                       {pg}
                     </button>
                   );
                 })}
-                <button
-                  disabled={page === totalPages}
-                  onClick={() => setPage(p => p + 1)}
-                  className="p-1.5 rounded-lg border border-[#e2edf7] text-gray-500 hover:bg-[#f0f7ff] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-                >
+                <button disabled={page === totalPages} onClick={() => setPage(p => p + 1)}
+                  className="p-1.5 rounded-lg border border-[#e2edf7] text-gray-500 hover:bg-[#f0f7ff] disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
                   <ChevronRight size={14} />
                 </button>
               </div>

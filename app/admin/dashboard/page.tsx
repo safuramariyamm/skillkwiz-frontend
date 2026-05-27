@@ -2,21 +2,20 @@
 
 import AdminLayout from "@/app/admin/layout/AdminLayout";
 import {
-  Users, Building2, CreditCard, ClipboardList,
-  DollarSign, TrendingUp, Activity, Download,
-  ArrowUpRight, ArrowDownRight,
+  Users, Building2, ClipboardList,
+  IndianRupee, Activity, Download,
+  ArrowUpRight, ArrowDownRight, UserCheck,
 } from "lucide-react";
-import { useAdminRevenue, useAdminEmployers, useAdminCandidates } from "@/hooks";
+import { useAdminRevenue, useAdminEmployers } from "@/hooks";
 import { RevenueBarChart } from "@/components/dashboard/charts";
 import { StatCard, SectionCard, PageHeader, Btn, SkeletonCard, EmptyState } from "@/components/dashboard/shared";
 
 export default function AdminDashboardPage() {
   const { summary, monthly } = useAdminRevenue();
-  const employers  = useAdminEmployers(1, "", "");
-  const candidates = useAdminCandidates(1, "", "");
+  const employers = useAdminEmployers(1, "", "");
 
-  const stats     = summary.data as any;
-  const revData   = (monthly.data as any)?.monthly ?? [];
+  const stats      = summary.data as any;
+  const revData    = (monthly.data as any)?.monthly ?? [];
   const recentEmps = (employers.data as any)?.employers?.slice(0, 5) ?? [];
 
   return (
@@ -25,27 +24,49 @@ export default function AdminDashboardPage() {
         <PageHeader
           title="Platform Overview"
           subtitle="Live metrics across the entire SkillKwiz platform"
-          actions={
-            <Btn icon={<Download size={14} />}>Export Report</Btn>
-          }
+          actions={<Btn icon={<Download size={14} />}>Export Report</Btn>}
         />
 
-        {/* KPI Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3">
+        {/* KPI Cards — 5 cards, no Candidates */}
+        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-3">
           {summary.loading ? (
-            Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)
+            Array.from({ length: 5 }).map((_, i) => <SkeletonCard key={i} />)
           ) : summary.error ? (
             <div className="col-span-full">
               <EmptyState title="Could not load stats" description={summary.error} />
             </div>
           ) : (
             <>
-              <StatCard label="Total Users"    value={String(stats?.totalUsers      ?? 0)} icon={<Users size={18} className="text-[#1e40af]" />} iconBg="bg-[#eff6ff]" />
-              <StatCard label="Employers"       value={String(stats?.totalEmployers  ?? 0)} icon={<Building2 size={18} className="text-emerald-700" />} iconBg="bg-emerald-50" />
-              <StatCard label="Candidates"      value={String(stats?.totalCandidates ?? 0)} icon={<Users size={18} className="text-amber-700" />} iconBg="bg-amber-50" />
-              <StatCard label="Assessments"     value={String(stats?.totalAssessments?? 0)} icon={<ClipboardList size={18} className="text-[#f73e5d]" />} iconBg="bg-[#fff0f2]" />
-              <StatCard label="Revenue"         value={`₹${Number(stats?.totalRevenue ?? 0).toLocaleString()}`} icon={<DollarSign size={18} className="text-violet-700" />} iconBg="bg-violet-50" />
-              <StatCard label="Active Plans"    value={String(stats?.activePlans     ?? 0)} icon={<Activity size={18} className="text-emerald-700" />} iconBg="bg-emerald-50" />
+              <StatCard
+                label="Employees"
+                value={String(stats?.totalEmployees ?? stats?.totalUsers ?? 0)}
+                icon={<UserCheck size={18} className="text-[#1e40af]" />}
+                iconBg="bg-[#eff6ff]"
+              />
+              <StatCard
+                label="Employers"
+                value={String(stats?.totalEmployers ?? 0)}
+                icon={<Building2 size={18} className="text-emerald-700" />}
+                iconBg="bg-emerald-50"
+              />
+              <StatCard
+                label="Assessments"
+                value={String(stats?.totalAssessments ?? 0)}
+                icon={<ClipboardList size={18} className="text-[#f73e5d]" />}
+                iconBg="bg-[#fff0f2]"
+              />
+              <StatCard
+                label="Revenue"
+                value={`$${Number(stats?.totalRevenue ?? 0).toLocaleString()}`}
+                icon={<IndianRupee size={18} className="text-violet-700" />}
+                iconBg="bg-violet-50"
+              />
+              <StatCard
+                label="Active Plans"
+                value={String(stats?.activePlans ?? 0)}
+                icon={<Activity size={18} className="text-emerald-700" />}
+                iconBg="bg-emerald-50"
+              />
             </>
           )}
         </div>
@@ -64,20 +85,44 @@ export default function AdminDashboardPage() {
 
           <SectionCard title="Quick Stats">
             <div className="space-y-4 pt-1">
-              {[
-                { label: "Employers this month", value: stats?.newEmployersThisMonth ?? "—", up: true },
-                { label: "Candidates this month", value: stats?.newCandidatesThisMonth ?? "—", up: true },
-                { label: "Failed payments", value: stats?.failedPayments ?? 0, up: false },
-                { label: "Expired plans", value: stats?.expiredPlans ?? 0, up: false },
-              ].map((item) => (
-                <div key={item.label} className="flex items-center justify-between">
-                  <span className="text-sm text-gray-500">{item.label}</span>
-                  <div className={`flex items-center gap-1 text-sm font-semibold ${item.up ? "text-emerald-600" : "text-red-500"}`}>
-                    {item.up ? <ArrowUpRight size={14} /> : <ArrowDownRight size={14} />}
-                    {item.value}
+              {summary.loading ? (
+                Array.from({ length: 4 }).map((_, i) => (
+                  <div key={i} className="h-5 bg-gray-100 rounded animate-pulse" />
+                ))
+              ) : (
+                [
+                  {
+                    label: "Employers this month",
+                    value: stats?.newEmployersThisMonth ?? 0,
+                    up: true,
+                  },
+                  {
+                    label: "Employees this month",
+                    value: stats?.newCandidatesThisMonth ?? stats?.newEmployeesThisMonth ?? 0,
+                    up: true,
+                  },
+                  {
+                    label: "Failed payments",
+                    value: stats?.failedPayments ?? 0,
+                    up: false,
+                  },
+                  {
+                    label: "Expired plans",
+                    value: stats?.expiredPlans ?? 0,
+                    up: false,
+                  },
+                ].map((item) => (
+                  <div key={item.label} className="flex items-center justify-between">
+                    <span className="text-sm text-gray-500">{item.label}</span>
+                    <div className={`flex items-center gap-1 text-sm font-semibold ${
+                      item.up ? "text-emerald-600" : "text-red-500"
+                    }`}>
+                      {item.up ? <ArrowUpRight size={14} /> : <ArrowDownRight size={14} />}
+                      {item.value}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </SectionCard>
         </div>
@@ -125,7 +170,8 @@ export default function AdminDashboardPage() {
                       <td className="py-3 px-3 text-gray-700">{emp.credits ?? 0}</td>
                       <td className="py-3 px-3">
                         <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium border
-                          ${emp.planStatus === "active" ? "bg-emerald-50 text-emerald-700 border-emerald-200" : "bg-red-50 text-red-600 border-red-200"}`}>
+                          ${emp.planStatus === "active" ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                            : "bg-red-50 text-red-600 border-red-200"}`}>
                           {emp.planStatus ?? "—"}
                         </span>
                       </td>

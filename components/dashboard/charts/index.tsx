@@ -47,8 +47,8 @@ export function RevenueBarChart({ data, height = 200 }: RevenueChartProps) {
         <CartesianGrid vertical={false} stroke="#f0f5fb" />
         <XAxis dataKey="month" tick={{ fontSize: 11, fill: "#9ca3af" }} axisLine={false} tickLine={false} />
         <YAxis tick={{ fontSize: 11, fill: "#9ca3af" }} axisLine={false} tickLine={false}
-          tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} />
-        <Tooltip content={<CustomTooltip prefix="$" />} />
+          tickFormatter={(v) => `₹${(v / 1000).toFixed(0)}k`} />
+        <Tooltip content={<CustomTooltip prefix="₹" />} />
         <Bar dataKey="total" name="Revenue" fill={SK_BLUE} radius={[5, 5, 0, 0]} />
       </BarChart>
     </ResponsiveContainer>
@@ -69,8 +69,8 @@ export function StackedRevenueChart({ data, height = 220 }: StackedRevenueProps)
         <CartesianGrid vertical={false} stroke="#f0f5fb" />
         <XAxis dataKey="month" tick={{ fontSize: 11, fill: "#9ca3af" }} axisLine={false} tickLine={false} />
         <YAxis tick={{ fontSize: 11, fill: "#9ca3af" }} axisLine={false} tickLine={false}
-          tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} />
-        <Tooltip content={<CustomTooltip prefix="$" />} />
+          tickFormatter={(v) => `₹${(v / 1000).toFixed(0)}k`} />
+        <Tooltip content={<CustomTooltip prefix="₹" />} />
         <Legend wrapperStyle={{ fontSize: 11, color: "#6b7280" }} />
         <Bar dataKey="starter"    name="Starter"    stackId="a" fill="#b3d4f5" radius={[0,0,0,0]} />
         <Bar dataKey="growth"     name="Growth"     stackId="a" fill={SK_BLUE} radius={[0,0,0,0]} />
