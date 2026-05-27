@@ -102,7 +102,7 @@ export default function AdminPaymentsPage() {
               />
               <StatCard
                 label="Revenue This Month"
-                value={`₹${Number(revenueThisMonth).toLocaleString()}`}
+                value={`$${Number(revenueThisMonth).toLocaleString()}`}
                 icon={<TrendingUp size={18} className="text-emerald-700" />}
                 iconBg="bg-emerald-50"
               />
