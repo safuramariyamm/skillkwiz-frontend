@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import AdminLayout from "@/app/admin/layout/AdminLayout";
 import {
-  CreditCard, DollarSign, TrendingUp, AlertTriangle,
+  CreditCard, IndianRupee, TrendingUp, AlertTriangle,
   ChevronLeft, ChevronRight, RefreshCw, Download,
 } from "lucide-react";
 import {
@@ -67,6 +67,12 @@ export default function AdminPaymentsPage() {
   const txTotal = (txResult.data as any)?.pagination?.total ?? 0;
   const txPages = Math.max(1, Math.ceil(txTotal / 15));
 
+  // Derive "Revenue This Month" from the monthly chart data
+  const currentMonth = new Date().toLocaleString("en", { month: "short" });
+  const revenueThisMonth = revData.find((r: any) => r.month === currentMonth)?.total
+    ?? stats?.revenueThisMonth
+    ?? 0;
+
   return (
     <AdminLayout section="payments">
       <div className="space-y-5">
@@ -85,7 +91,7 @@ export default function AdminPaymentsPage() {
               <StatCard
                 label="Total Revenue"
                 value={`₹${Number(stats?.totalRevenue ?? 0).toLocaleString()}`}
-                icon={<DollarSign size={18} className="text-violet-700" />}
+                icon={<IndianRupee size={18} className="text-violet-700" />}
                 iconBg="bg-violet-50"
               />
               <StatCard
@@ -96,7 +102,7 @@ export default function AdminPaymentsPage() {
               />
               <StatCard
                 label="Revenue This Month"
-                value={`₹${Number(stats?.revenueThisMonth ?? 0).toLocaleString()}`}
+                value={`₹${Number(revenueThisMonth).toLocaleString()}`}
                 icon={<TrendingUp size={18} className="text-emerald-700" />}
                 iconBg="bg-emerald-50"
               />
@@ -149,12 +155,8 @@ export default function AdminPaymentsPage() {
                 <tbody>
                   {txList.map((tx: Transaction) => (
                     <tr key={tx._id} className="border-b border-[#f0f5fb] last:border-0 hover:bg-[#fafcff] transition-colors">
-                      <td className="px-3 py-3 font-medium text-gray-900">
-                        {tx.employer?.companyName || "—"}
-                      </td>
-                      <td className="px-3 py-3 font-semibold text-emerald-700">
-                        ₹{Number(tx.amount).toLocaleString()}
-                      </td>
+                      <td className="px-3 py-3 font-medium text-gray-900">{tx.employer?.companyName || "—"}</td>
+                      <td className="px-3 py-3 font-semibold text-emerald-700">₹{Number(tx.amount).toLocaleString()}</td>
                       <td className="px-3 py-3 capitalize text-gray-600">{tx.plan || "—"}</td>
                       <td className="px-3 py-3 text-gray-500 capitalize">{tx.method || "—"}</td>
                       <td className="px-3 py-3">{txStatusBadge(tx.status)}</td>
@@ -172,33 +174,22 @@ export default function AdminPaymentsPage() {
             <div className="flex items-center justify-between mt-4 pt-4 border-t border-[#e2edf7]">
               <span className="text-xs text-gray-400">Page {txPage} of {txPages} · {txTotal} total</span>
               <div className="flex items-center gap-1">
-                <button
-                  disabled={txPage === 1}
-                  onClick={() => setTxPage(p => p - 1)}
-                  className="p-1.5 rounded-lg border border-[#e2edf7] text-gray-500 hover:bg-[#f0f7ff] disabled:opacity-40 disabled:cursor-not-allowed"
-                >
+                <button disabled={txPage === 1} onClick={() => setTxPage(p => p - 1)}
+                  className="p-1.5 rounded-lg border border-[#e2edf7] text-gray-500 hover:bg-[#f0f7ff] disabled:opacity-40 disabled:cursor-not-allowed">
                   <ChevronLeft size={14} />
                 </button>
                 {Array.from({ length: Math.min(5, txPages) }, (_, i) => {
                   const pg = Math.max(1, Math.min(txPage - 2, txPages - 4)) + i;
                   if (pg < 1 || pg > txPages) return null;
                   return (
-                    <button
-                      key={pg}
-                      onClick={() => setTxPage(pg)}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                        pg === txPage ? "bg-[#00418d] text-white" : "border border-[#e2edf7] text-gray-600 hover:bg-[#f0f7ff]"
-                      }`}
-                    >
+                    <button key={pg} onClick={() => setTxPage(pg)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${pg === txPage ? "bg-[#00418d] text-white" : "border border-[#e2edf7] text-gray-600 hover:bg-[#f0f7ff]"}`}>
                       {pg}
                     </button>
                   );
                 })}
-                <button
-                  disabled={txPage === txPages}
-                  onClick={() => setTxPage(p => p + 1)}
-                  className="p-1.5 rounded-lg border border-[#e2edf7] text-gray-500 hover:bg-[#f0f7ff] disabled:opacity-40 disabled:cursor-not-allowed"
-                >
+                <button disabled={txPage === txPages} onClick={() => setTxPage(p => p + 1)}
+                  className="p-1.5 rounded-lg border border-[#e2edf7] text-gray-500 hover:bg-[#f0f7ff] disabled:opacity-40 disabled:cursor-not-allowed">
                   <ChevronRight size={14} />
                 </button>
               </div>

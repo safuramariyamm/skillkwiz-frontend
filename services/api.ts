@@ -90,7 +90,45 @@ export const authAPI = {
   me: () => get("/auth/me"),
 };
 
-// ─── Admin — Employers ────────────────────────────────────────────────────────
+// ─── Admin — unified namespace ────────────────────────────────────────────────
+
+export const adminAPI = {
+  // Overview / stats (counts CompanyCredentials for "Total Users" now)
+  getOverview: () => get("/admin/overview"),
+
+  // Employers
+  getEmployers: (opts: { page?: number; search?: string; plan?: string } = {}) => {
+    const { page = 1, search = "", plan = "" } = opts;
+    return get(
+      `/admin/employers?page=${page}&limit=20${search ? `&search=${encodeURIComponent(search)}` : ""}${plan ? `&plan=${encodeURIComponent(plan)}` : ""}`
+    );
+  },
+
+  // FIX: Company-registered employees (CompanyCredential records)
+  getEmployees: (opts: { page?: number; search?: string } = {}) => {
+    const { page = 1, search = "" } = opts;
+    return get(
+      `/admin/employees?page=${page}&limit=20${search ? `&search=${encodeURIComponent(search)}` : ""}`
+    );
+  },
+
+  // Candidates (standalone job-seekers — separate from company employees)
+  getCandidates: (opts: { page?: number; search?: string; skill?: string } = {}) => {
+    const { page = 1, search = "", skill = "" } = opts;
+    return get(
+      `/admin/candidates?page=${page}&limit=20${search ? `&search=${encodeURIComponent(search)}` : ""}${skill ? `&skill=${encodeURIComponent(skill)}` : ""}`
+    );
+  },
+
+  // Revenue
+  getRevenueSummary: () => get("/admin/revenue/summary"),
+  getRevenueMonthly: (months = 6) => get(`/admin/revenue/monthly?months=${months}`),
+
+  // Health
+  getHealth: () => get("/admin/health"),
+};
+
+// ─── Admin — legacy named exports (keep for backward compat with hooks) ───────
 
 export const adminEmployersAPI = {
   list: (page = 1, limit = 20, search = "", plan = "") =>
@@ -103,8 +141,6 @@ export const adminEmployersAPI = {
   deactivate: (id: string) => put(`/admin/employers/${id}/deactivate`, {}),
 };
 
-// ─── Admin — Candidates ───────────────────────────────────────────────────────
-
 export const adminCandidatesAPI = {
   list: (page = 1, limit = 20, search = "", skill = "") =>
     get(
@@ -113,16 +149,12 @@ export const adminCandidatesAPI = {
   getOne: (id: string) => get(`/admin/candidates/${id}`),
 };
 
-// ─── Admin — Revenue ──────────────────────────────────────────────────────────
-
 export const adminRevenueAPI = {
   summary: () => get("/admin/overview"),
   monthly: (months = 6) => get(`/admin/revenue/monthly?months=${months}`),
   transactions: (page = 1, limit = 10) =>
     get(`/admin/revenue/transactions?page=${page}&limit=${limit}`),
 };
-
-// ─── Admin — Blog ─────────────────────────────────────────────────────────────
 
 export const adminBlogAPI = {
   list: () => get("/blogs"),
@@ -132,8 +164,6 @@ export const adminBlogAPI = {
   update: (id: string, body: object) => put(`/blogs/${id}`, body),
   remove: (id: string) => del(`/blogs/${id}`),
 };
-
-// ─── Admin — Platform Health ──────────────────────────────────────────────────
 
 export const adminHealthAPI = {
   status: () => get("/admin/health"),
@@ -160,7 +190,7 @@ export const employerAPI = {
   assessmentRequests: () => get("/employers/assessment-requests"),
 };
 
-// ─── Employer — Assessment requests (replaces generic /assessments list) ─────
+// ─── Employer — Assessment requests ──────────────────────────────────────────
 
 export const assessmentsAPI = {
   list: () => get("/employers/assessment-requests"),
@@ -183,7 +213,7 @@ export const slotsAPI = {
   remove: (id: string) => del(`/employers/slots/${id}`),
 };
 
-// ─── Employer — Candidates = company credentials ────────────────────────────
+// ─── Employer — Candidates = company credentials ──────────────────────────────
 
 export const employerCandidatesAPI = {
   list: () => get("/employers/credentials"),
@@ -198,7 +228,7 @@ export const credentialsAPI = {
   revoke: (credentialId: string) => del(`/employers/credentials/${credentialId}`),
 };
 
-// ─── Employee (company credential login) ──────────────────────────────────────
+// ─── Employee (company credential login) ─────────────────────────────────────
 
 export const employeeAPI = {
   availableSlots: () => get("/assessments/available-slots"),

@@ -16,9 +16,12 @@ export default function AdminTopBar({ user }: Props) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const handleLogout = () => {
+    // Clear all auth tokens + user data
     authAPI.logout();
     document.cookie = "sk_token=; path=/; max-age=0";
-    router.push("/admin/login");
+    // FIX: use window.location.replace for a hard redirect — this fully
+    // unmounts the React tree so the admin dashboard can't stay on screen
+    window.location.replace("/admin/login");
   };
 
   const initials = user?.name

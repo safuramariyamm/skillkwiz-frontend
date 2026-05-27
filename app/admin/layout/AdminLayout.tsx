@@ -89,10 +89,19 @@ export default function AdminLayout({ children, section }: Props) {
 
   return (
     <AdminLayoutContext.Provider value={{ user, collapsed, toggleSidebar: () => setCollapsed(p => !p) }}>
+      {/* FIX: Use fixed positioning for the entire shell so the TopBar never scrolls away.
+          The sidebar is fixed on the left; the right column is a flex column
+          where the TopBar is sticky and only the main area scrolls. */}
       <div className="flex h-screen overflow-hidden bg-[#f0f7ff]">
+        {/* Sidebar — full height, never scrolls */}
         <AdminSidebar collapsed={collapsed} activeSection={section} />
-        <div className="flex flex-1 flex-col overflow-hidden min-w-0">
-          <AdminTopBar user={user} />
+
+        {/* Right column — fills remaining width, split into TopBar + scrollable main */}
+        <div className="flex flex-1 flex-col min-w-0 overflow-hidden">
+          {/* FIX: sticky top-0 + z-10 keeps the bar pinned even when main scrolls */}
+          <div className="sticky top-0 z-10 flex-shrink-0">
+            <AdminTopBar user={user} />
+          </div>
           <main className="flex-1 overflow-y-auto p-5 md:p-6">
             {children}
           </main>

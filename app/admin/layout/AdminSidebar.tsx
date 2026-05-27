@@ -40,7 +40,7 @@ export default function AdminSidebar({ collapsed, activeSection }: Props) {
   const handleLogout = () => {
     authAPI.logout();
     document.cookie = "sk_token=; path=/; max-age=0";
-    router.push("/admin/login");
+    window.location.replace("/admin/login");
   };
 
   return (

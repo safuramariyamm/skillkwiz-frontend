@@ -1,6 +1,6 @@
 // components/ConditionalShell.tsx
 // Renders SiteHeader + SiteFooter only on public pages.
-// Dashboard routes get NO site header/footer — they have their own layout.
+// Dashboard routes AND admin routes get NO site header/footer — they have their own layout.
 "use client";
 
 import { usePathname } from "next/navigation";
@@ -13,10 +13,11 @@ export default function ConditionalShell({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const isDashboard = pathname.startsWith("/dashboard");
+  // FIX: also exclude /admin/* from the public site chrome
+  const isAppShell = pathname.startsWith("/dashboard") || pathname.startsWith("/admin");
 
-  if (isDashboard) {
-    // Dashboard pages: render children directly, no site chrome
+  if (isAppShell) {
+    // Dashboard + Admin pages: render children directly, no site chrome
     return <>{children}</>;
   }
 
