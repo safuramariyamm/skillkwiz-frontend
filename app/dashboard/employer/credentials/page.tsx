@@ -1,7 +1,7 @@
 // app/dashboard/employer/credentials/page.tsx
 "use client";
 
-import { KeyRound, ShieldOff } from "lucide-react";
+import { KeyRound, ShieldOff, RefreshCw } from "lucide-react";
 import {
   PageHeader, Btn, SectionCard, DataTable, Badge, SkeletonTable, EmptyState,
 } from "@/components/dashboard/shared";
